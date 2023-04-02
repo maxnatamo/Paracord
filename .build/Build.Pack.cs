@@ -2,7 +2,6 @@ using Nuke.Common;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.NuGet;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
-using static Nuke.Common.Tools.NuGet.NuGetTasks;
 
 partial class Build : NukeBuild
 {
@@ -19,6 +18,7 @@ partial class Build : NukeBuild
                 .EnableNoBuild()
                 .EnableNoRestore()
                 .SetIncludeSymbols(true)
+                .SetSymbolPackageFormat(DotNetSymbolPackageFormat.snupkg)
                 .SetIncludeSource(false)
                 .SetDescription("Homebrew HTTP server for .NET Core")
                 .SetAuthors("Max T. Kristiansen")
