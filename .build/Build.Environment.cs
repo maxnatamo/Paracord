@@ -20,6 +20,11 @@ partial class Build : NukeBuild
     /// </summary>
     readonly AbsolutePath ArtifactsDirectory = RootDirectory / "artifacts";
 
+    /// <summary>
+    /// Path to store local NuGet artifacts.
+    /// </summary>
+    readonly AbsolutePath NuGetArtifactsDirectory = RootDirectory / "artifacts" / "nuget";
+
     [GitVersion(Framework = "net6.0", NoFetch = true)]
     readonly GitVersion GitVersion;
 }
