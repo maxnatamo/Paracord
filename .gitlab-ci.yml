@@ -1,0 +1,47 @@
+stages:
+  - test
+  - build
+  - publish
+
+format:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:7.0
+  script:
+    - ./build.cmd Format
+
+test:
+  stage: test
+  image: mcr.microsoft.com/dotnet/sdk:7.0
+  script:
+    - ./build.cmd Test
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:7.0
+  script:
+    - ./build.cmd Pack
+  artifacts:
+    paths:
+      - artifacts/
+  only:
+    - main
+
+publish:
+  stage: publish
+  image: mcr.microsoft.com/dotnet/sdk:7.0
+  variables:
+    NUKE_NUGET_SOURCE_NAME: gitlab
+    NUKE_NUGET_SOURCE: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/nuget/index.json
+    NUKE_NUGET_USERNAME: gitlab-ci-token
+    NUKE_NUGET_PASSWORD: $CI_JOB_TOKEN
+  script:
+    - ./build.cmd Publish
+  dependencies:
+    - build
+  only:
+    - tags
