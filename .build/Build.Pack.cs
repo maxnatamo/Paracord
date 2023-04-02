@@ -8,16 +8,16 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build : NukeBuild
 {
     [Parameter("Name of the NuGet source")]
-    readonly string NuGetSourceName = "gitlab";
+    readonly string NugetSourceName = "gitlab";
 
     [Parameter("NuGet Source for packages")]
-    readonly string NuGetSource;
+    readonly string NugetSource;
 
     [Parameter("NuGet username")]
-    readonly string NuGetUsername;
+    readonly string NugetUsername;
 
     [Parameter("NuGet password")]
-    readonly string NuGetPassword;
+    readonly string NugetPassword;
 
     Target Pack => _ => _
         .DependsOn(Compile)
@@ -50,24 +50,24 @@ partial class Build : NukeBuild
     Target Publish => _ => _
         .DependsOn(Compile)
         .Consumes(Pack)
-        .Requires(() => NuGetSourceName)
-        .Requires(() => NuGetSource)
-        .Requires(() => NuGetUsername)
-        .Requires(() => NuGetPassword)
+        .Requires(() => NugetSourceName)
+        .Requires(() => NugetSource)
+        .Requires(() => NugetUsername)
+        .Requires(() => NugetPassword)
         .Requires(() => Configuration.IsRelease)
         .Executes(() =>
         {
             var packages = NuGetArtifactsDirectory.GlobFiles("*.nupkg");
 
             DotNetNuGetAddSource(c => c
-                .SetName(NuGetSourceName)
-                .SetSource(NuGetSource)
-                .SetUsername(NuGetUsername)
-                .SetPassword(NuGetPassword)
+                .SetName(NugetSourceName)
+                .SetSource(NugetSource)
+                .SetUsername(NugetUsername)
+                .SetPassword(NugetPassword)
                 .SetStorePasswordInClearText(true));
 
             DotNetNuGetPush(c => c
-                .SetSource(NuGetSource)
+                .SetSource(NugetSource)
                 .CombineWith(packages, (s, v) => s.SetTargetPath(v)));
         });
 }
