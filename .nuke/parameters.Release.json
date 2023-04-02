@@ -1,0 +1,5 @@
+{
+  "$schema": "./build.schema.json",
+  "Solution": "Paracord.sln",
+  "Configuration": "Release"
+}
