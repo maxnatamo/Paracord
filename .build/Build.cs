@@ -22,7 +22,6 @@ partial class Build : NukeBuild
         Serilog.Log.Information("🪢 Build process started");
         Serilog.Log.Information("");
         Serilog.Log.Information("Build manifest:");
-        Serilog.Log.Information("  Git head: {Head}", GitRepository.Head);
         Serilog.Log.Information("  Git branch: {BranchName}", GitVersion.BranchName);
         Serilog.Log.Information("  Git commit hash: {ShortSha}", GitVersion.ShortSha);
         Serilog.Log.Information("  Git semantic version: {SemVer}", GitVersion.SemVer);
