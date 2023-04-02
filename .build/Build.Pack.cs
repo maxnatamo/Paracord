@@ -25,7 +25,7 @@ partial class Build : NukeBuild
                 .SetCopyright("Copyright (c) Max T. Kristiansen 2023")
                 .SetPackageTags("http https web-server c# core library")
                 .SetPackageProjectUrl("https://github.com/maxnatamo/paracord")
-                .SetNoDependencies(true)
+                .SetNoDependencies(false)
                 .SetOutputDirectory(ArtifactsDirectory / "nuget")
                 .SetAssemblyVersion(GitVersion.AssemblySemVer)
                 .SetFileVersion(GitVersion.AssemblySemFileVer)
