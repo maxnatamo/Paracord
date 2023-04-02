@@ -20,7 +20,7 @@ partial class Build : NukeBuild
     /// </summary>
     readonly AbsolutePath ArtifactsDirectory = RootDirectory / "artifacts";
 
-    [GitVersion]
+    [GitVersion(Framework = "net6.0", NoFetch = true)]
     readonly GitVersion GitVersion;
 
     [GitRepository]
