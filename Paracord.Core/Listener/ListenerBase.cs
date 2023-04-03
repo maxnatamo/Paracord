@@ -44,9 +44,16 @@ namespace Paracord.Core.Listener
         {
             this.InternalLock = new object();
 
-            this.ListenAddress = IPAddress.Parse(address);
-            this.ListenPort = port;
+            this.ListenAddress = address switch
+            {
+                var a when a == "localhost"        => IPAddress.Loopback,
+                var a when string.IsNullOrEmpty(a) => IPAddress.Any,
+                var a when a == "*"                => IPAddress.Any,
 
+                _ => IPAddress.Parse(address)
+            };
+
+            this.ListenPort = port;
             this.Listener = new TcpListener(this.ListenAddress, this.ListenPort);
         }
 

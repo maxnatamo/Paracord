@@ -1,5 +1,6 @@
 using System.Net.Security;
 using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
 using Paracord.Shared.Http;
@@ -105,8 +106,8 @@ namespace Paracord.Core.Listener
 
             lock(this.InternalLock)
             {
-                SslStream sslStream = new SslStream(innerStream);
-                sslStream.AuthenticateAsServer(serverCertificate: this.SslCertificate);
+                SslStream sslStream = new SslStream(innerStream, true);
+                sslStream.AuthenticateAsServer(this.SslCertificate, false, SslProtocols.Tls13 | SslProtocols.Tls12, false);
 
                 return sslStream;
             }
