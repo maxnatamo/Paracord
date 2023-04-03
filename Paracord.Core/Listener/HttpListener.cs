@@ -59,6 +59,7 @@ namespace Paracord.Core.Listener
         protected HttpContext WrapTcpClient(TcpClient client)
         {
             Stream stream = client.GetStream();
+            HttpContext ctx = new HttpContext(client);
 
             if(this.IsSecure)
             {
@@ -73,15 +74,10 @@ namespace Paracord.Core.Listener
             while((bytesExpected = client.Available) == 0) { }
 
             Byte[] bytes = new Byte[bytesExpected];
+            bytesRead = stream.Read(bytes, 0, bytes.Length);
 
-            if((bytesRead = stream.Read(bytes, 0, bytes.Length)) != bytesExpected)
-            {
-                client.Close();
-                Console.WriteLine(System.Text.Encoding.ASCII.GetString(bytes));
-                throw new InvalidDataException($"TCP connection was ended abruptly; received {bytesRead} bytes, expected {bytesExpected} bytes.");
-            }
-
-            HttpContext ctx = new HttpContext(client);
+            // Limit bytes size
+            bytes = bytes[0..bytesRead];
 
             ctx.Request = new HttpRequest();
             ctx.Request.Context = ctx;
