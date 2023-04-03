@@ -10,19 +10,28 @@ namespace Paracord.Core.Listener
 {
     public class HttpListener : ListenerBase
     {
-        protected readonly X509Certificate2 Certificate;
+        /// <summary>
+        /// The SSL certificate to use for HTTPS connections, if enabled.
+        /// </summary>
+        protected readonly X509Certificate2? SslCertificate;
+
+        /// <summary>
+        /// Whether the listener is secured with HTTPS.
+        /// </summary>
+        protected bool IsSecure
+        {
+            get => this.SslCertificate != null;
+        }
 
         /// <summary>
         /// Initialize a new <c>HttpListener</c>-instance with the specified IP-address and port.
         /// </summary>
         /// <param name="address">The IP-address to listen on.</param>
         /// <param name="port">The port to listen on.</param>
-        public HttpListener(string address, UInt16 port = 80) : base(address, port)
+        /// <param name="sslCertificate">The SSL certificate to use for HTTPS connections. HTTPS is disabled, if null.</param>
+        public HttpListener(string address, UInt16 port = 80, X509Certificate2? sslCertificate = null) : base(address, port)
         {
-            this.Certificate = new X509CertificateBuilder()
-                .SetCommonName("localhost")
-                .SetCountry("DK")
-                .Build();
+            this.SslCertificate = sslCertificate;
         }
 
         /// <summary>
@@ -49,6 +58,11 @@ namespace Paracord.Core.Listener
         protected HttpContext WrapTcpClient(TcpClient client)
         {
             Stream stream = client.GetStream();
+
+            if(this.IsSecure)
+            {
+                stream = this.CreateSslStream(stream);
+            }
 
             // Reading client.Available will reset it
             int bytesExpected = 0;
@@ -79,13 +93,20 @@ namespace Paracord.Core.Listener
             return ctx;
         }
 
+        /// <summary>
+        /// Wrap the specified stream with an <c>SslStream</c>-instance and authenticate as a server, using the <c>SslCertificate</c>.
+        /// </summary>
+        /// <param name="innerStream">The <c>Stream</c>-instance to wrap in an SSL stream.</param>
+        /// <returns>The wrapped <c>SslStream</c>-instance.</returns>
+        /// <exception cref="ArgumentNullException">The certificate, <c>SslCertificate</c>, is null.</exception>
         internal SslStream CreateSslStream(Stream innerStream)
         {
+            ArgumentNullException.ThrowIfNull(this.SslCertificate, nameof(this.SslCertificate));
+
             lock(this.InternalLock)
             {
                 SslStream sslStream = new SslStream(innerStream);
-                sslStream.AuthenticateAsServer(
-                    serverCertificate: this.Certificate);
+                sslStream.AuthenticateAsServer(serverCertificate: this.SslCertificate);
 
                 return sslStream;
             }
