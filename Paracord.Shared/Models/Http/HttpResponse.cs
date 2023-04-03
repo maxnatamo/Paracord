@@ -39,6 +39,11 @@ namespace Paracord.Shared.Models.Http
         public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.Ok;
 
         /// <summary>
+        /// The thread Id for the thread executing/handling this request.
+        /// </summary>
+        public int ThreadId { get; private set; }
+
+        /// <summary>
         /// Initialize a new <c>HttpResponse</c>-instance.
         /// </summary>
         public HttpResponse()
@@ -46,6 +51,8 @@ namespace Paracord.Shared.Models.Http
             this.Body = new MemoryStream();
 
             this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
+
+            this.ThreadId = Thread.CurrentThread.ManagedThreadId;
         }
 
         /// <inheritdoc cref="HttpContext.Send" />

@@ -68,6 +68,11 @@ namespace Paracord.Shared.Models.Http
         public HttpTarget Target { get; set; } = default!;
 
         /// <summary>
+        /// The thread Id for the thread executing/handling this request.
+        /// </summary>
+        public int ThreadId { get; private set; }
+
+        /// <summary>
         /// Initialize a new <c>HttpRequest</c>-instance.
         /// </summary>
         public HttpRequest()
@@ -76,6 +81,8 @@ namespace Paracord.Shared.Models.Http
 
             this.Cookies = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
             this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
+
+            this.ThreadId = Thread.CurrentThread.ManagedThreadId;
         }
 
         /// <summary>
