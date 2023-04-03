@@ -40,13 +40,8 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
         public void DeserializeBodyThrowsNotImplementedExceptionWhenBodyLengthIsDifferentFromContentLength()
         {
             // Arrange
-            HttpRequest request = new HttpRequest
-            {
-                Headers = new Dictionary<string, string>
-                {
-                    { "content-length", "1" }
-                }
-            };
+            HttpRequest request = new HttpRequest();
+            request.Headers.Add("content-length", "1");
             string body = @"Some value";
 
             // Act
@@ -61,13 +56,8 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
         {
             // Arrange
             string body = @"Some value";
-            HttpRequest request = new HttpRequest
-            {
-                Headers = new Dictionary<string, string>
-                {
-                    { "content-length", body.Length.ToString() }
-                }
-            };
+            HttpRequest request = new HttpRequest();
+            request.Headers.Add("content-length", body.Length.ToString());
 
             // Act
             HttpParser.DeserializeBody(request, Encoding.ASCII.GetBytes(body));

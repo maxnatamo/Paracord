@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -31,12 +32,12 @@ namespace Paracord.Shared.Models.Http
         /// <summary>
         /// The HTTP cookies sent along with the request.
         /// </summary>
-        public IDictionary<string, string> Cookies { get; set; } = new Dictionary<string, string>();
+        public NameValueCollection Cookies { get; set; }
 
         /// <summary>
         /// The HTTP headers sent along with the request.
         /// </summary>
-        public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+        public NameValueCollection Headers { get; set; }
 
         /// <summary>
         /// The HTTP request method.
@@ -72,13 +73,16 @@ namespace Paracord.Shared.Models.Http
         public HttpRequest()
         {
             this.Body = new MemoryStream();
+
+            this.Cookies = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
+            this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
         /// Checks the Content-Type header for whether the content should contain JSON-content.
         /// </summary>
         public bool HasJsonContent()
-            => this.Headers.ContainsKey("content-type") && this.Headers["content-type"].StartsWith("application/json");
+            => this.Headers["content-type"]?.StartsWith("application/json") ?? false;
 
         /// <summary>
         /// Read the content of the request as JSON and deserialize it to the specified type.

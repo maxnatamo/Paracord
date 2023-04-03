@@ -1,3 +1,4 @@
+using System.Collections.Specialized;
 using System.Text;
 
 using Newtonsoft.Json;
@@ -30,7 +31,7 @@ namespace Paracord.Shared.Models.Http
         /// <summary>
         /// The HTTP headers sent along with the response.
         /// </summary>
-        public IDictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
+        public NameValueCollection Headers { get; set; }
 
         /// <summary>
         /// The HTTP response code for the response.
@@ -43,6 +44,8 @@ namespace Paracord.Shared.Models.Http
         public HttpResponse()
         {
             this.Body = new MemoryStream();
+
+            this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
         }
 
         /// <inheritdoc cref="HttpContext.Send" />

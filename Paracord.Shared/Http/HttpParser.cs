@@ -157,11 +157,13 @@ namespace Paracord.Shared.Http
             ArgumentNullException.ThrowIfNull(request, nameof(request));
             ArgumentNullException.ThrowIfNull(request.Body, nameof(request.Body));
 
-            if(request.Headers.ContainsKey("content-length") && bodyData.Length.ToString() != request.Headers["content-length"])
+            string? contentLengthHeader = request.Headers["content-length"];
+
+            if(contentLengthHeader != null && bodyData.Length.ToString() != contentLengthHeader)
             {
                 throw new NotImplementedException(
                     $"Content-Length does not match body content;" +
-                    $"{request.ContentLength} != {request.Headers["content-length"]}"
+                    $"{request.ContentLength} != {contentLengthHeader}"
                 );
             }
 
@@ -182,9 +184,9 @@ namespace Paracord.Shared.Http
             content += $"{((int) response.StatusCode)}";
 
             // Append headers
-            foreach(var header in response.Headers)
+            foreach(var key in response.Headers.AllKeys)
             {
-                content += HttpParser.EndOfLineString + $"{header.Key}: {header.Value}";
+                content += HttpParser.EndOfLineString + $"{key}: {response.Headers[key]}";
             }
 
             // Append content-delimiter

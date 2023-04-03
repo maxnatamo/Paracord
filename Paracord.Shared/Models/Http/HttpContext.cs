@@ -102,7 +102,7 @@ namespace Paracord.Shared.Models.Http
             }
 
             // Default to the length of the body.
-            if(!this.Response.Headers.ContainsKey("content-length"))
+            if(this.Response.Headers["content-length"] == null)
             {
                 this.Response.Headers["content-length"] = this.Response.ContentLength.ToString();
             }

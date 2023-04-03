@@ -48,7 +48,7 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
             HttpParser.DeserializeHeaders(request, headerData);
 
             // Assert
-            request.Headers.Should().BeEmpty();
+            request.Headers.HasKeys().Should().BeFalse();
         }
 
         [Fact]
@@ -66,10 +66,10 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
             HttpParser.DeserializeHeaders(request, headerData);
 
             // Assert
-            request.Headers.Should().NotBeEmpty();
+            request.Headers.HasKeys().Should().BeTrue();
             request.Headers.Count.Should().Be(1);
-            request.Headers.Should().ContainKey("x-sec-header");
-            request.Headers.Should().NotContainKey("X-Sec-Header");
+            request.Headers["x-sec-header"].Should().NotBeNull();
+            request.Headers["X-Sec-Header"].Should().NotBeNull();
         }
 
         [Fact]
@@ -105,7 +105,7 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
             HttpParser.DeserializeHeaders(request, headerData);
 
             // Assert
-            request.Headers.Should().NotBeEmpty();
+            request.Headers.HasKeys().Should().BeTrue();
             request.Headers["x-sec-header"].Should().Be("enabled");
         }
 
@@ -124,7 +124,7 @@ namespace Paracord.Shared.Tests.Http.HttpParserTests
             HttpParser.DeserializeHeaders(request, headerData);
 
             // Assert
-            request.Headers.Should().NotBeEmpty();
+            request.Headers.HasKeys().Should().BeTrue();
             request.Headers["x-sec-header"].Should().Be("enabled: disabled");
         }
     }
