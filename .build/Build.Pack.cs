@@ -20,7 +20,7 @@ partial class Build : NukeBuild
     readonly string NugetPassword;
 
     Target Pack => _ => _
-        .DependsOn(Compile)
+        .DependsOn(Compile, Format, Test)
         .Produces(NuGetArtifactsDirectory / "*.nupkg")
         .Produces(NuGetArtifactsDirectory / "*.snupkg")
         .Requires(() => Configuration.IsRelease)

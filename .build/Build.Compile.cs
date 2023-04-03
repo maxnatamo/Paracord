@@ -9,8 +9,6 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build : NukeBuild
 {
     Target Restore => _ => _
-        .DependsOn(Clean)
-        .DependsOn(Format)
         .Executes(() =>
         {
             DotNetRestore(c => c

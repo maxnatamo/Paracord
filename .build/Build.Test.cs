@@ -6,7 +6,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 partial class Build : NukeBuild
 {
     Target Test => _ => _
-        .DependsOn(Restore)
+        .DependsOn(Compile)
         .Executes(() =>
         {
             DotNetTest(c => c
