@@ -89,7 +89,7 @@ namespace Paracord.Shared.Models.Http
         /// Checks the Content-Type header for whether the content should contain JSON-content.
         /// </summary>
         public bool HasJsonContent()
-            => this.Headers["content-type"]?.StartsWith("application/json") ?? false;
+            => this.Headers[HttpHeaders.ContentType]?.StartsWith("application/json") ?? false;
 
         /// <summary>
         /// Read the content of the request as JSON and deserialize it to the specified type.

@@ -107,7 +107,7 @@ namespace Paracord.Shared.Models.Http
             this.Body.Seek(0, SeekOrigin.Begin);
             this.Body.Write(jsonBytes, 0, jsonBytes.Length);
 
-            this.Headers["content-type"] = "application/json; charset=utf-8";
+            this.Headers[HttpHeaders.ContentType] = "application/json; charset=utf-8";
         }
 
         /// <inheritdoc cref="HttpResponse.WriteToJson(object, Type, JsonSerializerSettings)" />
@@ -124,7 +124,7 @@ namespace Paracord.Shared.Models.Http
             this.Body.Seek(0, SeekOrigin.Begin);
             await this.Body.WriteAsync(jsonBytes, 0, jsonBytes.Length);
 
-            this.Headers["content-type"] = "application/json; charset=utf-8";
+            this.Headers[HttpHeaders.ContentType] = "application/json; charset=utf-8";
         }
 
         /// <inheritdoc cref="HttpResponse.WriteToJson{T}(T, JsonSerializerSettings)" />

@@ -157,7 +157,7 @@ namespace Paracord.Shared.Http
             ArgumentNullException.ThrowIfNull(request, nameof(request));
             ArgumentNullException.ThrowIfNull(request.Body, nameof(request.Body));
 
-            string? contentLengthHeader = request.Headers["content-length"];
+            string? contentLengthHeader = request.Headers[HttpHeaders.ContentLength];
 
             if(contentLengthHeader != null && bodyData.Length.ToString() != contentLengthHeader)
             {
@@ -192,7 +192,7 @@ namespace Paracord.Shared.Http
             // Append cookies
             foreach(var key in response.Cookies.AllKeys)
             {
-                content += HttpParser.EndOfLineString + $"Set-Cookie: {key}={response.Headers[key]}";
+                content += HttpParser.EndOfLineString + $"{HttpHeaders.SetCookie}: {key}={response.Headers[key]}";
             }
 
             // Append content-delimiter
