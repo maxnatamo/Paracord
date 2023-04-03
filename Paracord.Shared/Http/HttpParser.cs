@@ -189,6 +189,12 @@ namespace Paracord.Shared.Http
                 content += HttpParser.EndOfLineString + $"{key}: {response.Headers[key]}";
             }
 
+            // Append cookies
+            foreach(var key in response.Cookies.AllKeys)
+            {
+                content += HttpParser.EndOfLineString + $"Set-Cookie: {key}={response.Headers[key]}";
+            }
+
             // Append content-delimiter
             content += HttpParser.ContentDelimiterString;
 

@@ -29,6 +29,11 @@ namespace Paracord.Shared.Models.Http
         public HttpContext Context { get; set; } = default!;
 
         /// <summary>
+        /// The HTTP cookies to send to the client.
+        /// </summary>
+        public NameValueCollection Cookies { get; set; }
+
+        /// <summary>
         /// The HTTP headers sent along with the response.
         /// </summary>
         public NameValueCollection Headers { get; set; }
@@ -50,6 +55,7 @@ namespace Paracord.Shared.Models.Http
         {
             this.Body = new MemoryStream();
 
+            this.Cookies = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
             this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
 
             this.ThreadId = Thread.CurrentThread.ManagedThreadId;
