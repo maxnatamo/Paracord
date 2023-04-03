@@ -1,11 +1,8 @@
-using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
 using Paracord.Shared.Http;
 using Paracord.Shared.Models.Http;
-using Paracord.Shared.Security.X509;
 
 namespace Paracord.Core.Listener
 {
@@ -88,25 +85,6 @@ namespace Paracord.Core.Listener
             ctx.Response.Context = ctx;
 
             return ctx;
-        }
-
-        /// <summary>
-        /// Wrap the specified stream with an <c>SslStream</c>-instance and authenticate as a server, using the <c>SslCertificate</c>.
-        /// </summary>
-        /// <param name="innerStream">The <c>Stream</c>-instance to wrap in an SSL stream.</param>
-        /// <returns>The wrapped <c>SslStream</c>-instance.</returns>
-        /// <exception cref="ArgumentNullException">The certificate, <c>SslCertificate</c>, is null.</exception>
-        internal SslStream CreateSslStream(Stream innerStream)
-        {
-            ArgumentNullException.ThrowIfNull(this.SslCertificate, nameof(this.SslCertificate));
-
-            lock(this.InternalLock)
-            {
-                SslStream sslStream = new SslStream(innerStream, true);
-                sslStream.AuthenticateAsServer(this.SslCertificate, false, SslProtocols.Tls13 | SslProtocols.Tls12, false);
-
-                return sslStream;
-            }
         }
     }
 }
