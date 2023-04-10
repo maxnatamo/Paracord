@@ -128,6 +128,8 @@ namespace Paracord.Shared.Models.Http
 
             this.ResponseStream.Write(responseBytes);
             this.ResponseStream.Flush();
+
+            this.Close();
         }
     }
 }
