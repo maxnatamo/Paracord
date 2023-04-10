@@ -2,7 +2,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-using Paracord.Shared.Http;
+using Paracord.Core.Http;
+using HttpListener = Paracord.Core.Listener.HttpListener;
 
 namespace Paracord.Shared.Models.Http
 {
@@ -23,6 +24,11 @@ namespace Paracord.Shared.Models.Http
         {
             get => this.Client.Connected;
         }
+
+        /// <summary>
+        /// The listener which handles this context.
+        /// </summary>
+        public readonly HttpListener Listener;
 
         /// <summary>
         /// The local <c>EndPoint</c>-instance for the current client, if any. Otherwise, null.
@@ -67,11 +73,13 @@ namespace Paracord.Shared.Models.Http
         /// <summary>
         /// Create a new <c>HttpContext</c>-instance with the specified <c>TcpClient</c>-instance.
         /// </summary>
+        /// <param name="listener">The <c>HttpListener</c>-instance which handles this context.</param>
         /// <param name="client">The <c>TcpClient</c>-instance to derive properties from.</param>
-        public HttpContext(TcpClient client)
+        public HttpContext(HttpListener listener, TcpClient client)
         {
             this.UniqueId = Guid.NewGuid().ToString();
 
+            this.Listener = listener;
             this.Client = client;
             this.TTL = client.Client.Ttl;
             this.LocalEndpoint = client.Client.LocalEndPoint;

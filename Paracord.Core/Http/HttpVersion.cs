@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
-namespace Paracord.Shared.Http
+namespace Paracord.Core.Http
 {
     /// <summary>
     /// Structure defining an HTTP-version, using the <major>.<minor> numbering scheme.

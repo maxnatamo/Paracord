@@ -1,8 +1,8 @@
 using System.Net.Sockets;
 
-namespace Paracord.Shared.Http
+namespace Paracord.Core.Http
 {
-    public class HttpRequestStream : Stream
+    public class HttpResponseStream : Stream
     {
         /// <summary>
         /// The internal <c>NetworkStream</c>-instance for handling TCP-sockets.
@@ -14,7 +14,7 @@ namespace Paracord.Shared.Http
         /// </summary>
         public override bool CanRead
         {
-            get => true;
+            get => false;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace Paracord.Shared.Http
         /// </summary>
         public override bool CanWrite
         {
-            get => false;
+            get => true;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Paracord.Shared.Http
         /// </summary>
         public override Int64 Length
         {
-            get => throw new NotSupportedException("HttpRequestStream does not support Length_get");
+            get => throw new NotSupportedException("HttpResponseStream does not support Length_get");
         }
 
         /// <summary>
@@ -46,15 +46,15 @@ namespace Paracord.Shared.Http
         /// </summary>
         public override Int64 Position
         {
-            get => throw new NotSupportedException("HttpRequestStream does not support Position_get");
-            set => throw new NotSupportedException("HttpRequestStream does not support Position_set");
+            get => throw new NotSupportedException("HttpResponseStream does not support Position_get");
+            set => throw new NotSupportedException("HttpResponseStream does not support Position_set");
         }
 
         /// <summary>
-        /// Initialize a new <c>HttpRequestStream</c>-instance with the specified <c>NetworkStream</c>-instance.
+        /// Initialize a new <c>HttpResponseStream</c>-instance with the specified <c>NetworkStream</c>-instance.
         /// </summary>
         /// <param name="stream">The parent <c>NetworkStream</c>-instance.</param>
-        public HttpRequestStream(NetworkStream stream)
+        public HttpResponseStream(NetworkStream stream)
         {
             this.Stream = stream;
         }
@@ -80,7 +80,7 @@ namespace Paracord.Shared.Http
         /// <param name="size">The maximum amount of bytes to read from the stream.</param>
         /// <returns>The total amount of bytes read into the buffer.</returns>
         public override int Read(byte[] buffer, int offset, int size)
-            => this.Stream.Read(buffer, offset, size);
+            => throw new NotSupportedException("HttpResponseStream does not support Seek");
 
         /// <summary>
         /// Sets the position within the stream.
@@ -89,14 +89,14 @@ namespace Paracord.Shared.Http
         /// <param name="origin">The reference point for the <c>offset</c> parameter.</param>
         /// <returns>The new position within the stream.</returns>
         public override long Seek(long offset, SeekOrigin origin)
-            => throw new NotSupportedException("HttpRequestStream does not support Seek");
+            => throw new NotSupportedException("HttpResponseStream does not support Seek");
 
         /// <summary>
         /// Sets the length of the stream.
         /// </summary>
         /// <param name="value">The new desired length of the stream in bytes.</param>
         public override void SetLength(long value)
-            => throw new NotSupportedException("HttpRequestStream does not support SetLength");
+            => throw new NotSupportedException("HttpResponseStream does not support SetLength");
 
         /// <summary>
         /// Write bytes from the buffer and advance the position within the stream
@@ -109,6 +109,6 @@ namespace Paracord.Shared.Http
         /// <param name="offset">The zero-based offset into the <c>buffer</c> to begin reading bytes.</param>
         /// <param name="size">The maximum amount of bytes to write from the stream.</param>
         public override void Write(byte[] buffer, int offset, int size)
-            => throw new NotSupportedException("HttpRequestStream does not support Write");
+            => this.Stream.Write(buffer, offset, size);
     }
 }

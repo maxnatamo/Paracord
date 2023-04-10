@@ -2,9 +2,10 @@ using System.Collections.Specialized;
 using System.Text;
 
 using Newtonsoft.Json;
-using Paracord.Shared.Http;
+using Paracord.Shared.Models.Http;
+using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
 
-namespace Paracord.Shared.Models.Http
+namespace Paracord.Core.Http
 {
     /// <summary>
     /// Native definitions for HTTP requests.

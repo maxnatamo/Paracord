@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Paracord.Shared.Http
+namespace Paracord.Core.Http
 {
     /// <summary>
     /// Structure defining an HTTP-target, including both path and optional query string.

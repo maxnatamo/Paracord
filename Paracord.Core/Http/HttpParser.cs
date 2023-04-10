@@ -3,13 +3,13 @@ using System.Text;
 using Paracord.Shared.Models.Http;
 using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
 
-namespace Paracord.Shared.Http
+namespace Paracord.Core.Http
 {
     public static class HttpParser
     {
         /// <summary>
         /// The current version of HTTP supported by Paracord.
-        /// </summary>
+        /// /// </summary>
         public static HttpVersion CurrentHttpVersion { get; } = new HttpVersion(1, 1);
 
         /// <summary>
