@@ -55,9 +55,9 @@ namespace Paracord.Core.Listener
 
             this.ListenAddress = address switch
             {
-                var a when a == "localhost"        => IPAddress.Loopback,
+                var a when a == "localhost" => IPAddress.Loopback,
                 var a when string.IsNullOrEmpty(a) => IPAddress.Any,
-                var a when a == "*"                => IPAddress.Any,
+                var a when a == "*" => IPAddress.Any,
 
                 _ => IPAddress.Parse(address)
             };
@@ -66,6 +66,11 @@ namespace Paracord.Core.Listener
 
             this.ListenPort = port;
             this.Listener = new TcpListener(this.ListenAddress, this.ListenPort);
+
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                this.Stop();
+            };
         }
 
         /// <summary>
@@ -85,7 +90,7 @@ namespace Paracord.Core.Listener
         /// <remarks>
         /// If the socket is already open, nothing is done.
         /// </remarks>
-        public void Start()
+        public virtual void Start()
         {
             if(this.IsOpen)
             {
@@ -102,7 +107,7 @@ namespace Paracord.Core.Listener
         /// <remarks>
         /// If the socket is already closed, nothing is done.
         /// </remarks>
-        public void Stop()
+        public virtual void Stop()
         {
             if(!this.IsOpen)
             {

@@ -121,6 +121,8 @@ namespace Paracord.Shared.Models.Http
                 throw new InvalidDataException("Content-Length parameter doesn't match the length of the Body property on the HttpResponse.");
             }
 
+            this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response));
+
             string response = HttpParser.SerializeResponse(this.Response);
             byte[] responseBytes = Encoding.ASCII.GetBytes(response);
 

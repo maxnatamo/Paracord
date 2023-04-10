@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paracord.Shared", "Paracord
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paracord.Shared.Tests", "Paracord.Shared.Tests\Paracord.Shared.Tests.csproj", "{59A2480A-4315-4D8D-8CDF-BAEA9513FA64}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paracord.Core.Tests", "Paracord.Core.Tests\Paracord.Core.Tests.csproj", "{47F99A86-24F2-4F11-9225-1F5BFCFE90D6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{59A2480A-4315-4D8D-8CDF-BAEA9513FA64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59A2480A-4315-4D8D-8CDF-BAEA9513FA64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59A2480A-4315-4D8D-8CDF-BAEA9513FA64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47F99A86-24F2-4F11-9225-1F5BFCFE90D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47F99A86-24F2-4F11-9225-1F5BFCFE90D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47F99A86-24F2-4F11-9225-1F5BFCFE90D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47F99A86-24F2-4F11-9225-1F5BFCFE90D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
