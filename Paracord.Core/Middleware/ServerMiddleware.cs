@@ -1,5 +1,6 @@
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
+using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Middleware
 {
@@ -10,7 +11,7 @@ namespace Paracord.Core.Middleware
     {
         public override void BeforeResponseSent(HttpListener listener, HttpRequest request, HttpResponse response)
         {
-            response.Headers["Server"] = "Paracord";
+            response.Headers[HttpHeaders.Server] = "Paracord";
             this.Next();
         }
     }

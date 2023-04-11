@@ -1,6 +1,7 @@
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
 using Paracord.Shared.Models;
+using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Middleware
 {
@@ -41,7 +42,7 @@ namespace Paracord.Core.Middleware
 
             byte[] fileContent = File.ReadAllBytes(absoluteRequestPath);
 
-            response.Headers["Content-Type"] = MimeTypes.ResolveMimeType(localPath);
+            response.Headers[HttpHeaders.ContentType] = MimeTypes.ResolveMimeType(localPath);
             response.Write(fileContent, 0, fileContent.Length);
             response.Send();
         }

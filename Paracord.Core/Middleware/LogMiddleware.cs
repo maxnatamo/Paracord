@@ -1,5 +1,6 @@
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
+using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Middleware
 {
@@ -31,7 +32,7 @@ namespace Paracord.Core.Middleware
                 request.Method.ToString(),
                 request.Path,
                 request.Protocol,
-                request.Headers["User-Agent"]?.Replace(" ", "+") ?? "-",
+                request.Headers[HttpHeaders.UserAgent]?.Replace(" ", "+") ?? "-",
                 (DateTime.Now - request.Time).TotalMilliseconds
             );
 
