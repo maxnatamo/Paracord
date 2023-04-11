@@ -31,9 +31,9 @@ namespace Paracord.Shared.Models.Http
         public readonly HttpListener Listener;
 
         /// <summary>
-        /// The local <c>EndPoint</c>-instance for the current client, if any. Otherwise, null.
+        /// The local <c>IPEndPoint</c>-instance for the current client, if any. Otherwise, null.
         /// </summary>
-        public EndPoint? LocalEndpoint { get; } = default!;
+        public IPEndPoint? LocalEndpoint { get; } = default!;
 
         /// <summary>
         /// The <c>HttpRequest</c>-instance for the current context.
@@ -56,9 +56,9 @@ namespace Paracord.Shared.Models.Http
         protected HttpResponseStream ResponseStream { get; }
 
         /// <summary>
-        /// The remote <c>EndPoint</c>-instance for the current client, if any. Otherwise, null.
+        /// The remote <c>IPEndPoint</c>-instance for the current client, if any. Otherwise, null.
         /// </summary>
-        public EndPoint? RemoteEndpoint { get; } = default!;
+        public IPEndPoint? RemoteEndpoint { get; } = default!;
 
         /// <summary>
         /// Time To Live (TTL) value from IP-packets.
@@ -82,8 +82,8 @@ namespace Paracord.Shared.Models.Http
             this.Listener = listener;
             this.Client = client;
             this.TTL = client.Client.Ttl;
-            this.LocalEndpoint = client.Client.LocalEndPoint;
-            this.RemoteEndpoint = client.Client.RemoteEndPoint;
+            this.LocalEndpoint = (IPEndPoint?) client.Client.LocalEndPoint;
+            this.RemoteEndpoint = (IPEndPoint?) client.Client.RemoteEndPoint;
 
             this.RequestStream = new HttpRequestStream(client.GetStream());
             this.ResponseStream = new HttpResponseStream(client.GetStream());

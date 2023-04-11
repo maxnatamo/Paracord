@@ -22,7 +22,19 @@ namespace Paracord.Core.Middleware
 
         public override void BeforeResponseSent(HttpListener listener, HttpRequest request, HttpResponse response)
         {
-            Console.WriteLine("{0} {1} {2}", request.Method.ToString(), request.Path, request.Protocol);
+            Console.WriteLine("[{0}] {1}:{2} <-> {3}:{4} {5} {6} {7} {8} {9}ms",
+                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                request.Context.LocalEndpoint?.Address,
+                request.Context.LocalEndpoint?.Port,
+                request.Context.RemoteEndpoint?.Address,
+                request.Context.RemoteEndpoint?.Port,
+                request.Method.ToString(),
+                request.Path,
+                request.Protocol,
+                request.Headers["User-Agent"]?.Replace(" ", "+") ?? "-",
+                (DateTime.Now - request.Time).TotalMilliseconds
+            );
+
             this.Next();
         }
     }

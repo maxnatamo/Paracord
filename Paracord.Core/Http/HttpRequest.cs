@@ -74,6 +74,11 @@ namespace Paracord.Core.Http
         public int ThreadId { get; private set; }
 
         /// <summary>
+        /// The date/time when the request was received, for internal measuring.
+        /// </summary>
+        public DateTime Time { get; private set; }
+
+        /// <summary>
         /// Initialize a new <c>HttpRequest</c>-instance.
         /// </summary>
         public HttpRequest()
@@ -84,6 +89,7 @@ namespace Paracord.Core.Http
             this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
 
             this.ThreadId = Thread.CurrentThread.ManagedThreadId;
+            this.Time = DateTime.Now;
         }
 
         /// <summary>
