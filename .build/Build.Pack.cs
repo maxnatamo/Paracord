@@ -16,6 +16,7 @@ partial class Build : NukeBuild
     [Parameter("NuGet username")]
     readonly string NugetUsername;
 
+    [Secret]
     [Parameter("NuGet password")]
     readonly string NugetPassword;
 

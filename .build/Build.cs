@@ -4,13 +4,42 @@ using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.GitLab;
 
 [GitHubActions(
-    "merge-request",
+    "continuous",
     GitHubActionsImage.UbuntuLatest,
     FetchDepth = 0,
     OnPushBranches = new[]
     {
         "main"
     },
+    InvokedTargets = new[]
+    {
+        nameof(Pack)
+    }
+)]
+[GitHubActions(
+    "release",
+    GitHubActionsImage.UbuntuLatest,
+    FetchDepth = 0,
+    OnPushTags = new[]
+    {
+        "**"
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Publish)
+    },
+    ImportSecrets = new[]
+    {
+        nameof(NugetSourceName),
+        nameof(NugetSource),
+        nameof(NugetUsername),
+        nameof(NugetPassword),
+    }
+)]
+[GitHubActions(
+    "merge-request",
+    GitHubActionsImage.UbuntuLatest,
+    FetchDepth = 0,
     OnPullRequestBranches = new[]
     {
         "main"

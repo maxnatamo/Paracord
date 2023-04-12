@@ -9,15 +9,15 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_merge-request --host GitHubActions
+#         nuke --generate-configuration GitHubActions_continuous --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: merge-request
+name: continuous
 
 on:
-  pull_request:
+  push:
     branches:
       - main
 
@@ -36,5 +36,9 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd Format Test'
-        run: ./build.cmd Format Test
+      - name: Run './build.cmd Pack'
+        run: ./build.cmd Pack
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget
+          path: artifacts/nuget

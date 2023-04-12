@@ -9,17 +9,17 @@
 #
 #     - To trigger manual generation invoke:
 #
-#         nuke --generate-configuration GitHubActions_merge-request --host GitHubActions
+#         nuke --generate-configuration GitHubActions_release --host GitHubActions
 #
 # </auto-generated>
 # ------------------------------------------------------------------------------
 
-name: merge-request
+name: release
 
 on:
-  pull_request:
-    branches:
-      - main
+  push:
+    tags:
+      - '**'
 
 jobs:
   ubuntu-latest:
@@ -36,5 +36,10 @@ jobs:
             .nuke/temp
             ~/.nuget/packages
           key: ${{ runner.os }}-${{ hashFiles('**/global.json', '**/*.csproj') }}
-      - name: Run './build.cmd Format Test'
-        run: ./build.cmd Format Test
+      - name: Run './build.cmd Publish'
+        run: ./build.cmd Publish
+        env:
+          NugetSourceName: ${{ secrets.NUGET_SOURCE_NAME }}
+          NugetSource: ${{ secrets.NUGET_SOURCE }}
+          NugetUsername: ${{ secrets.NUGET_USERNAME }}
+          NugetPassword: ${{ secrets.NUGET_PASSWORD }}
