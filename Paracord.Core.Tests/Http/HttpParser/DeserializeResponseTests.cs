@@ -14,10 +14,10 @@ namespace Paracord.Core.Tests.Http.HttpParserTests
             string expected = $"{HttpParser.CurrentHttpVersion.ToString()} 200\u000D\u000A\u000D\u000A";
 
             // Act
-            string received = HttpParser.SerializeResponse(response);
+            byte[] received = HttpParser.SerializeResponse(response);
 
             // Assert
-            received.Should().Be(expected);
+            received.Should().BeEquivalentTo(Encoding.ASCII.GetBytes(expected));
         }
 
         [Fact]
@@ -30,10 +30,10 @@ namespace Paracord.Core.Tests.Http.HttpParserTests
             string expected = $"{HttpParser.CurrentHttpVersion.ToString()} 200\u000D\u000AX-Sec-Header: enabled\u000D\u000A\u000D\u000A";
 
             // Act
-            string received = HttpParser.SerializeResponse(response);
+            byte[] received = HttpParser.SerializeResponse(response);
 
             // Assert
-            received.Should().Be(expected);
+            received.Should().BeEquivalentTo(Encoding.ASCII.GetBytes(expected));
         }
 
         [Fact]
@@ -47,10 +47,10 @@ namespace Paracord.Core.Tests.Http.HttpParserTests
             string expected = $"{HttpParser.CurrentHttpVersion.ToString()} 200\u000D\u000AX-Sec-Header: enabled\u000D\u000A\u000D\u000AText response.";
 
             // Act
-            string received = HttpParser.SerializeResponse(response);
+            byte[] received = HttpParser.SerializeResponse(response);
 
             // Assert
-            received.Should().Be(expected);
+            received.Should().BeEquivalentTo(Encoding.ASCII.GetBytes(expected));
         }
     }
 }
