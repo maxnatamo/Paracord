@@ -3,6 +3,24 @@ using Nuke.Common.CI;
 using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.GitLab;
 
+[GitHubActions(
+    "merge-request",
+    GitHubActionsImage.UbuntuLatest,
+    FetchDepth = 0,
+    OnPushBranches = new[]
+    {
+        "main"
+    },
+    OnPullRequestBranches = new[]
+    {
+        "main"
+    },
+    InvokedTargets = new[]
+    {
+        nameof(Format),
+        nameof(Test)
+    }
+)]
 partial class Build : NukeBuild
 {
     /// Support plugins are available for:
