@@ -1,6 +1,7 @@
 using System.Net.Sockets;
 using System.Security.Cryptography.X509Certificates;
 
+using Paracord.Core.Compression;
 using Paracord.Core.Http;
 using Paracord.Core.Middleware;
 using Paracord.Shared.Models.Http;
@@ -13,6 +14,11 @@ namespace Paracord.Core.Listener
         /// List of all middlewares used by the listener.
         /// </summary>
         protected Dictionary<string, MiddlewareBase> Middlewares { get; set; } = new();
+
+        /// <summary>
+        /// Compression provider collections used by the listener.
+        /// </summary>
+        public readonly CompressionProviderCollection CompressionProviders = new();
 
         /// <summary>
         /// The SSL certificate to use for HTTPS connections, if enabled.
@@ -37,6 +43,9 @@ namespace Paracord.Core.Listener
         {
             this.RegisterMiddleware<DateMiddleware>();
             this.RegisterMiddleware<ServerMiddleware>();
+            this.RegisterMiddleware<CompressionMiddleware>();
+
+            this.RegisterCompression<GzipCompressionProvider>();
 
             this.SslCertificate = sslCertificate;
         }
@@ -84,6 +93,18 @@ namespace Paracord.Core.Listener
         /// <inheritdoc cref="HttpListener.RegisterMiddleware{T}" />
         public void RegisterMiddleware<T>() where T : MiddlewareBase, new()
             => this.RegisterMiddleware(new T());
+
+        /// <summary>
+        /// Register a new compression provider onto the listener to handle internal actions.
+        /// </summary>
+        /// <param name="provider">The provider to register.</param>
+        /// <typeparam name="T">The type of middleware to register.</typeparam>
+        public void RegisterCompression<T>(T provider) where T : ICompressionProvider
+            => this.CompressionProviders.Add(provider);
+
+        /// <inheritdoc cref="HttpListener.RegisterCompression{T}" />
+        public void RegisterCompression<T>() where T : ICompressionProvider, new()
+            => this.RegisterCompression(new T());
 
         /// <summary>
         /// Parse the content from a <c>TcpClient</c>-instance into an HTTP context object.
