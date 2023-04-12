@@ -1,5 +1,6 @@
 using Nuke.Common;
 using Nuke.Common.CI;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.CI.GitLab;
 
 partial class Build : NukeBuild
@@ -32,6 +33,14 @@ partial class Build : NukeBuild
 
             Serilog.Log.Information("  GitLab Job ID: {JobId}", GitLab.JobId);
             Serilog.Log.Information("  Triggered by: {Name} ({Username})", GitLab.GitLabUserName, GitLab.GitLabUserLogin);
+        }
+
+        if(Host is GitHubActions)
+        {
+            GitHubActions GitHub = Host as GitHubActions;
+
+            Serilog.Log.Information("  GitHub Job ID: {JobId}", GitHub.JobId);
+            Serilog.Log.Information("  Triggered by: {Actor}", GitHub.Actor);
         }
 
         base.OnBuildInitialized();
