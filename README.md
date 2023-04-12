@@ -1,12 +1,10 @@
 <h1 align="center">
-  🪢
-
-  Paracord
+  🪢 Paracord
 </h1>
 
 > A homebrew HTTP framework, written in .NET Core 7
 
-<p align="center">
+<div align="center">
   <a href="https://github.com/maxnatamo/Paracord/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/maxnatamo/paracord?style=for-the-badge" />
   </a>
@@ -30,7 +28,7 @@
   <a href="https://github.com/maxnatamo/Paracord/actions">
     <img src="https://img.shields.io/github/actions/workflow/status/maxnatamo/paracord/test?branch=main&label=Tests&style=for-the-badge" />
   </a>
-</p>
+</div>
 
 # 🪢 Paracord
 
