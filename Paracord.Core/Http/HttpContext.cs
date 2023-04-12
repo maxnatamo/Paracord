@@ -123,8 +123,7 @@ namespace Paracord.Shared.Models.Http
 
             this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response), true);
 
-            string response = HttpParser.SerializeResponse(this.Response);
-            byte[] responseBytes = Encoding.ASCII.GetBytes(response);
+            byte[] responseBytes = HttpParser.SerializeResponse(this.Response);
 
             this.ResponseStream.Write(responseBytes);
             this.ResponseStream.Flush();

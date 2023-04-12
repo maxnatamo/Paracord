@@ -175,41 +175,41 @@ namespace Paracord.Core.Http
         /// </summary>
         /// <param name="response">The response to serialize.</param>
         /// <returns>A valid HTTP response.</returns>
-        public static string SerializeResponse(HttpResponse response)
+        public static byte[] SerializeResponse(HttpResponse response)
         {
-            string content = "";
+            using MemoryStream content = new MemoryStream();
+
+            Action<string> WriteStringContent = (value) =>
+            {
+                content.Write(Encoding.ASCII.GetBytes(value));
+            };
 
             // Append status-line
-            content += $"{CurrentHttpVersion.ToString()} ";
-            content += $"{((int) response.StatusCode)}";
+            WriteStringContent($"{CurrentHttpVersion.ToString()} {((int) response.StatusCode)}");
 
             // Append headers
             foreach(var key in response.Headers.AllKeys)
             {
-                content += HttpParser.EndOfLineString + $"{key}: {response.Headers[key]}";
+                WriteStringContent(HttpParser.EndOfLineString + $"{key}: {response.Headers[key]}");
             }
 
             // Append cookies
             foreach(var key in response.Cookies.AllKeys)
             {
-                content += HttpParser.EndOfLineString + $"{HttpHeaders.SetCookie}: {key}={response.Headers[key]}";
+                WriteStringContent(HttpParser.EndOfLineString + $"{HttpHeaders.SetCookie}: {key}={response.Headers[key]}");
             }
 
             // Append content-delimiter
-            content += HttpParser.ContentDelimiterString;
+            WriteStringContent(HttpParser.ContentDelimiterString);
 
             // Append body, if present
             if(response.Body.Length > 0)
             {
-                byte[] buffer = new byte[response.Body.Length];
-
                 response.Body.Seek(0, SeekOrigin.Begin);
-                response.Body.Read(buffer);
-
-                content += Encoding.ASCII.GetString(buffer);
+                response.Body.CopyTo(content);
             }
 
-            return content;
+            return content.ToArray();
         }
     }
 }
