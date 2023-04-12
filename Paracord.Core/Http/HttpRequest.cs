@@ -79,7 +79,7 @@ namespace Paracord.Core.Http
         public DateTime Time { get; private set; }
 
         /// <summary>
-        /// Initialize a new <c>HttpRequest</c>-instance.
+        /// Initialize a new <see cref="HttpRequest" />-instance.
         /// </summary>
         public HttpRequest()
         {
@@ -93,7 +93,7 @@ namespace Paracord.Core.Http
         }
 
         /// <summary>
-        /// Checks the Content-Type header for whether the content should contain JSON-content.
+        /// Checks the <c>Content-Type</c> header for whether the content should contain JSON-content.
         /// </summary>
         public bool HasJsonContent()
             => this.Headers[HttpHeaders.ContentType]?.StartsWith("application/json") ?? false;
@@ -103,15 +103,16 @@ namespace Paracord.Core.Http
         /// </summary>
         /// <remarks>
         /// <para>
-        /// If the Content-Type is not a valid JSON-type, an exception will be thrown.
+        /// If the <c>Content-Type</c> is not a valid JSON-type, an exception will be thrown.
         /// </para>
         /// <para>
         /// The position of the Body-stream is saved and reloaded, so there's no need to save it externally.
         /// </para>
         /// </remarks>
         /// <param name="type">The type of object to read and convert into.</param>
-        /// <param name="serializerSettings">Serialzier settings to pass to the serializer.</param>
-        /// <exception cref="FormatException">Thrown if the Content-Type is not a valid JSON-type.</exception>
+        /// <param name="serializerSettings">Serializer settings to pass to the serializer.</param>
+        /// <returns>The object read from the request body.</returns>
+        /// <exception cref="FormatException">Thrown if the <c>Content-Type</c> is not a valid JSON-type.</exception>
         public object? ReadFromJson(Type type, JsonSerializerSettings serializerSettings = default!)
         {
             if(!this.HasJsonContent())

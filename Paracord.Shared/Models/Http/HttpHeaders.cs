@@ -1,5 +1,9 @@
 namespace Paracord.Shared.Models.Http
 {
+    /// <summary>
+    /// Definitions of most HTTP headers, as defined on MDN.
+    /// </summary>
+    /// <seealso href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers">MDN web docs</seealso>
     public static class HttpHeaders
     {
         /// <summary>

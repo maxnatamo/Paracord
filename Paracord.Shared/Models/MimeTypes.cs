@@ -1,5 +1,8 @@
 namespace Paracord.Shared.Models
 {
+    /// <summary>
+    /// Definitions and helpers for common MIME-types.
+    /// </summary>
     public static class MimeTypes
     {
         /// <summary>
@@ -86,6 +89,11 @@ namespace Paracord.Shared.Models
             { ".7z",        "application/x-7z-compressed" },
         };
 
+        /// <summary>
+        /// Resolve a path and/or filename to a MIME-type.
+        /// </summary>
+        /// <param name="path">The path or filename to parse.</param>
+        /// <returns>The matching MIME-type, if found. Otherwise, null.</returns>
         public static string? ResolveMimeType(string path)
         {
             string extension = Path.GetExtension(path);

@@ -12,7 +12,7 @@ namespace Paracord.Core.Http
     public class HttpResponse
     {
         /// <summary>
-        /// The HTTP response body Stream.
+        /// The HTTP response body <see cref="Stream" />.
         /// </summary>
         public Stream Body { get; set; } = default!;
 
@@ -50,7 +50,7 @@ namespace Paracord.Core.Http
         public int ThreadId { get; private set; }
 
         /// <summary>
-        /// Initialize a new <c>HttpResponse</c>-instance.
+        /// Initialize a new <see cref="HttpResponse" />-instance.
         /// </summary>
         public HttpResponse()
         {
@@ -70,7 +70,7 @@ namespace Paracord.Core.Http
         /// Writes the given binary data to the response body.
         /// </summary>
         /// <param name="buffer">The binary data array to write to the body.</param>
-        /// <param name="offset">The offset into the <c>buffer</c>-parameter to start reading</param>
+        /// <param name="offset">The offset into the <paramref name="buffer" />-parameter to start reading</param>
         /// <param name="count">The maximum amount of bytes to write to the body.</param>
         public void Write(byte[] buffer, int offset, int count)
             => this.Body.Write(buffer, offset, count);

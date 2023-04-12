@@ -22,15 +22,15 @@ namespace Paracord.Core.Http
         }
 
         /// <summary>
-        /// Hashmap for the query parameters (e.g. "?q=1&a=b&q=2" = [{"q", "2"}, {"a", "b"}])
+        /// Hashmap for the query parameters (e.g. <c>?q=1&amp;a=b&amp;q=2</c> = <c>[{"q", "2"}, {"a", "b"}]</c>)
         /// </summary>
         public Dictionary<string, string> QueryParameters { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
-        /// Parse a string (e.g. /page?q=2) to a native <c>HttpTarget</c>-instance.
+        /// Parse a string (e.g. <c>/page?q=2</c>) to a native <see cref="HttpTarget" />-instance.
         /// </summary>
-        /// <param name="target">The HTTP request target to parse (e.g. /page?q=2).</param>
-        /// <param name="result">The resulting <c>HttpTarget</c>-instance, if the method returns true. Otherwise, false.</param>
+        /// <param name="target">The HTTP request target to parse (e.g. <c>/page?q=2</c>).</param>
+        /// <param name="result">The resulting <see cref="HttpTarget" />-instance, if the method returns true. Otherwise, false.</param>
         /// <returns>True, if the target was successfully parsed. Otherwise, false.</returns>
         public static bool TryParse(string target, [NotNullWhen(true)] out HttpTarget? result)
         {
@@ -86,11 +86,8 @@ namespace Paracord.Core.Http
             return true;
         }
 
-        /// <summary>
-        /// Parse a string (e.g. /page?q=2) to a native <c>HttpTarget</c>-instance.
-        /// </summary>
-        /// <param name="target">The HTTP version string to parse (e.g. /page?q=2).</param>
-        /// <returns>The parsed <c>HttpTarget</c>-instance.</returns>
+        /// <inheritdoc cref="HttpTarget.TryParse(string, out HttpTarget?)" />
+        /// <returns>The parsed <see cref="HttpTarget" />-instance.</returns>
         public static HttpTarget Parse(string target)
         {
             if(HttpTarget.TryParse(target, out var result))

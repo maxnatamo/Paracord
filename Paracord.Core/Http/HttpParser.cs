@@ -37,16 +37,16 @@ namespace Paracord.Core.Http
         /// <summary>
         /// Parse the specified Byte-array into an HTTP request.
         /// </summary>
-        /// <param name="request">The <c>HttpRequest</c> to fill.</param>
+        /// <param name="request">The <see cref="HttpRequest" /> to fill.</param>
         /// <param name="stream">The Byte-array to parse.</param>
         /// <exception cref="FormatException">Thrown if the message doesn't contain the content-delimiter string.</exception>
         /// <exception cref="NotImplementedException">Thrown if the status-line is missing or improperly formatted.</exception>
         /// <exception cref="FormatException">Thrown if the status-line has more or less and 3 separate components.</exception>
         /// <exception cref="NotImplementedException">Thrown if the defined HTTP verb is invalid.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if request is null.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if request.Headers is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="request" /> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="HttpRequest.Headers" /> is null.</exception>
         /// <exception cref="FormatException">Thrown if a header contains less than 2 colons.</exception>
-        /// <exception cref="NotImplementedException">Thrown if the Content-Length header doesn't match the body length.</exception>
+        /// <exception cref="NotImplementedException">Thrown if the <c>Content-Length</c> header doesn't match the body length.</exception>
         public static void DeserializeRequest(HttpRequest request, byte[] stream)
         {
             string[] requestData = Encoding.UTF8.GetString(stream).Split(ContentDelimiterString);
@@ -111,8 +111,8 @@ namespace Paracord.Core.Http
         /// </summary>
         /// <param name="request">The request to parse. Parsed by reference.</param>
         /// <param name="headerData">String-array of all lines in the HTTP message.</param>
-        /// <exception cref="ArgumentNullException">Thrown if request is null.</exception>
-        /// <exception cref="ArgumentNullException">Thrown if request.Headers is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <paramref name="request" /> is null.</exception>
+        /// <exception cref="ArgumentNullException">Thrown if <see cref="HttpRequest.Headers" /> is null.</exception>
         /// <exception cref="FormatException">Thrown if a header contains less than 2 colons.</exception>
         internal static void DeserializeHeaders(HttpRequest request, string[] headerData)
         {
@@ -151,7 +151,7 @@ namespace Paracord.Core.Http
         /// </remarks>
         /// <param name="request">The request to parse. Parsed by reference.</param>
         /// <param name="bodyData">Byte-array, representing the body content.</param>
-        /// <exception cref="NotImplementedException">Thrown if the Content-Length header doesn't match the body length.</exception>
+        /// <exception cref="NotImplementedException">Thrown if the <c>Content-Length</c> header doesn't match the body length.</exception>
         internal static void DeserializeBody(HttpRequest request, byte[] bodyData)
         {
             ArgumentNullException.ThrowIfNull(request, nameof(request));
@@ -171,7 +171,7 @@ namespace Paracord.Core.Http
         }
 
         /// <summary>
-        /// Parse the specified <c>HttpResponse</c> into a valid HTTP response.
+        /// Parse the specified <see cref="HttpResponse" /> into a valid HTTP response.
         /// </summary>
         /// <param name="response">The response to serialize.</param>
         /// <returns>A valid HTTP response.</returns>
