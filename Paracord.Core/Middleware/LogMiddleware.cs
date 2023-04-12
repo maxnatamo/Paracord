@@ -23,7 +23,7 @@ namespace Paracord.Core.Middleware
 
         public override void BeforeResponseSent(HttpListener listener, HttpRequest request, HttpResponse response)
         {
-            Console.WriteLine("[{0}] {1}:{2} <-> {3}:{4} {5} {6} {7} {8} {9}ms",
+            Console.WriteLine("[{0}] {1}:{2} <-> {3}:{4} {5} {6} {7} \"{8}\" {9}ms -> {10} bytes",
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                 request.Context.LocalEndpoint?.Address,
                 request.Context.LocalEndpoint?.Port,
@@ -32,8 +32,9 @@ namespace Paracord.Core.Middleware
                 request.Method.ToString(),
                 request.Path,
                 request.Protocol,
-                request.Headers[HttpHeaders.UserAgent]?.Replace(" ", "+") ?? "-",
-                (DateTime.Now - request.Time).TotalMilliseconds
+                request.Headers[HttpHeaders.UserAgent] ?? "-",
+                (DateTime.Now - request.Time).TotalMilliseconds,
+                response.ContentLength
             );
 
             this.Next();
