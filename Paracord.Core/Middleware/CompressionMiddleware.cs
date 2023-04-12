@@ -1,4 +1,3 @@
-using System.Text;
 using Paracord.Core.Compression;
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
@@ -43,7 +42,6 @@ namespace Paracord.Core.Middleware
                 string mimeType = MimeTypes.ResolveMimeType(request.Path) ?? MimeTypes.FileExtensions[".bin"];
 
                 response.Body.Seek(0, SeekOrigin.Begin);
-                response.Body.SetLength(0);
                 response.Body.Write(compressedBody);
                 response.Body.Flush();
 
