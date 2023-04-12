@@ -5,7 +5,7 @@ namespace Paracord.Core.Http
     public class HttpRequestStream : Stream
     {
         /// <summary>
-        /// The internal <c>NetworkStream</c>-instance for handling TCP-sockets.
+        /// The internal <see cref="NetworkStream" />-instance for handling TCP-sockets.
         /// </summary>
         protected NetworkStream Stream { get; set; }
 
@@ -51,9 +51,9 @@ namespace Paracord.Core.Http
         }
 
         /// <summary>
-        /// Initialize a new <c>HttpRequestStream</c>-instance with the specified <c>NetworkStream</c>-instance.
+        /// Initialize a new <see cref="HttpRequestStream" />-instance with the specified <see cref="NetworkStream" />-instance.
         /// </summary>
-        /// <param name="stream">The parent <c>NetworkStream</c>-instance.</param>
+        /// <param name="stream">The parent <see cref="NetworkStream" />-instance.</param>
         public HttpRequestStream(NetworkStream stream)
         {
             this.Stream = stream;
@@ -76,7 +76,7 @@ namespace Paracord.Core.Http
         /// forward by the amount of bytes read.
         /// </summary>
         /// <param name="buffer">The output buffer for the resulting bytes read.</param>
-        /// <param name="offset">The zero-based offset into the <c>buffer</c> to begin storing bytes.</param>
+        /// <param name="offset">The zero-based offset into the <paramref name="buffer" /> to begin storing bytes.</param>
         /// <param name="size">The maximum amount of bytes to read from the stream.</param>
         /// <returns>The total amount of bytes read into the buffer.</returns>
         public override int Read(byte[] buffer, int offset, int size)
@@ -85,8 +85,8 @@ namespace Paracord.Core.Http
         /// <summary>
         /// Sets the position within the stream.
         /// </summary>
-        /// <param name="offset">The relative offset to the <c>origin</c> parameter in bytes.</param>
-        /// <param name="origin">The reference point for the <c>offset</c> parameter.</param>
+        /// <param name="offset">The relative offset to the <paramref name="origin" /> parameter in bytes.</param>
+        /// <param name="origin">The reference point for the <paramref name="offset" /> parameter.</param>
         /// <returns>The new position within the stream.</returns>
         public override long Seek(long offset, SeekOrigin origin)
             => throw new NotSupportedException("HttpRequestStream does not support Seek");
@@ -104,9 +104,9 @@ namespace Paracord.Core.Http
         /// </summary>
         /// <param name="buffer">
         /// The input buffer to read bytes from.
-        /// This method copies <c>size</c> bytes at <c>offset</c> offset from the buffer into the stream.
+        /// This method copies <paramref name="size" /> bytes at <paramref name="offset" /> offset from the buffer into the stream.
         /// </param>
-        /// <param name="offset">The zero-based offset into the <c>buffer</c> to begin reading bytes.</param>
+        /// <param name="offset">The zero-based offset into the <paramref name="buffer" /> to begin reading bytes.</param>
         /// <param name="size">The maximum amount of bytes to write from the stream.</param>
         public override void Write(byte[] buffer, int offset, int size)
             => throw new NotSupportedException("HttpRequestStream does not support Write");

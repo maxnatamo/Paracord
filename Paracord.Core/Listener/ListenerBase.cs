@@ -44,7 +44,7 @@ namespace Paracord.Core.Listener
         protected bool Disposed { get; private set; } = false;
 
         /// <summary>
-        /// Initialize a new ListenerBase, with the specified listener-address and -port.
+        /// Initialize a new <see cref="ListenerBase" />, with the specified listener-address and -port.
         /// </summary>
         /// <param name="address">The IP-address to listen on.</param>
         /// <param name="port">The port number to listen on.</param>
@@ -122,7 +122,7 @@ namespace Paracord.Core.Listener
         /// Accept a new client from the listener, synchronously.
         /// This method will block until a client is available.
         /// </summary>
-        /// <returns>The accepted <c>TcpClient</c>-instance.</returns>
+        /// <returns>The accepted <see cref="TcpClient" />-instance.</returns>
         protected TcpClient AcceptClient()
             => this.Listener.AcceptTcpClient();
 
@@ -130,16 +130,16 @@ namespace Paracord.Core.Listener
         /// Accept a new client from the listener, asynchronously.
         /// This method will block until a client is available.
         /// </summary>
-        /// <returns>A task, resolving to the accepted <c>TcpClient</c>-instance.</returns>
+        /// <returns>A task, resolving to the accepted <see cref="TcpClient" />-instance.</returns>
         protected async Task<TcpClient> AcceptClientAsync()
             => await this.Listener.AcceptTcpClientAsync();
 
         /// <summary>
-        /// Wrap the specified stream with an <c>SslStream</c>-instance and authenticate as a server, using the <c>SslCertificate</c>.
+        /// Wrap the specified stream with an <see cref="SslStream" />-instance and authenticate as a server, using the <see cref="ListenerBase.Certificate" />.
         /// </summary>
-        /// <param name="innerStream">The <c>Stream</c>-instance to wrap in an SSL stream.</param>
-        /// <returns>The wrapped <c>SslStream</c>-instance.</returns>
-        /// <exception cref="ArgumentNullException">The certificate, <c>SslCertificate</c>, is null.</exception>
+        /// <param name="innerStream">The <see cref="Stream" />-instance to wrap in an SSL stream.</param>
+        /// <returns>The wrapped <see cref="SslStream" />-instance.</returns>
+        /// <exception cref="ArgumentNullException">The certificate, <see cref="ListenerBase.Certificate" />, is null.</exception>
         protected SslStream CreateSslStream(Stream innerStream)
         {
             ArgumentNullException.ThrowIfNull(this.Certificate, nameof(this.Certificate));

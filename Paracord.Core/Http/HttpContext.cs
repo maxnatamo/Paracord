@@ -13,7 +13,7 @@ namespace Paracord.Shared.Models.Http
     public class HttpContext
     {
         /// <summary>
-        /// The underlying <c>TcpClient</c>-instance for handling the corresponding TCP socket.
+        /// The underlying <see cref="TcpClient" />-instance for handling the corresponding TCP socket.
         /// </summary>
         public readonly TcpClient Client;
 
@@ -31,32 +31,32 @@ namespace Paracord.Shared.Models.Http
         public readonly HttpListener Listener;
 
         /// <summary>
-        /// The local <c>IPEndPoint</c>-instance for the current client, if any. Otherwise, null.
+        /// The local <see cref="IPEndPoint" />-instance for the current client, if any. Otherwise, null.
         /// </summary>
         public IPEndPoint? LocalEndpoint { get; } = default!;
 
         /// <summary>
-        /// The <c>HttpRequest</c>-instance for the current context.
+        /// The <see cref="HttpRequest" />-instance for the current context.
         /// </summary>
         public HttpRequest Request { get; set; } = default!;
 
         /// <summary>
-        /// The <c>RequestStream</c>-instance for the current TCP-connection.
+        /// The <see cref="HttpRequestStream" />-instance for the current TCP-connection.
         /// </summary>
         protected HttpRequestStream RequestStream { get; }
 
         /// <summary>
-        /// The <c>HttpResponse</c>-instance for the current context.
+        /// The <see cref="HttpResponse" />-instance for the current context.
         /// </summary>
         public HttpResponse Response { get; set; } = default!;
 
         /// <summary>
-        /// The <c>HttpResponseStream</c>-instance for the current TCP-connection.
+        /// The <see cref="HttpResponseStream" />-instance for the current TCP-connection.
         /// </summary>
         protected HttpResponseStream ResponseStream { get; }
 
         /// <summary>
-        /// The remote <c>IPEndPoint</c>-instance for the current client, if any. Otherwise, null.
+        /// The remote <see cref="IPEndPoint" />-instance for the current client, if any. Otherwise, null.
         /// </summary>
         public IPEndPoint? RemoteEndpoint { get; } = default!;
 
@@ -71,10 +71,10 @@ namespace Paracord.Shared.Models.Http
         public string UniqueId { get; set; } = default!;
 
         /// <summary>
-        /// Create a new <c>HttpContext</c>-instance with the specified <c>TcpClient</c>-instance.
+        /// Create a new <see cref="HttpContext" />-instance with the <paramref name="client" />.
         /// </summary>
-        /// <param name="listener">The <c>HttpListener</c>-instance which handles this context.</param>
-        /// <param name="client">The <c>TcpClient</c>-instance to derive properties from.</param>
+        /// <param name="listener">The <see cref="HttpListener" />-instance which handles this context.</param>
+        /// <param name="client">The <see cref="TcpClient" />-instance to derive properties from.</param>
         public HttpContext(HttpListener listener, TcpClient client)
         {
             this.UniqueId = Guid.NewGuid().ToString();
@@ -101,7 +101,7 @@ namespace Paracord.Shared.Models.Http
         /// <remarks>
         /// The TCP-connection is not closed, to allow for multiplexing.
         /// </remarks>
-        /// <exception cref="InvalidDataException">Thrown if the Content-Length header is set and doesn't match the body length.</exception>
+        /// <exception cref="InvalidDataException">Thrown if the <c>Content-Length</c> header is set and doesn't match the body length.</exception>
         public void Send()
         {
             if(!this.IsOpen)

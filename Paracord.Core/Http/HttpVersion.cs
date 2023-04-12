@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 namespace Paracord.Core.Http
 {
     /// <summary>
-    /// Structure defining an HTTP-version, using the <major>.<minor> numbering scheme.
+    /// Structure defining an HTTP-version, using the <c>&lt;major&gt;.&lt;minor&gt;</c> numbering scheme.
     /// </summary>
     public class HttpVersion
     {
@@ -22,7 +22,7 @@ namespace Paracord.Core.Http
         /// Initialize a new HttpVersion-instance with the specified major-, minor- digits.
         /// </summary>
         /// <param name="major">The major-digit of the schema.</param>
-        /// <param name="minor">The major-digit of the schema.</param>
+        /// <param name="minor">The minor-digit of the schema.</param>
         public HttpVersion(byte major, byte minor = 0)
         {
             this.Major = major;

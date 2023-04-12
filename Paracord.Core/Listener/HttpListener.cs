@@ -34,7 +34,7 @@ namespace Paracord.Core.Listener
         }
 
         /// <summary>
-        /// Initialize a new <c>HttpListener</c>-instance with the specified IP-address and port.
+        /// Initialize a new <see cref="HttpListener" />-instance with the specified IP-address and port.
         /// </summary>
         /// <param name="address">The IP-address to listen on.</param>
         /// <param name="port">The port to listen on.</param>
@@ -70,7 +70,7 @@ namespace Paracord.Core.Listener
         /// Accept a new HTTP request from the listener, synchronously.
         /// This method will block until a request is received.
         /// </summary>
-        /// <returns>The received <c>HttpContext</c>-instance.</returns>
+        /// <returns>The received <see cref="HttpContext" />-instance.</returns>
         public HttpContext AcceptRequest()
             => this.WrapTcpClient(this.AcceptClient());
 
@@ -78,7 +78,7 @@ namespace Paracord.Core.Listener
         /// Accept a new HTTP request from the listener, asynchronously.
         /// This method will block until a request is received.
         /// </summary>
-        /// <returns>A task, resolving to the received <c>HttpContext</c>-instance.</returns>
+        /// <returns>A task, resolving to the received <see cref="HttpContext" />-instance.</returns>
         public async Task<HttpContext> AcceptRequestAsync()
             => this.WrapTcpClient(await this.AcceptClientAsync());
 
@@ -109,8 +109,8 @@ namespace Paracord.Core.Listener
         /// <summary>
         /// Parse the content from a <c>TcpClient</c>-instance into an HTTP context object.
         /// </summary>
-        /// <param name="client">The <c>TcpClient</c>-instance to parse from.</param>
-        /// <returns>The parsed <c>HttpContext</c>-object.</returns>
+        /// <param name="client">The <see cref="TcpClient" />-instance to parse from.</param>
+        /// <returns>The parsed <see cref="HttpContext" />-object.</returns>
         protected HttpContext WrapTcpClient(TcpClient client)
         {
             Stream stream = client.GetStream();
@@ -153,7 +153,7 @@ namespace Paracord.Core.Listener
         /// <param name="runner">Selects the method to run on the middlewares.</param>
         /// <param name="reversed">Whether to reverse the middleware ordering.</param>
         /// <example>
-        /// For example, to execute the <c>OnServerStarted</c>-method in all the middleware:
+        /// For example, to execute the <see cref="MiddlewareBase.OnServerStarted(HttpListener)" />-method in all the middleware:
         /// <code>
         /// this.ExecuteMiddleware(_ => _.OnServerStarted(this));
         /// </code>

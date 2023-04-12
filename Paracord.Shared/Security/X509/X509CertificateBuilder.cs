@@ -52,7 +52,7 @@ namespace Paracord.Shared.Security.X509
         /// <summary>
         /// Build the certificate with the parameters specified and return it.
         /// </summary>
-        /// <returns>The resulting <c>X509Certificate2</c>.</returns>
+        /// <returns>The resulting <see cref="X509Certificate2" />.</returns>
         public X509Certificate2 Build()
         {
             using RSA rsa = RSA.Create();
@@ -74,7 +74,7 @@ namespace Paracord.Shared.Security.X509
         /// <summary>
         /// Clear the current subject to allow for new subject-components.
         /// </summary>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder ClearSubject()
         {
             this.Subjects.Clear();
@@ -88,7 +88,7 @@ namespace Paracord.Shared.Security.X509
         /// The input is a key-value pair, such as <c>["O", "Organization, Inc"]</c>, <c>["C", "DA"]</c>, etc.
         /// </remarks>
         /// <param name="subject">The subject-component to add to the current subject.</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder AddSubject(KeyValuePair<string, string> subject)
         {
             if(this.Subjects.ContainsKey(subject.Key))
@@ -106,53 +106,54 @@ namespace Paracord.Shared.Security.X509
         /// <inheritdoc cref="X509CertificateBuilder.AddSubject(KeyValuePair{string, string})" />
         /// <param name="key">The key for the subject-component.</param>
         /// <param name="value">The value for the subject-component.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder AddSubject(string key, string value)
             => this.AddSubject(new KeyValuePair<string, string>(key, value));
 
         /// <summary>
         /// Set the country of the certificate.
         /// </summary>
-        /// <param name="country">The new country of the certificate..</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="country">The new country of the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetCountry(string country)
             => this.AddSubject("C", country);
 
         /// <summary>
         /// Set the state of the certificate.
         /// </summary>
-        /// <param name="state">The new state of the certificate..</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="state">The new state of the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetState(string state)
             => this.AddSubject("ST", state);
 
         /// <summary>
         /// Set the city of the certificate.
         /// </summary>
-        /// <param name="city">The new city of the certificate..</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="city">The new city of the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetCity(string city)
             => this.AddSubject("L", city);
 
         /// <summary>
         /// Set the organization of the certificate.
         /// </summary>
-        /// <param name="organization">The new organization of the certificate..</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="organization">The new organization of the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetOrganization(string organization)
             => this.AddSubject("O", organization);
 
         /// <summary>
         /// Set the common-name of the certificate.
         /// </summary>
-        /// <param name="commonName">The new common-name of the certificate..</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="commonName">The new common-name of the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetCommonName(string commonName)
             => this.AddSubject("CN", commonName);
 
         /// <summary>
         /// Clear the current extensions to allow for new ones.
         /// </summary>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder ClearExtensions()
         {
             this.Extensions.Clear();
@@ -160,10 +161,10 @@ namespace Paracord.Shared.Security.X509
         }
 
         /// <summary>
-        /// Add the specified <c>X509Extension</c>-extension to the certificate.
+        /// Add the specified <see cref="X509Extension" />-extension to the certificate.
         /// </summary>
-        /// <param name="extension">The <c>X509Extension</c>-extension to add to the certificate.</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <param name="extension">The <see cref="X509Extension" />-extension to add to the certificate.</param>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder AddExtension(X509Extension extension)
         {
             this.Extensions.Add(extension);
@@ -174,7 +175,7 @@ namespace Paracord.Shared.Security.X509
         /// Set the oldest date/time when this certificate will be considered valid.
         /// </summary>
         /// <param name="notBefore">The new <c>NotBefore</c>-parameter of the certificate.</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetNotBefore(DateTimeOffset notBefore)
         {
             this.NotBefore = notBefore;
@@ -185,7 +186,7 @@ namespace Paracord.Shared.Security.X509
         /// Set the expiration date for this certificate, when it will no longer be considered valid.
         /// </summary>
         /// <param name="notAfter">The new <c>NotAfter</c>-parameter of the certificate.</param>
-        /// <returns>The current <c>X509CertificateBuilder</c>, to allow for chaining commands.</returns>
+        /// <returns>The current <see cref="X509CertificateBuilder" />, to allow for chaining commands.</returns>
         public X509CertificateBuilder SetNotAfter(DateTimeOffset notAfter)
         {
             this.NotAfter = notAfter;
