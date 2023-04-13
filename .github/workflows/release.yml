@@ -41,7 +41,6 @@ jobs:
         env:
           NugetSource: ${{ secrets.NUGET_SOURCE }}
           NugetApiKey: ${{ secrets.NUGET_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/upload-artifact@v3
         with:
           name: nuget

@@ -86,8 +86,6 @@
               "Format",
               "Pack",
               "Publish",
-              "PublishGitHub",
-              "PublishNuget",
               "Restore",
               "Test"
             ]
@@ -104,8 +102,6 @@
               "Format",
               "Pack",
               "Publish",
-              "PublishGitHub",
-              "PublishNuget",
               "Restore",
               "Test"
             ]

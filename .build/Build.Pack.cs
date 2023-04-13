@@ -17,8 +17,6 @@ partial class Build : NukeBuild
     [Parameter("NuGet API key for authorization for nuget.org")]
     readonly string NugetApiKey;
 
-    private IReadOnlyCollection<AbsolutePath> NugetArtifacts;
-
     Target Pack => _ => _
         .DependsOn(Compile, Format, Test)
         .Produces(NuGetArtifactsDirectory / "*.nupkg")
@@ -49,48 +47,19 @@ partial class Build : NukeBuild
 
     Target Publish => _ => _
         .DependsOn(Pack)
-        .Triggers(PublishNuget)
-        .Triggers(PublishGitHub)
-        .Executes(() =>
-        {
-            NugetArtifacts = NuGetArtifactsDirectory.GlobFiles("*.nupkg");
-        });
-
-    Target PublishNuget => _ => _
-        .DependsOn(Publish)
         .Requires(() => NugetSource)
         .Requires(() => NugetApiKey)
         .Requires(() => Configuration.IsRelease)
-        .OnlyWhenDynamic(() => NugetArtifacts.Count > 0)
         .Executes(() =>
         {
-            foreach(AbsolutePath package in NugetArtifacts)
+            IReadOnlyCollection<AbsolutePath> packages = NuGetArtifactsDirectory.GlobFiles("*.nupkg");
+
+            foreach(AbsolutePath package in packages)
             {
                 DotNetNuGetPush(c => c
                     .SetTargetPath(package)
                     .SetSource(NugetSource)
                     .SetApiKey(NugetApiKey)
-                    .EnableSkipDuplicate());
-            }
-        });
-
-    Target PublishGitHub => _ => _
-        .DependsOn(Publish)
-        .Requires(() => NugetSource)
-        .Requires(() => NugetApiKey)
-        .Requires(() => Configuration.IsRelease)
-        .OnlyWhenStatic(() => Host is GitHubActions)
-        .OnlyWhenDynamic(() => NugetArtifacts.Count > 0)
-        .Executes(() =>
-        {
-            GitHubActions Instance = (GitHubActions) Host;
-
-            foreach(AbsolutePath package in NugetArtifacts)
-            {
-                DotNetNuGetPush(c => c
-                    .SetTargetPath(package)
-                    .SetSource($"https://nuget.pkg.github.com/{Instance.RepositoryOwner}/index.json")
-                    .SetApiKey(Instance.Token)
                     .EnableSkipDuplicate());
             }
         });

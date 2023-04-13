@@ -20,7 +20,6 @@ using Nuke.Common.CI.GitLab;
     "release",
     GitHubActionsImage.UbuntuLatest,
     FetchDepth = 0,
-    EnableGitHubToken = true,
     OnPushTags = new[]
     {
         "**"
