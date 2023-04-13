@@ -39,7 +39,10 @@ jobs:
       - name: Run './build.cmd Publish'
         run: ./build.cmd Publish
         env:
-          NugetSourceName: ${{ secrets.NUGET_SOURCE_NAME }}
           NugetSource: ${{ secrets.NUGET_SOURCE }}
-          NugetUsername: ${{ secrets.NUGET_USERNAME }}
-          NugetPassword: ${{ secrets.NUGET_PASSWORD }}
+          NugetApiKey: ${{ secrets.NUGET_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: nuget
+          path: artifacts/nuget

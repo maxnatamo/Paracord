@@ -47,22 +47,14 @@
           "type": "boolean",
           "description": "Disables displaying the NUKE logo"
         },
-        "NugetPassword": {
+        "NugetApiKey": {
           "type": "string",
-          "description": "NuGet password",
+          "description": "NuGet API key for authorization for nuget.org",
           "default": "Secrets must be entered via 'nuke :secrets [profile]'"
         },
         "NugetSource": {
           "type": "string",
-          "description": "NuGet Source for packages"
-        },
-        "NugetSourceName": {
-          "type": "string",
-          "description": "Name of the NuGet source"
-        },
-        "NugetUsername": {
-          "type": "string",
-          "description": "NuGet username"
+          "description": "NuGet package endpoint for nuget.org"
         },
         "Partition": {
           "type": "string",
@@ -94,6 +86,8 @@
               "Format",
               "Pack",
               "Publish",
+              "PublishGitHub",
+              "PublishNuget",
               "Restore",
               "Test"
             ]
@@ -110,6 +104,8 @@
               "Format",
               "Pack",
               "Publish",
+              "PublishGitHub",
+              "PublishNuget",
               "Restore",
               "Test"
             ]

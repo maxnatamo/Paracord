@@ -1,4 +1,7 @@
+using System.Collections.Generic;
+
 using Nuke.Common;
+using Nuke.Common.CI.GitHubActions;
 using Nuke.Common.IO;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
@@ -7,18 +10,14 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 partial class Build : NukeBuild
 {
-    [Parameter("Name of the NuGet source")]
-    readonly string NugetSourceName = "gitlab";
-
-    [Parameter("NuGet Source for packages")]
-    readonly string NugetSource;
-
-    [Parameter("NuGet username")]
-    readonly string NugetUsername;
+    [Parameter("NuGet package endpoint for nuget.org")]
+    readonly string NugetSource = "https://api.nuget.org/v3/index.json";
 
     [Secret]
-    [Parameter("NuGet password")]
-    readonly string NugetPassword;
+    [Parameter("NuGet API key for authorization for nuget.org")]
+    readonly string NugetApiKey;
+
+    private IReadOnlyCollection<AbsolutePath> NugetArtifacts;
 
     Target Pack => _ => _
         .DependsOn(Compile, Format, Test)
@@ -49,26 +48,50 @@ partial class Build : NukeBuild
         });
 
     Target Publish => _ => _
-        .DependsOn(Compile)
-        .Consumes(Pack)
-        .Requires(() => NugetSourceName)
-        .Requires(() => NugetSource)
-        .Requires(() => NugetUsername)
-        .Requires(() => NugetPassword)
-        .Requires(() => Configuration.IsRelease)
+        .DependsOn(Pack)
+        .Triggers(PublishNuget)
+        .Triggers(PublishGitHub)
         .Executes(() =>
         {
-            var packages = NuGetArtifactsDirectory.GlobFiles("*.nupkg");
+            NugetArtifacts = NuGetArtifactsDirectory.GlobFiles("*.nupkg");
+        });
 
-            DotNetNuGetAddSource(c => c
-                .SetName(NugetSourceName)
-                .SetSource(NugetSource)
-                .SetUsername(NugetUsername)
-                .SetPassword(NugetPassword)
-                .SetStorePasswordInClearText(true));
+    Target PublishNuget => _ => _
+        .DependsOn(Publish)
+        .Requires(() => NugetSource)
+        .Requires(() => NugetApiKey)
+        .Requires(() => Configuration.IsRelease)
+        .OnlyWhenDynamic(() => NugetArtifacts.Count > 0)
+        .Executes(() =>
+        {
+            foreach(AbsolutePath package in NugetArtifacts)
+            {
+                DotNetNuGetPush(c => c
+                    .SetTargetPath(package)
+                    .SetSource(NugetSource)
+                    .SetApiKey(NugetApiKey)
+                    .EnableSkipDuplicate());
+            }
+        });
 
-            DotNetNuGetPush(c => c
-                .SetSource(NugetSource)
-                .CombineWith(packages, (s, v) => s.SetTargetPath(v)));
+    Target PublishGitHub => _ => _
+        .DependsOn(Publish)
+        .Requires(() => NugetSource)
+        .Requires(() => NugetApiKey)
+        .Requires(() => Configuration.IsRelease)
+        .OnlyWhenStatic(() => Host is GitHubActions)
+        .OnlyWhenDynamic(() => NugetArtifacts.Count > 0)
+        .Executes(() =>
+        {
+            GitHubActions Instance = (GitHubActions) Host;
+
+            foreach(AbsolutePath package in NugetArtifacts)
+            {
+                DotNetNuGetPush(c => c
+                    .SetTargetPath(package)
+                    .SetSource($"https://nuget.pkg.github.com/{Instance.RepositoryOwner}/index.json")
+                    .SetApiKey(Instance.Token)
+                    .EnableSkipDuplicate());
+            }
         });
 }

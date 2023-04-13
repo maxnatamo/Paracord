@@ -20,6 +20,7 @@ using Nuke.Common.CI.GitLab;
     "release",
     GitHubActionsImage.UbuntuLatest,
     FetchDepth = 0,
+    EnableGitHubToken = true,
     OnPushTags = new[]
     {
         "**"
@@ -30,10 +31,8 @@ using Nuke.Common.CI.GitLab;
     },
     ImportSecrets = new[]
     {
-        nameof(NugetSourceName),
         nameof(NugetSource),
-        nameof(NugetUsername),
-        nameof(NugetPassword),
+        nameof(NugetApiKey),
     }
 )]
 [GitHubActions(
