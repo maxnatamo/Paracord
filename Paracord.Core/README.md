@@ -1,0 +1,1 @@
+Contains the inner core of Paracord and houses most of the execution.

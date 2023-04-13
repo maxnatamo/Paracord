@@ -1,0 +1,1 @@
+Contains extra parts and utilities for [Paracord](https://github.com/maxnatamo/Paracord).
