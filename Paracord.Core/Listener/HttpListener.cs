@@ -45,8 +45,9 @@ namespace Paracord.Core.Listener
             this.RegisterMiddleware<ServerMiddleware>();
             this.RegisterMiddleware<CompressionMiddleware>();
 
-            this.RegisterCompression<GzipCompressionProvider>();
+            this.RegisterCompression<BrotliCompressionProvider>();
             this.RegisterCompression<DeflateCompressionProvider>();
+            this.RegisterCompression<GzipCompressionProvider>();
 
             this.SslCertificate = sslCertificate;
         }
