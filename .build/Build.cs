@@ -73,22 +73,6 @@ partial class Build : NukeBuild
         Serilog.Log.Information("  Git commit hash: {ShortSha}", GitVersion.ShortSha);
         Serilog.Log.Information("  Git semantic version: {SemVer}", GitVersion.SemVer);
 
-        if(Host is GitLab)
-        {
-            GitLab GitLab = Host as GitLab;
-
-            Serilog.Log.Information("  GitLab Job ID: {JobId}", GitLab.JobId);
-            Serilog.Log.Information("  Triggered by: {Name} ({Username})", GitLab.GitLabUserName, GitLab.GitLabUserLogin);
-        }
-
-        if(Host is GitHubActions)
-        {
-            GitHubActions GitHub = Host as GitHubActions;
-
-            Serilog.Log.Information("  GitHub Job ID: {JobId}", GitHub.JobId);
-            Serilog.Log.Information("  Triggered by: {Actor}", GitHub.Actor);
-        }
-
         base.OnBuildInitialized();
     }
 }
