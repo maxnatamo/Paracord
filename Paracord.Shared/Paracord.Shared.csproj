@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>Paracord</PackageId>
-    <AssemblyName>Paracord</AssemblyName>
-    <RootNamespace>Paracord</RootNamespace>
+    <PackageId>Paracord.Shared</PackageId>
+    <AssemblyName>Paracord.Shared</AssemblyName>
+    <RootNamespace>Paracord.Shared</RootNamespace>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
