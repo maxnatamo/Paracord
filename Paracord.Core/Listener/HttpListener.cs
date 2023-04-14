@@ -39,6 +39,7 @@ namespace Paracord.Core.Listener
             this.RegisterMiddleware<DateMiddleware>();
             this.RegisterMiddleware<ServerMiddleware>();
             this.RegisterMiddleware<CompressionMiddleware>();
+            this.RegisterMiddleware<ETagMiddleware>();
 
             this.RegisterCompression<BrotliCompressionProvider>();
             this.RegisterCompression<DeflateCompressionProvider>();

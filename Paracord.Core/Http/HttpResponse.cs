@@ -50,6 +50,14 @@ namespace Paracord.Core.Http
         public int ThreadId { get; private set; }
 
         /// <summary>
+        /// Whether the status code of the response is 2xx.
+        /// </summary>
+        public bool IsSuccessful
+        {
+            get => (int) this.StatusCode >= 200 && (int) this.StatusCode < 300;
+        }
+
+        /// <summary>
         /// Initialize a new <see cref="HttpResponse" />-instance.
         /// </summary>
         public HttpResponse()
