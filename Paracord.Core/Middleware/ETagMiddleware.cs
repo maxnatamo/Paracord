@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
+using Paracord.Shared.Extensions;
 using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Middleware
@@ -28,13 +29,13 @@ namespace Paracord.Core.Middleware
             }
 
             string digest = this.ComputeDigest(response);
-            string? ifNoneMatch = response.Headers[HttpHeaders.IfNoneMatch];
 
             response.Headers[HttpHeaders.ETag] = digest;
 
-            if(ifNoneMatch != null && ifNoneMatch != digest)
+            if(!this.IsMatch(request, digest))
             {
                 response.StatusCode = HttpStatusCode.PreconditionFailed;
+                response.Body.SetLength(0);
                 return;
             }
         }
@@ -83,6 +84,63 @@ namespace Paracord.Core.Middleware
             string digest = Convert.ToBase64String(digestBytes);
 
             return $"\"{digest}\"";
+        }
+
+        /// <summary>
+        /// Whether the specified request matches the computed digest value.
+        /// </summary>
+        /// <param name="request">The <see cref="HttpRequest" />-instance to check for.</param>
+        /// <param name="digest">The generated digest to match with.</param>
+        /// <returns>True, if the ETag is matched. Otherwise, false.</returns>
+        protected bool IsMatch(HttpRequest request, string digest)
+        {
+            string? ifMatch = request.Headers[HttpHeaders.IfMatch];
+            string? ifNoneMatch = request.Headers[HttpHeaders.IfNoneMatch];
+
+            if(ifMatch != null && !this.IsHeaderMatched(ifMatch, digest))
+            {
+                return false;
+            }
+
+            if(ifNoneMatch != null && this.IsHeaderMatched(ifNoneMatch, digest))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Whether a single header contains the specified digest.
+        /// </summary>
+        /// <remarks>
+        /// If the header only contains '*', it will return <c>true</c>.
+        /// </remarks>
+        /// <param name="headerValue">The full header value of the header.</param>
+        /// <param name="digest">The digest to check for.</param>
+        /// <returns>True, if the header matches the digest. Otherwise, false.</returns>
+        protected bool IsHeaderMatched(string headerValue, string digest)
+        {
+            StringSplitOptions opts = StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries;
+            List<string> digests = headerValue.Split(',', opts).ToList();
+
+            // Always return true for 'any' resource
+            if(digests.Count == 1 && digests[0] == "*")
+            {
+                return true;
+            }
+
+            // Remove 'W/', if present
+            digests.Select(v =>
+            {
+                if(v.StartsWith("W/"))
+                {
+                    v = v.Substring(2);
+                }
+                return v;
+            });
+
+            return digests.Any(v => v == digest);
         }
     }
 }
