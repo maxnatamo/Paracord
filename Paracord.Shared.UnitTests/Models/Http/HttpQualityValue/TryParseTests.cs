@@ -85,6 +85,32 @@ namespace Paracord.Shared.Tests.Http.HttpQualityValueTests
         }
 
         [Fact]
+        public void TryParseReturnsFalseGivenOnlyWeight()
+        {
+            // Arrange
+            string value = "q=1.0";
+
+            // Act
+            bool parsed = HttpQualityValue.TryParse(value, out var _);
+
+            // Assert
+            parsed.Should().BeFalse();
+        }
+
+        [Fact]
+        public void TryParseReturnsFalseGivenOnlyWeightWithSemicolon()
+        {
+            // Arrange
+            string value = ";q=1.0";
+
+            // Act
+            bool parsed = HttpQualityValue.TryParse(value, out var _);
+
+            // Assert
+            parsed.Should().BeFalse();
+        }
+
+        [Fact]
         public void TryParseReturnsFalseGivenQualityWithNonFloatValue()
         {
             // Arrange
