@@ -142,6 +142,8 @@ namespace Paracord.Shared.Models.Http
                 throw new ObjectDisposedException("HttpContext", "The socket has been closed.");
             }
 
+            this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response), true);
+
             // Default to the length of the body.
             if(this.Response.Headers["content-length"] == null)
             {
@@ -153,8 +155,6 @@ namespace Paracord.Shared.Models.Http
             {
                 throw new InvalidDataException("Content-Length parameter doesn't match the length of the Body property on the HttpResponse.");
             }
-
-            this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response), true);
 
             byte[] responseBytes = HttpParser.SerializeResponse(this.Response);
 
