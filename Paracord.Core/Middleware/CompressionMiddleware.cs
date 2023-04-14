@@ -24,14 +24,14 @@ namespace Paracord.Core.Middleware
                 return;
             }
 
-            HttpEncoding[] acceptEncodings = acceptEncodingStrings
-                .Select(v => HttpEncoding.Parse(v))
+            HttpQualityValue[] acceptEncodings = acceptEncodingStrings
+                .Select(v => HttpQualityValue.Parse(v))
                 .OrderByDescending(v => v.Weight)
                 .ToArray();
 
             foreach(var acceptEncoding in acceptEncodings)
             {
-                ICompressionProvider? provider = listener.CompressionProviders.FindProvider(acceptEncoding.Encoding);
+                ICompressionProvider? provider = listener.CompressionProviders.FindProvider(acceptEncoding.Value);
 
                 if(provider == null)
                 {
