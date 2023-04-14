@@ -21,16 +21,11 @@ namespace Paracord.Core.Listener
         public readonly CompressionProviderCollection CompressionProviders = new();
 
         /// <summary>
-        /// The SSL certificate to use for HTTPS connections, if enabled.
-        /// </summary>
-        protected readonly X509Certificate2? SslCertificate;
-
-        /// <summary>
         /// Whether the listener is secured with HTTPS.
         /// </summary>
-        protected bool IsSecure
+        public bool IsSecure
         {
-            get => this.SslCertificate != null;
+            get => this.Certificate != null;
         }
 
         /// <summary>
@@ -39,7 +34,7 @@ namespace Paracord.Core.Listener
         /// <param name="address">The IP-address to listen on.</param>
         /// <param name="port">The port to listen on.</param>
         /// <param name="sslCertificate">The SSL certificate to use for HTTPS connections. HTTPS is disabled, if null.</param>
-        public HttpListener(string address = "*", UInt16 port = 80, X509Certificate2? sslCertificate = null) : base(address, port)
+        public HttpListener(string address = "*", UInt16 port = 80, X509Certificate2? sslCertificate = null) : base(address, port, sslCertificate)
         {
             this.RegisterMiddleware<DateMiddleware>();
             this.RegisterMiddleware<ServerMiddleware>();
@@ -48,8 +43,6 @@ namespace Paracord.Core.Listener
             this.RegisterCompression<BrotliCompressionProvider>();
             this.RegisterCompression<DeflateCompressionProvider>();
             this.RegisterCompression<GzipCompressionProvider>();
-
-            this.SslCertificate = sslCertificate;
         }
 
         /// <inheritdoc cref="ListenerBase.Start" />
