@@ -5,9 +5,9 @@ namespace Paracord.Core.Http
     public class HttpResponseStream : Stream
     {
         /// <summary>
-        /// The internal <see cref="NetworkStream" />-instance for handling TCP-sockets.
+        /// The internal <see cref="Stream" />-instance for handling TCP-sockets.
         /// </summary>
-        protected NetworkStream Stream { get; set; }
+        protected Stream Stream { get; set; }
 
         /// <summary>
         /// Indicates whether the current stream supports reading.
@@ -51,10 +51,10 @@ namespace Paracord.Core.Http
         }
 
         /// <summary>
-        /// Initialize a new <see cref="HttpResponseStream" />-instance with the specified <see cref="NetworkStream" />-instance.
+        /// Initialize a new <see cref="HttpResponseStream" />-instance with the specified <see cref="Stream" />-instance.
         /// </summary>
-        /// <param name="stream">The parent <see cref="NetworkStream" />-instance.</param>
-        public HttpResponseStream(NetworkStream stream)
+        /// <param name="stream">The parent <see cref="Stream" />-instance.</param>
+        public HttpResponseStream(Stream stream)
         {
             this.Stream = stream;
         }
