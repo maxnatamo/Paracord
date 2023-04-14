@@ -133,24 +133,5 @@ namespace Paracord.Core.Listener
         /// <returns>A task, resolving to the accepted <see cref="TcpClient" />-instance.</returns>
         protected async Task<TcpClient> AcceptClientAsync()
             => await this.Listener.AcceptTcpClientAsync();
-
-        /// <summary>
-        /// Wrap the specified stream with an <see cref="SslStream" />-instance and authenticate as a server, using the <see cref="ListenerBase.Certificate" />.
-        /// </summary>
-        /// <param name="innerStream">The <see cref="Stream" />-instance to wrap in an SSL stream.</param>
-        /// <returns>The wrapped <see cref="SslStream" />-instance.</returns>
-        /// <exception cref="ArgumentNullException">The certificate, <see cref="ListenerBase.Certificate" />, is null.</exception>
-        protected SslStream CreateSslStream(Stream innerStream)
-        {
-            ArgumentNullException.ThrowIfNull(this.Certificate, nameof(this.Certificate));
-
-            lock(this.InternalLock)
-            {
-                SslStream sslStream = new SslStream(innerStream, true);
-                sslStream.AuthenticateAsServer(this.Certificate, false, SslProtocols.Tls13 | SslProtocols.Tls12, false);
-
-                return sslStream;
-            }
-        }
     }
 }
