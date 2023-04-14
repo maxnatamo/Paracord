@@ -108,13 +108,7 @@ namespace Paracord.Core.Listener
         /// <returns>The parsed <see cref="HttpContext" />-object.</returns>
         protected HttpContext WrapTcpClient(TcpClient client)
         {
-            Stream stream = client.GetStream();
             HttpContext ctx = new HttpContext(this, client);
-
-            if(this.IsSecure)
-            {
-                stream = this.CreateSslStream(stream);
-            }
 
             // Reading client.Available will reset it
             int bytesExpected = 0;
@@ -124,7 +118,7 @@ namespace Paracord.Core.Listener
             while((bytesExpected = client.Available) == 0) { }
 
             Byte[] bytes = new Byte[2048];
-            bytesRead = stream.Read(bytes, 0, bytes.Length);
+            bytesRead = ctx.ConnectionStream.Read(bytes, 0, bytes.Length);
 
             // Limit bytes size
             bytes = bytes[0..bytesRead];

@@ -16,7 +16,7 @@ namespace Paracord.Core.Listener
         /// <summary>
         /// An optional certificate to use for SSL connections. If null, SSL is disabled.
         /// </summary>
-        protected readonly X509Certificate2? Certificate;
+        public readonly X509Certificate2? Certificate;
 
         /// <summary>
         /// The actual TCP listener.
