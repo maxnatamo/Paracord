@@ -110,11 +110,10 @@ namespace Paracord.Core.Listener
         {
             HttpContext ctx = new HttpContext(this, client);
 
-            // Reading client.Available will reset it
             int bytesExpected = 0;
             int bytesRead = 0;
 
-            // Wait until data is available
+            // Reading client.Available will reset it
             while((bytesExpected = client.Available) == 0) { }
 
             Byte[] bytes = new Byte[2048];
