@@ -1,6 +1,6 @@
 using Paracord.Core.Http;
 
-namespace Paracord.Core.Tests.Http.HttpVersionTests
+namespace Paracord.Core.UnitTests.Http.HttpVersionTests
 {
     public class TryParseTests
     {

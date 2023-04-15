@@ -5,7 +5,7 @@ using Paracord.Core.Middleware;
 using Paracord.Shared.Models.Http;
 using Paracord.Shared.Models.Listener;
 
-namespace Paracord.Core.Tests.Middleware
+namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
 {
     public class TestHttpContext : HttpContext
     {
