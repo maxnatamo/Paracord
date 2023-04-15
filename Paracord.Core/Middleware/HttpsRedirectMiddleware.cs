@@ -26,6 +26,18 @@ namespace Paracord.Core.Middleware
                 return;
             }
 
+            // If the client explicitly refuses to upgrade, skip.
+            if(request.Headers[HttpHeaders.UpgradeInsecureRequests] == "0")
+            {
+                this.Next();
+                return;
+            }
+
+            if(request.Headers[HttpHeaders.UpgradeInsecureRequests] == "1")
+            {
+                response.Headers[HttpHeaders.Vary] += HttpHeaders.UpgradeInsecureRequests;
+            }
+
             response.StatusCode = HttpStatusCode.MovedPermanently;
             response.Headers[HttpHeaders.Location] = listener.Prefixes.First(v => v.Secure).ToString();
             response.Send();
