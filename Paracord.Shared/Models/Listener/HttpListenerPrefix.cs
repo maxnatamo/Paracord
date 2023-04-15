@@ -62,7 +62,7 @@ namespace Paracord.Shared.Models.Listener
         {
             result = null;
 
-            if(address.Length == 0 || address.Length > 256)
+            if(string.IsNullOrEmpty(address) || address.Length > 256)
             {
                 return false;
             }
@@ -80,12 +80,12 @@ namespace Paracord.Shared.Models.Listener
             result = new HttpListenerPrefix();
             result.Address = match.Groups["address"].Value;
 
-            if(match.Groups.ContainsKey("protocol"))
+            if(match.Groups["protocol"].Success)
             {
                 result.Secure = match.Groups["protocol"].Value == "https";
             }
 
-            if(match.Groups.ContainsKey("port"))
+            if(match.Groups["port"].Success)
             {
                 if(!uint.TryParse(match.Groups["port"].Value, out var port))
                 {
