@@ -1,6 +1,6 @@
 # Homepage
 
-To get started with the framework, take a look at the [articles](/Paracord/articles/intro.html).
+To get started with the framework, take a look at the [articles](/Paracord/articles/intro.html). If you want to develop and contribute, look at the [development guide](/Paracord/development/intro.html).
 
 Looking for the [API Documentation?](/Paracord/api/index.html)
 
