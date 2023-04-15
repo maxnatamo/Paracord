@@ -5,6 +5,7 @@ using Paracord.Core.Compression;
 using Paracord.Core.Http;
 using Paracord.Core.Middleware;
 using Paracord.Shared.Models.Http;
+using Paracord.Shared.Models.Listener;
 
 namespace Paracord.Core.Listener
 {
@@ -21,20 +22,10 @@ namespace Paracord.Core.Listener
         public readonly CompressionProviderCollection CompressionProviders = new();
 
         /// <summary>
-        /// Whether the listener is secured with HTTPS.
+        /// Initialize a new <see cref="HttpListener" />-instance.
         /// </summary>
-        public bool IsSecure
-        {
-            get => this.Certificate != null;
-        }
-
-        /// <summary>
-        /// Initialize a new <see cref="HttpListener" />-instance with the specified IP-address and port.
-        /// </summary>
-        /// <param name="address">The IP-address to listen on.</param>
-        /// <param name="port">The port to listen on.</param>
         /// <param name="sslCertificate">The SSL certificate to use for HTTPS connections. HTTPS is disabled, if null.</param>
-        public HttpListener(string address = "*", UInt16 port = 80, X509Certificate2? sslCertificate = null) : base(address, port, sslCertificate)
+        public HttpListener(X509Certificate2? sslCertificate = null) : base(sslCertificate)
         {
             this.RegisterMiddleware<DateMiddleware>();
             this.RegisterMiddleware<ServerMiddleware>();
@@ -63,20 +54,31 @@ namespace Paracord.Core.Listener
         }
 
         /// <summary>
-        /// Accept a new HTTP request from the listener, synchronously.
-        /// This method will block until a request is received.
+        /// Start receiving connections and pass them to the specified <paramref name="executor" />.
+        /// This method is blocking, while the listener is running.
         /// </summary>
-        /// <returns>The received <see cref="HttpContext" />-instance.</returns>
-        public HttpContext AcceptRequest()
-            => this.WrapTcpClient(this.AcceptClient());
+        /// <param name="executor">The action for handling incoming HTTP requests.</param>
+        /// <param name="cancellationToken">An optional <see cref="CancellationToken" /> for halting.</param>
+        public void AcceptConnections(Action<HttpContext> executor, CancellationToken cancellationToken = default!)
+        {
+            List<Task> listenerTasks = new List<Task>();
 
-        /// <summary>
-        /// Accept a new HTTP request from the listener, asynchronously.
-        /// This method will block until a request is received.
-        /// </summary>
-        /// <returns>A task, resolving to the received <see cref="HttpContext" />-instance.</returns>
-        public async Task<HttpContext> AcceptRequestAsync()
-            => this.WrapTcpClient(await this.AcceptClientAsync());
+            foreach(KeyValuePair<ListenerPrefix, TcpListener> kv in this.Listeners)
+            {
+                Task listenerTask = Task.Run(async () =>
+                {
+                    await this.InternalListenerProc(
+                        listener: kv.Value,
+                        listenerPrefix: kv.Key,
+                        executor: executor,
+                        cancellationToken: cancellationToken);
+                });
+
+                listenerTasks.Add(listenerTask);
+            }
+
+            Task.WaitAll(listenerTasks.ToArray());
+        }
 
         /// <summary>
         /// Register a new middleware onto the listener to handle internal actions.
@@ -103,13 +105,35 @@ namespace Paracord.Core.Listener
             => this.RegisterCompression(new T());
 
         /// <summary>
+        /// Internal process for handling a single listener of the <see cref="ListenerBase.Listeners" />.
+        /// </summary>
+        /// <param name="listener">The listener which the process should execute with.</param>
+        /// <param name="executor">The underlying handler for HTTP requests.</param>
+        /// <param name="cancellationToken">An optional <see cref="CancellationToken" />, for halting the process.</param>
+        protected async Task InternalListenerProc(TcpListener listener, ListenerPrefix listenerPrefix, Action<HttpContext> executor, CancellationToken cancellationToken = default!)
+        {
+            while(this.IsOpen && !cancellationToken.IsCancellationRequested)
+            {
+                TcpClient client = await listener.AcceptTcpClientAsync(cancellationToken);
+
+                Task _ = Task.Run(() =>
+                {
+                    HttpContext context = this.WrapTcpClient(listenerPrefix, client);
+                    executor(context);
+                },
+                cancellationToken);
+            }
+        }
+
+        /// <summary>
         /// Parse the content from a <c>TcpClient</c>-instance into an HTTP context object.
         /// </summary>
+        /// <param name="listenerPrefix">The <see cref="ListenerPrefix" />, from which the <paramref name="client" /> was received.</param>
         /// <param name="client">The <see cref="TcpClient" />-instance to parse from.</param>
         /// <returns>The parsed <see cref="HttpContext" />-object.</returns>
-        protected HttpContext WrapTcpClient(TcpClient client)
+        protected HttpContext WrapTcpClient(ListenerPrefix listenerPrefix, TcpClient client)
         {
-            HttpContext ctx = new HttpContext(this, client);
+            HttpContext ctx = new HttpContext(this, listenerPrefix, client);
 
             int bytesExpected = 0;
             int bytesRead = 0;
