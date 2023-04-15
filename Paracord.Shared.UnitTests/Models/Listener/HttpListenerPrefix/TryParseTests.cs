@@ -1,6 +1,6 @@
 using Paracord.Shared.Models.Listener;
 
-namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
+namespace Paracord.Shared.Tests.Listener.ListenerPrefixTests
 {
     public class TryParseTests
     {
@@ -11,7 +11,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = string.Empty;
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();
@@ -24,7 +24,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = null!;
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();
@@ -37,7 +37,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = string.Join("", Enumerable.Repeat('a', 300));
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();
@@ -50,7 +50,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "127.0.0.1";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var result);
+            bool parsed = ListenerPrefix.TryParse(value, out var result);
 
             // Assert
             parsed.Should().BeTrue();
@@ -66,7 +66,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "http://127.0.0.1";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var result);
+            bool parsed = ListenerPrefix.TryParse(value, out var result);
 
             // Assert
             parsed.Should().BeTrue();
@@ -82,7 +82,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "https://127.0.0.1";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var result);
+            bool parsed = ListenerPrefix.TryParse(value, out var result);
 
             // Assert
             parsed.Should().BeTrue();
@@ -98,7 +98,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "https://";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();
@@ -111,7 +111,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "https";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();
@@ -124,7 +124,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "0.0.0.0:32000";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var result);
+            bool parsed = ListenerPrefix.TryParse(value, out var result);
 
             // Assert
             parsed.Should().BeTrue();
@@ -139,7 +139,7 @@ namespace Paracord.Shared.Tests.Listener.HttpListenerPrefixTests
             string value = "0.0.0.0:96000";
 
             // Act
-            bool parsed = HttpListenerPrefix.TryParse(value, out var _);
+            bool parsed = ListenerPrefix.TryParse(value, out var _);
 
             // Assert
             parsed.Should().BeFalse();

@@ -5,11 +5,21 @@ using System.Text.RegularExpressions;
 namespace Paracord.Shared.Models.Listener
 {
     /// <summary>
-    /// Definition of an HTTP prefix (e.g. <c>http://127.0.0.1:32000</c>, <c>0.0.0.0:80</c>, etc.),
+    /// Definition of a prefix (e.g. <c>http://127.0.0.1:32000</c>, <c>ssl://0.0.0.0:80</c>, etc.),
     /// including IP address, port and whether it's secure.
     /// </summary>
-    public class HttpListenerPrefix
+    public class ListenerPrefix
     {
+        /// <summary>
+        /// List of protocols utilizing TLS/SSL encryption.
+        /// </summary>
+        public static readonly IEnumerable<string> SecureProtocols = new List<string>
+        {
+            "https",
+            "ssl",
+            "tls"
+        };
+
         /// <summary>
         /// The IP address of the prefix. Defaults to <c>127.0.0.1</c>.
         /// </summary>
@@ -26,21 +36,21 @@ namespace Paracord.Shared.Models.Listener
         public bool Secure { get; private set; } = false;
 
         /// <summary>
-        /// Initialize an empty <see cref="HttpListenerPrefix" />-instance with default values.
+        /// Initialize an empty <see cref="ListenerPrefix" />-instance with default values.
         /// </summary>
-        public HttpListenerPrefix()
+        public ListenerPrefix()
         {
 
         }
 
         /// <summary>
-        /// Initialize an <see cref="HttpListenerPrefix" />-instance with the specified values.
+        /// Initialize an <see cref="ListenerPrefix" />-instance with the specified values.
         /// </summary>
         /// <param name="address">The IP-address of the instance.</param>
         /// <param name="port">The port number of the instance.</param>
         /// <param name="secure">Whether the prefix should use a secure protocol (ie. HTTPS).</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the port number is above 65535.</exception>
-        public HttpListenerPrefix(string address, uint port, bool secure = false)
+        public ListenerPrefix(string address, uint port, bool secure = false)
         {
             if(port > 65535)
             {
@@ -53,12 +63,12 @@ namespace Paracord.Shared.Models.Listener
         }
 
         /// <summary>
-        /// Parse an address (e.g. <c>http://localhost:32000</c>, <c>0.0.0.0:80</c>, etc.) to a native <c>HttpListenerPrefix</c>-instance.
+        /// Parse an address (e.g. <c>http://localhost:32000</c>, <c>0.0.0.0:80</c>, etc.) to a native <c>ListenerPrefix</c>-instance.
         /// </summary>
         /// <param name="address">The address to parse. This may include protocol, IP-address and/or port.</param>
-        /// <param name="result">The resulting <c>HttpListenerPrefix</c>-instance, if the method returns true. Otherwise, false.</param>
+        /// <param name="result">The resulting <c>ListenerPrefix</c>-instance, if the method returns true. Otherwise, false.</param>
         /// <returns>True, if the string was successfully parsed. Otherwise, false.</returns>
-        public static bool TryParse(string address, [NotNullWhen(true)] out HttpListenerPrefix? result)
+        public static bool TryParse(string address, [NotNullWhen(true)] out ListenerPrefix? result)
         {
             result = null;
 
@@ -69,7 +79,7 @@ namespace Paracord.Shared.Models.Listener
 
             address = address.Trim();
 
-            Regex pattern = new Regex(@"^((?<protocol>http(s)?):\/\/)?(?<address>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:(?<port>(\d+)))?$");
+            Regex pattern = new Regex(@"^((?<protocol>[a-zA-Z]+):\/\/)?(?<address>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:(?<port>(\d+)))?$");
             Match match = pattern.Match(address);
 
             if(!match.Success)
@@ -77,12 +87,12 @@ namespace Paracord.Shared.Models.Listener
                 return false;
             }
 
-            result = new HttpListenerPrefix();
+            result = new ListenerPrefix();
             result.Address = match.Groups["address"].Value;
 
             if(match.Groups["protocol"].Success)
             {
-                result.Secure = match.Groups["protocol"].Value == "https";
+                result.Secure = ListenerPrefix.SecureProtocols.Contains(match.Groups["protocol"].Value);
             }
 
             if(match.Groups["port"].Success)
@@ -105,16 +115,16 @@ namespace Paracord.Shared.Models.Listener
             return true;
         }
 
-        /// <returns>The parsed <c>HttpListenerPrefix</c>-instance.</returns>
+        /// <returns>The parsed <c>ListenerPrefix</c>-instance.</returns>
         /// <exception cref="FormatException">Thrown if the parsing failed.</exception>
-        /// <inheritdoc cref="HttpListenerPrefix.TryParse" />
-        public static HttpListenerPrefix Parse(string address)
+        /// <inheritdoc cref="ListenerPrefix.TryParse" />
+        public static ListenerPrefix Parse(string address)
         {
-            if(HttpListenerPrefix.TryParse(address, out var result))
+            if(ListenerPrefix.TryParse(address, out var result))
             {
                 return result;
             }
-            throw new FormatException("The supplied HTTP prefix is improperly formatted.");
+            throw new FormatException("The supplied prefix is improperly formatted.");
         }
     }
 }
