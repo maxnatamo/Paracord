@@ -80,6 +80,11 @@ namespace Paracord.Core.Listener
                 return;
             }
 
+            if(!this.Prefixes.Any())
+            {
+                throw new ArgumentException("No prefixes specified. Use ListenerBase.Prefixes.Add to add prefixes.");
+            }
+
             if(this.Prefixes.Any(v => v.Secure) && this.Certificate == null)
             {
                 throw new ArgumentException("Prefix uses secure protocol, but no certificate was specified");
