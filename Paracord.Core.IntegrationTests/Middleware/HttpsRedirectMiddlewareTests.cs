@@ -37,7 +37,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
 
             // Assert
-            response.Object.StatusCode = HttpStatusCode.Ok;
+            response.Object.StatusCode.Should().Be(HttpStatusCode.Ok);
         }
 
         [Fact]
@@ -60,7 +60,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
 
             // Assert
-            response.Object.StatusCode = HttpStatusCode.Ok;
+            response.Object.StatusCode.Should().Be(HttpStatusCode.Ok);
         }
 
         [Fact]
@@ -84,8 +84,8 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
 
             // Assert
-            response.Object.StatusCode = HttpStatusCode.MovedPermanently;
-            response.Object.Headers[HttpHeaders.Location] = "https://localhost:8080";
+            response.Object.StatusCode.Should().Be(HttpStatusCode.MovedPermanently);
+            response.Object.Headers[HttpHeaders.Location].Should().Be("https://localhost:8080");
         }
 
         [Fact]
@@ -110,7 +110,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
 
             // Assert
-            response.Object.StatusCode = HttpStatusCode.Ok;
+            response.Object.StatusCode.Should().Be(HttpStatusCode.Ok);
         }
 
         [Fact]
@@ -135,8 +135,8 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
 
             // Assert
-            response.Object.StatusCode = HttpStatusCode.MovedPermanently;
-            response.Object.Headers[HttpHeaders.Location] = "https://localhost:8080";
+            response.Object.StatusCode.Should().Be(HttpStatusCode.MovedPermanently);
+            response.Object.Headers[HttpHeaders.Location].Should().Be("https://localhost:8080");
         }
     }
 }
