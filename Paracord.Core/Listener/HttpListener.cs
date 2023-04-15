@@ -5,6 +5,7 @@ using Paracord.Core.Compression;
 using Paracord.Core.Http;
 using Paracord.Core.Middleware;
 using Paracord.Shared.Models.Http;
+using Paracord.Shared.Models.Listener;
 
 namespace Paracord.Core.Listener
 {
@@ -62,12 +63,17 @@ namespace Paracord.Core.Listener
         {
             List<Task> listenerTasks = new List<Task>();
 
-            foreach(TcpListener listener in this.Listeners)
+            foreach(KeyValuePair<ListenerPrefix, TcpListener> kv in this.Listeners)
             {
                 Task listenerTask = Task.Run(async () =>
                 {
-                    await this.InternalListenerProc(listener, executor, cancellationToken);
+                    await this.InternalListenerProc(
+                        listener: kv.Value,
+                        listenerPrefix: kv.Key,
+                        executor: executor,
+                        cancellationToken: cancellationToken);
                 });
+
                 listenerTasks.Add(listenerTask);
             }
 
@@ -98,28 +104,36 @@ namespace Paracord.Core.Listener
         public void RegisterCompression<T>() where T : ICompressionProvider, new()
             => this.RegisterCompression(new T());
 
-        protected async Task InternalListenerProc(TcpListener listener, Action<HttpContext> executor, CancellationToken cancellationToken = default!)
+        /// <summary>
+        /// Internal process for handling a single listener of the <see cref="ListenerBase.Listeners" />.
+        /// </summary>
+        /// <param name="listener">The listener which the process should execute with.</param>
+        /// <param name="executor">The underlying handler for HTTP requests.</param>
+        /// <param name="cancellationToken">An optional <see cref="CancellationToken" />, for halting the process.</param>
+        protected async Task InternalListenerProc(TcpListener listener, ListenerPrefix listenerPrefix, Action<HttpContext> executor, CancellationToken cancellationToken = default!)
         {
-            while(this.IsOpen)
+            while(this.IsOpen && !cancellationToken.IsCancellationRequested)
             {
                 TcpClient client = await listener.AcceptTcpClientAsync(cancellationToken);
 
                 Task _ = Task.Run(() =>
                 {
-                    HttpContext context = this.WrapTcpClient(client);
+                    HttpContext context = this.WrapTcpClient(listenerPrefix, client);
                     executor(context);
-                });
+                },
+                cancellationToken);
             }
         }
 
         /// <summary>
         /// Parse the content from a <c>TcpClient</c>-instance into an HTTP context object.
         /// </summary>
+        /// <param name="listenerPrefix">The <see cref="ListenerPrefix" />, from which the <paramref name="client" /> was received.</param>
         /// <param name="client">The <see cref="TcpClient" />-instance to parse from.</param>
         /// <returns>The parsed <see cref="HttpContext" />-object.</returns>
-        protected HttpContext WrapTcpClient(TcpClient client)
+        protected HttpContext WrapTcpClient(ListenerPrefix listenerPrefix, TcpClient client)
         {
-            HttpContext ctx = new HttpContext(this, client);
+            HttpContext ctx = new HttpContext(this, listenerPrefix, client);
 
             int bytesExpected = 0;
             int bytesRead = 0;

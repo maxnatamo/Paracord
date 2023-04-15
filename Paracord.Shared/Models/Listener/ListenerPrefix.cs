@@ -134,5 +134,22 @@ namespace Paracord.Shared.Models.Listener
             }
             throw new FormatException("The supplied prefix is improperly formatted.");
         }
+
+        public override bool Equals(object? obj)
+        {
+            if(obj is not ListenerPrefix)
+            {
+                return false;
+            }
+            return ((ListenerPrefix) obj).ToString() == this.ToString();
+        }
+
+        public override string ToString()
+        {
+            return $"{this.Protocol}://{this.Address}:{this.Port}";
+        }
+
+        public override int GetHashCode()
+            => this.ToString().GetHashCode();
     }
 }

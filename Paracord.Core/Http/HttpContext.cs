@@ -5,6 +5,7 @@ using System.Security.Authentication;
 using System.Text;
 
 using Paracord.Core.Http;
+using Paracord.Shared.Models.Listener;
 using HttpListener = Paracord.Core.Listener.HttpListener;
 
 namespace Paracord.Shared.Models.Http
@@ -31,6 +32,11 @@ namespace Paracord.Shared.Models.Http
         /// The listener which handles this context.
         /// </summary>
         public readonly HttpListener Listener;
+
+        /// <summary>
+        /// The listener prefix, from which the context is operating on.
+        /// </summary>
+        public readonly ListenerPrefix ListenerPrefix;
 
         /// <summary>
         /// The local <see cref="IPEndPoint" />-instance for the current client, if any. Otherwise, null.
@@ -99,24 +105,26 @@ namespace Paracord.Shared.Models.Http
         /// Create a new <see cref="HttpContext" />-instance with the <paramref name="client" />.
         /// </summary>
         /// <param name="listener">The <see cref="HttpListener" />-instance which handles this context.</param>
+        /// <param name="listenerPrefix">The <see cref="ListenerPrefix" />, from which the context is operating on.</param>
         /// <param name="client">The <see cref="TcpClient" />-instance to derive properties from.</param>
-        public HttpContext(HttpListener listener, TcpClient client)
+        public HttpContext(HttpListener listener, ListenerPrefix listenerPrefix, TcpClient client)
         {
             this.UniqueId = Guid.NewGuid().ToString();
-
-            this.PlainStream = client.GetStream();
-
-            if(listener.Certificate != null)
-            {
-                this.EncryptedStream = new SslStream(this.PlainStream, true);
-                this.EncryptedStream.AuthenticateAsServer(listener.Certificate, false, SslProtocols.Tls13 | SslProtocols.Tls12, false);
-            }
+            this.ListenerPrefix = listenerPrefix;
 
             this.Listener = listener;
             this.Client = client;
             this.TTL = client.Client.Ttl;
             this.LocalEndpoint = (IPEndPoint?) client.Client.LocalEndPoint;
             this.RemoteEndpoint = (IPEndPoint?) client.Client.RemoteEndPoint;
+
+            this.PlainStream = client.GetStream();
+
+            if(this.ListenerPrefix.Secure && this.Listener.Certificate != null)
+            {
+                this.EncryptedStream = new SslStream(this.PlainStream, true);
+                this.EncryptedStream.AuthenticateAsServer(this.Listener.Certificate, false, SslProtocols.Tls13 | SslProtocols.Tls12, false);
+            }
 
             this.RequestStream = new HttpRequestStream(this.ConnectionStream);
             this.ResponseStream = new HttpResponseStream(this.ConnectionStream);

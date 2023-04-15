@@ -25,7 +25,7 @@ namespace Paracord.Core.Listener
         /// <summary>
         /// The list of listeners, one for each prefix in <see cref="Prefixes" />.
         /// </summary>
-        protected readonly List<TcpListener> Listeners;
+        protected readonly Dictionary<ListenerPrefix, TcpListener> Listeners;
 
         /// <summary>
         /// Whether the listener is currently running.
@@ -47,7 +47,7 @@ namespace Paracord.Core.Listener
 
             this.Certificate = certificate;
             this.Prefixes = new ListenerPrefixCollection();
-            this.Listeners = new List<TcpListener>();
+            this.Listeners = new Dictionary<ListenerPrefix, TcpListener>();
 
             Console.CancelKeyPress += (sender, e) =>
             {
@@ -90,11 +90,11 @@ namespace Paracord.Core.Listener
                 IPAddress address = IPAddress.Parse(prefix.Address);
                 int port = (int) prefix.Port;
 
-                this.Listeners.Add(new TcpListener(address, port));
+                this.Listeners.Add(prefix, new TcpListener(address, port));
             }
 
             this.IsOpen = true;
-            this.Listeners.ForEach(v => v.Start());
+            this.Listeners.ToList().ForEach(v => v.Value.Start());
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Paracord.Core.Listener
             }
 
             this.IsOpen = false;
-            this.Listeners.ForEach(v => v.Stop());
+            this.Listeners.ToList().ForEach(v => v.Value.Stop());
             this.Listeners.Clear();
         }
     }
