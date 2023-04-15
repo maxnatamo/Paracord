@@ -2,7 +2,7 @@ using System.Text;
 
 using Paracord.Core.Compression;
 
-namespace Paracord.Core.Tests.Compression.DeflateCompressionProviderTests
+namespace Paracord.Core.UnitTests.Compression.DeflateCompressionProviderTests
 {
     public class DecompressTests
     {

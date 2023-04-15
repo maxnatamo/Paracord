@@ -1,6 +1,6 @@
 using Paracord.Shared.Models.Listener;
 
-namespace Paracord.Shared.Tests.Listener.ListenerPrefixTests
+namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
 {
     public class TryParseTests
     {

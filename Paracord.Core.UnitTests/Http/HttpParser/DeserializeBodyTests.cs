@@ -2,7 +2,7 @@ using System.Text;
 
 using Paracord.Core.Http;
 
-namespace Paracord.Core.Tests.Http.HttpParserTests
+namespace Paracord.Core.UnitTests.Http.HttpParserTests
 {
     public class DeserializeBodyTests
     {
