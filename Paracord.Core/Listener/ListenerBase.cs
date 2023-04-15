@@ -92,10 +92,13 @@ namespace Paracord.Core.Listener
 
             foreach(ListenerPrefix prefix in this.Prefixes)
             {
-                IPAddress address = IPAddress.Parse(prefix.Address);
-                int port = (int) prefix.Port;
+                IPAddress[] addresses = Dns.GetHostAddresses(prefix.Address);
+                if(addresses.Length == 0)
+                {
+                    throw new ArgumentException($"Prefix has invalid DNS entry: {prefix.Address}");
+                }
 
-                this.Listeners.Add(prefix, new TcpListener(address, port));
+                this.Listeners.Add(prefix, new TcpListener(addresses[0], (int) prefix.Port));
             }
 
             this.IsOpen = true;
