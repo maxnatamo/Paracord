@@ -39,8 +39,14 @@ namespace Paracord.Shared.Models.Listener
         /// <param name="address">The IP-address of the instance.</param>
         /// <param name="port">The port number of the instance.</param>
         /// <param name="secure">Whether the prefix should use a secure protocol (ie. HTTPS).</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown if the port number is above 65535.</exception>
         public HttpListenerPrefix(string address, uint port, bool secure = false)
         {
+            if(port > 65535)
+            {
+                throw new ArgumentOutOfRangeException(nameof(port), "Port number cannot be above 65535");
+            }
+
             this.Address = address;
             this.Port = port;
             this.Secure = secure;
@@ -82,6 +88,12 @@ namespace Paracord.Shared.Models.Listener
             if(match.Groups.ContainsKey("port"))
             {
                 if(!uint.TryParse(match.Groups["port"].Value, out var port))
+                {
+                    result = null;
+                    return false;
+                }
+
+                if(port > 65535)
                 {
                     result = null;
                     return false;
