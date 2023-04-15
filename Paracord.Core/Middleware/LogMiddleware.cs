@@ -11,7 +11,13 @@ namespace Paracord.Core.Middleware
     {
         public override void OnServerStarted(HttpListener listener)
         {
-            Console.WriteLine("Listening on {0}:{1}", listener.ListenAddress.ToString(), listener.ListenPort);
+            Console.WriteLine("Server has started.");
+
+            foreach(var prefix in listener.Prefixes)
+            {
+                Console.WriteLine("  {0}://{1}:{2}", prefix.Protocol, prefix.Address, prefix.Port);
+            }
+
             this.Next();
         }
 

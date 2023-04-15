@@ -21,20 +21,10 @@ namespace Paracord.Core.Listener
         public readonly CompressionProviderCollection CompressionProviders = new();
 
         /// <summary>
-        /// Whether the listener is secured with HTTPS.
+        /// Initialize a new <see cref="HttpListener" />-instance.
         /// </summary>
-        public bool IsSecure
-        {
-            get => this.Certificate != null;
-        }
-
-        /// <summary>
-        /// Initialize a new <see cref="HttpListener" />-instance with the specified IP-address and port.
-        /// </summary>
-        /// <param name="address">The IP-address to listen on.</param>
-        /// <param name="port">The port to listen on.</param>
         /// <param name="sslCertificate">The SSL certificate to use for HTTPS connections. HTTPS is disabled, if null.</param>
-        public HttpListener(string address = "*", UInt16 port = 80, X509Certificate2? sslCertificate = null) : base(address, port, sslCertificate)
+        public HttpListener(X509Certificate2? sslCertificate = null) : base(sslCertificate)
         {
             this.RegisterMiddleware<DateMiddleware>();
             this.RegisterMiddleware<ServerMiddleware>();
@@ -63,20 +53,26 @@ namespace Paracord.Core.Listener
         }
 
         /// <summary>
-        /// Accept a new HTTP request from the listener, synchronously.
-        /// This method will block until a request is received.
+        /// Start receiving connections and pass them to the specified <paramref name="executor" />.
+        /// This method is blocking, while the listener is running.
         /// </summary>
-        /// <returns>The received <see cref="HttpContext" />-instance.</returns>
-        public HttpContext AcceptRequest()
-            => this.WrapTcpClient(this.AcceptClient());
+        /// <param name="executor">The action for handling incoming HTTP requests.</param>
+        /// <param name="cancellationToken">An optional <see cref="CancellationToken" /> for halting.</param>
+        public void AcceptConnections(Action<HttpContext> executor, CancellationToken cancellationToken = default!)
+        {
+            List<Task> listenerTasks = new List<Task>();
 
-        /// <summary>
-        /// Accept a new HTTP request from the listener, asynchronously.
-        /// This method will block until a request is received.
-        /// </summary>
-        /// <returns>A task, resolving to the received <see cref="HttpContext" />-instance.</returns>
-        public async Task<HttpContext> AcceptRequestAsync()
-            => this.WrapTcpClient(await this.AcceptClientAsync());
+            foreach(TcpListener listener in this.Listeners)
+            {
+                Task listenerTask = Task.Run(async () =>
+                {
+                    await this.InternalListenerProc(listener, executor, cancellationToken);
+                });
+                listenerTasks.Add(listenerTask);
+            }
+
+            Task.WaitAll(listenerTasks.ToArray());
+        }
 
         /// <summary>
         /// Register a new middleware onto the listener to handle internal actions.
@@ -101,6 +97,20 @@ namespace Paracord.Core.Listener
         /// <inheritdoc cref="HttpListener.RegisterCompression{T}" />
         public void RegisterCompression<T>() where T : ICompressionProvider, new()
             => this.RegisterCompression(new T());
+
+        protected async Task InternalListenerProc(TcpListener listener, Action<HttpContext> executor, CancellationToken cancellationToken = default!)
+        {
+            while(this.IsOpen)
+            {
+                TcpClient client = await listener.AcceptTcpClientAsync(cancellationToken);
+
+                Task _ = Task.Run(() =>
+                {
+                    HttpContext context = this.WrapTcpClient(client);
+                    executor(context);
+                });
+            }
+        }
 
         /// <summary>
         /// Parse the content from a <c>TcpClient</c>-instance into an HTTP context object.

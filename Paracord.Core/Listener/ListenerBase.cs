@@ -1,8 +1,7 @@
 using System.Net;
-using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using Paracord.Shared.Models.Listener;
 
 namespace Paracord.Core.Listener
 {
@@ -19,19 +18,14 @@ namespace Paracord.Core.Listener
         public readonly X509Certificate2? Certificate;
 
         /// <summary>
-        /// The actual TCP listener.
+        /// The list of prefixes the listener should listen on.
         /// </summary>
-        protected TcpListener Listener { get; set; }
+        public readonly ListenerPrefixCollection Prefixes;
 
         /// <summary>
-        /// The address which the listener should listen on.
+        /// The list of listeners, one for each prefix in <see cref="Prefixes" />.
         /// </summary>
-        public IPAddress ListenAddress { get; protected set; }
-
-        /// <summary>
-        /// The port number which the listener should listen on.
-        /// </summary>
-        public UInt16 ListenPort { get; protected set; }
+        protected readonly List<TcpListener> Listeners;
 
         /// <summary>
         /// Whether the listener is currently running.
@@ -44,28 +38,16 @@ namespace Paracord.Core.Listener
         protected bool Disposed { get; private set; } = false;
 
         /// <summary>
-        /// Initialize a new <see cref="ListenerBase" />, with the specified listener-address and -port.
+        /// Initialize a new <see cref="ListenerBase" />.
         /// </summary>
-        /// <param name="address">The IP-address to listen on.</param>
-        /// <param name="port">The port number to listen on.</param>
         /// <param name="certificate">An optional certificate to use for SSL connections. If null, SSL is disabled.</param>
-        public ListenerBase(string address, UInt16 port, X509Certificate2? certificate = null)
+        public ListenerBase(X509Certificate2? certificate = null)
         {
             this.InternalLock = new object();
 
-            this.ListenAddress = address switch
-            {
-                var a when a == "localhost" => IPAddress.Loopback,
-                var a when string.IsNullOrEmpty(a) => IPAddress.Any,
-                var a when a == "*" => IPAddress.Any,
-
-                _ => IPAddress.Parse(address)
-            };
-
             this.Certificate = certificate;
-
-            this.ListenPort = port;
-            this.Listener = new TcpListener(this.ListenAddress, this.ListenPort);
+            this.Prefixes = new ListenerPrefixCollection();
+            this.Listeners = new List<TcpListener>();
 
             Console.CancelKeyPress += (sender, e) =>
             {
@@ -90,6 +72,7 @@ namespace Paracord.Core.Listener
         /// <remarks>
         /// If the socket is already open, nothing is done.
         /// </remarks>
+        /// <exception cref="ArgumentException">Thrown if a secure prefix was specified, but no certificate was added.</exception>
         public virtual void Start()
         {
             if(this.IsOpen)
@@ -97,8 +80,21 @@ namespace Paracord.Core.Listener
                 return;
             }
 
+            if(this.Prefixes.Any(v => v.Secure) && this.Certificate == null)
+            {
+                throw new ArgumentException("Prefix uses secure protocol, but no certificate was specified");
+            }
+
+            foreach(ListenerPrefix prefix in this.Prefixes)
+            {
+                IPAddress address = IPAddress.Parse(prefix.Address);
+                int port = (int) prefix.Port;
+
+                this.Listeners.Add(new TcpListener(address, port));
+            }
+
             this.IsOpen = true;
-            this.Listener.Start();
+            this.Listeners.ForEach(v => v.Start());
         }
 
         /// <summary>
@@ -115,23 +111,8 @@ namespace Paracord.Core.Listener
             }
 
             this.IsOpen = false;
-            this.Listener.Stop();
+            this.Listeners.ForEach(v => v.Stop());
+            this.Listeners.Clear();
         }
-
-        /// <summary>
-        /// Accept a new client from the listener, synchronously.
-        /// This method will block until a client is available.
-        /// </summary>
-        /// <returns>The accepted <see cref="TcpClient" />-instance.</returns>
-        protected TcpClient AcceptClient()
-            => this.Listener.AcceptTcpClient();
-
-        /// <summary>
-        /// Accept a new client from the listener, asynchronously.
-        /// This method will block until a client is available.
-        /// </summary>
-        /// <returns>A task, resolving to the accepted <see cref="TcpClient" />-instance.</returns>
-        protected async Task<TcpClient> AcceptClientAsync()
-            => await this.Listener.AcceptTcpClientAsync();
     }
 }
