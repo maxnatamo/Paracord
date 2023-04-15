@@ -31,9 +31,17 @@ namespace Paracord.Shared.Models.Listener
         public uint Port { get; private set; } = 80;
 
         /// <summary>
-        /// Whether the prefix is using a secure protocol, ie. HTTPS. Defaults to <c>false</c>.
+        /// The protocol of the prefix. Defaults to <c>http</c>.
         /// </summary>
-        public bool Secure { get; private set; } = false;
+        public string Protocol { get; private set; } = "http";
+
+        /// <summary>
+        /// Whether the prefix is using a secure protocol, ie. HTTPS.
+        /// </summary>
+        public bool Secure
+        {
+            get => ListenerPrefix.SecureProtocols.Contains(this.Protocol);
+        }
 
         /// <summary>
         /// Initialize an empty <see cref="ListenerPrefix" />-instance with default values.
@@ -48,9 +56,9 @@ namespace Paracord.Shared.Models.Listener
         /// </summary>
         /// <param name="address">The IP-address of the instance.</param>
         /// <param name="port">The port number of the instance.</param>
-        /// <param name="secure">Whether the prefix should use a secure protocol (ie. HTTPS).</param>
+        /// <param name="protocol">The protocol of the instance.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown if the port number is above 65535.</exception>
-        public ListenerPrefix(string address, uint port, bool secure = false)
+        public ListenerPrefix(string address, uint port = 80, string protocol = "http")
         {
             if(port > 65535)
             {
@@ -59,7 +67,7 @@ namespace Paracord.Shared.Models.Listener
 
             this.Address = address;
             this.Port = port;
-            this.Secure = secure;
+            this.Protocol = protocol;
         }
 
         /// <summary>
@@ -92,7 +100,7 @@ namespace Paracord.Shared.Models.Listener
 
             if(match.Groups["protocol"].Success)
             {
-                result.Secure = ListenerPrefix.SecureProtocols.Contains(match.Groups["protocol"].Value);
+                result.Protocol = match.Groups["protocol"].Value;
             }
 
             if(match.Groups["port"].Success)
