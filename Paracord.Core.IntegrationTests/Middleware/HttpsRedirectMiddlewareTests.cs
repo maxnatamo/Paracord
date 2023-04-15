@@ -78,7 +78,7 @@ namespace Paracord.Core.Tests.Middleware
 
             Mock<HttpResponse> response = new Mock<HttpResponse>();
             response.Object.Context = context.Object;
-            response.Setup(v => v.Send()).Callback(() => {});
+            response.Setup(v => v.Send()).Callback(() => { });
 
             // Act
             middleware.AfterRequestReceived(listener, request.Object, response.Object);
