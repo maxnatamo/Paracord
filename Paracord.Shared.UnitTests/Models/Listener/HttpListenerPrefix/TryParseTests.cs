@@ -105,19 +105,6 @@ namespace Paracord.Shared.Tests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenProtocolWithoutSeparater()
-        {
-            // Arrange
-            string value = "https";
-
-            // Act
-            bool parsed = ListenerPrefix.TryParse(value, out var _);
-
-            // Assert
-            parsed.Should().BeFalse();
-        }
-
-        [Fact]
         public void TryParseReturnsTrueGivenAddressAndPort()
         {
             // Arrange

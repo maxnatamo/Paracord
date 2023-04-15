@@ -87,7 +87,7 @@ namespace Paracord.Shared.Models.Listener
 
             address = address.Trim();
 
-            Regex pattern = new Regex(@"^((?<protocol>[a-zA-Z]+):\/\/)?(?<address>(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))(:(?<port>(\d+)))?$");
+            Regex pattern = new Regex(@"^((?<protocol>[a-zA-Z]+):\/\/)?(?<address>([A-Za-z0-9\.-]+))(:(?<port>(\d+)))?$");
             Match match = pattern.Match(address);
 
             if(!match.Success)
