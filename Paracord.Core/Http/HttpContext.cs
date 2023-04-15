@@ -102,6 +102,20 @@ namespace Paracord.Shared.Models.Http
         }
 
         /// <summary>
+        /// Internal constructor, used for testing.
+        /// </summary>
+        protected HttpContext(HttpListener listener, ListenerPrefix listenerPrefix)
+        {
+            this.Listener = listener;
+            this.ListenerPrefix = listenerPrefix;
+
+            this.Client = default!;
+            this.PlainStream = default!;
+            this.RequestStream = default!;
+            this.ResponseStream = default!;
+        }
+
+        /// <summary>
         /// Create a new <see cref="HttpContext" />-instance with the <paramref name="client" />.
         /// </summary>
         /// <param name="listener">The <see cref="HttpListener" />-instance which handles this context.</param>

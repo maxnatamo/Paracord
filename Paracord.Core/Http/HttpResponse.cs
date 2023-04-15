@@ -71,7 +71,7 @@ namespace Paracord.Core.Http
         }
 
         /// <inheritdoc cref="HttpContext.Send" />
-        public void Send()
+        public virtual void Send()
             => this.Context.Send();
 
         /// <summary>
