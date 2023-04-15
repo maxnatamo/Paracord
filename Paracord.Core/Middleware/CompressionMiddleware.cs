@@ -39,13 +39,11 @@ namespace Paracord.Core.Middleware
                 }
 
                 byte[] compressedBody = provider.Compress(response.Body);
-                string mimeType = MimeTypes.ResolveMimeType(request.Path) ?? MimeTypes.FileExtensions[".bin"];
 
                 response.Body.Seek(0, SeekOrigin.Begin);
                 response.Body.Write(compressedBody);
                 response.Body.Flush();
 
-                response.Headers[HttpHeaders.ContentType] = mimeType;
                 response.Headers[HttpHeaders.Vary] = HttpHeaders.AcceptEncoding;
                 response.Headers[HttpHeaders.ContentEncoding] = provider.AcceptedEncoding;
                 response.Headers[HttpHeaders.ContentLength] = response.Body.Length.ToString();

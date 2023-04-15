@@ -167,15 +167,20 @@ namespace Paracord.Shared.Models.Http
             this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response), true);
 
             // Default to the length of the body.
-            if(this.Response.Headers["content-length"] == null)
+            if(this.Response.Headers[HttpHeaders.ContentLength] == null)
             {
-                this.Response.Headers["content-length"] = this.Response.ContentLength.ToString();
+                this.Response.Headers[HttpHeaders.ContentLength] = this.Response.ContentLength.ToString();
             }
 
             // Throw if they're different
-            if(this.Response.Headers["content-length"] != this.Response.ContentLength.ToString())
+            if(this.Response.Headers[HttpHeaders.ContentLength] != this.Response.ContentLength.ToString())
             {
                 throw new InvalidDataException("Content-Length parameter doesn't match the length of the Body property on the HttpResponse.");
+            }
+
+            if(this.Response.Headers[HttpHeaders.ContentType] == null)
+            {
+                this.Response.Headers[HttpHeaders.ContentType] = MimeTypes.ResolveMimeType(this.Request.Path) ?? MimeTypes.FileExtensions[".bin"];
             }
 
             byte[] responseBytes = HttpParser.SerializeResponse(this.Response);
