@@ -30,7 +30,7 @@ namespace Paracord.Core.Controller
         /// <returns>List of <see cref="ControllerBase" />.</returns>
         internal static List<Type> GetAllControllers()
             => AppDomain.CurrentDomain.GetAssemblies()
-                .Where(v => v.FullName?.StartsWith("Paracord") ?? true)
+                .Where(v => !v.FullName?.StartsWith("Paracord") ?? true)
                 .SelectMany(v => v.GetTypes())
                 .Where(v => v.IsSubclassOf(typeof(ControllerBase)))
                 .ToList();
