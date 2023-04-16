@@ -1,4 +1,5 @@
 using LightInject;
+using Paracord.Core.Controller;
 using Paracord.Core.Listener;
 using Paracord.Shared.Models.Http;
 using Paracord.Shared.Models.Listener;
@@ -14,6 +15,11 @@ namespace Paracord.Core.Application
         /// The underlying <see cref="HttpListener" />-instance.
         /// </summary>
         private readonly HttpListener Listener;
+
+        /// <summary>
+        /// Collection of routes available for the application.
+        /// </summary>
+        protected internal readonly ControllerRouteCollection Routes = new ControllerRouteCollection();
 
         /// <summary>
         /// The services available to the <see cref="WebApplication" />.
