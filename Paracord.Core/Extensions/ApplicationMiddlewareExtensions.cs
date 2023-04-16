@@ -15,7 +15,7 @@ namespace Paracord.Core.Extensions
         {
             ArgumentNullException.ThrowIfNull(builder);
 
-            builder.Services.Register<MiddlewareBase, T>();
+            builder.Services.Register<MiddlewareBase, T>(typeof(T).Name);
             return builder;
         }
     }
