@@ -14,9 +14,7 @@ namespace Paracord.Core.Listener
         /// </summary>
         /// <param name="sslCertificate">The SSL certificate to use for HTTPS connections. HTTPS is disabled, if null.</param>
         public HttpListener(X509Certificate2? sslCertificate = null) : base(sslCertificate)
-        {
-            
-        }
+        { }
 
         /// <summary>
         /// Start receiving connections and pass them to the specified <paramref name="executor" />.
