@@ -164,8 +164,6 @@ namespace Paracord.Shared.Models.Http
                 throw new ObjectDisposedException("HttpContext", "The socket has been closed.");
             }
 
-            this.Listener.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, this.Request, this.Response), true);
-
             // Default to the length of the body.
             if(this.Response.Headers[HttpHeaders.ContentLength] == null)
             {
