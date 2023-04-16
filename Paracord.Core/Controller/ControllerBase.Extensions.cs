@@ -42,7 +42,7 @@ namespace Paracord.Core.Controller
         /// <returns>List of <see cref="ControllerRoute" />.</returns>
         internal static IEnumerable<ControllerRoute> GetAllRoutes<T>(T controller) where T : ControllerBase
         {
-            List<MethodInfo> methods = typeof(T)
+            List<MethodInfo> methods = controller.GetType()
                 .GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Where(v => !v.IsSpecialName)
                 .ToList();
@@ -64,7 +64,7 @@ namespace Paracord.Core.Controller
         {
             ControllerRoute route = new ControllerRoute();
             route.ParentController = controller;
-            route.ControllerPath = typeof(T).ParseRoute();
+            route.ControllerPath = controller.GetType().ParseRoute();
             route.MethodPath = methodInfo.ParseRoute();
             route.HttpMethod = methodInfo.ParseHttpMethod();
             route.Executor = ctx => methodInfo.Invoke(controller, new object[] { ctx });
