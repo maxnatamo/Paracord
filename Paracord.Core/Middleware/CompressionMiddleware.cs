@@ -1,7 +1,6 @@
 using Paracord.Core.Compression;
 using Paracord.Core.Http;
 using Paracord.Core.Listener;
-using Paracord.Shared.Models;
 using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Middleware

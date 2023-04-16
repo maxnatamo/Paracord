@@ -70,7 +70,17 @@ namespace Paracord.Core.Application
                 this.Listener.Start();
                 this.ExecuteMiddleware(_ => _.OnServerStarted(this.Listener));
 
-                this.Listener.AcceptConnections(ctx => ctx.Send(), cancellationToken);
+                this.Listener.AcceptConnections(ctx =>
+                {
+                    this.ExecuteMiddleware(_ => _.AfterRequestReceived(this.Listener, ctx.Request, ctx.Response));
+
+                    // Call context handler
+
+                    this.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, ctx.Request, ctx.Response));
+
+                    ctx.Send();
+                },
+                cancellationToken);
             });
         }
 
