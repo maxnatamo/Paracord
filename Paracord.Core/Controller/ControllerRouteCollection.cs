@@ -25,6 +25,31 @@ namespace Paracord.Core.Controller
             {
                 throw new ArgumentException($"Route combination is not valid Regex: {item.RoutePath}", e);
             }
+
+            base.Add(item);
+        }
+
+        /// <summary>
+        /// Iterate through the collection and find the first that matches the specified request path.
+        /// </summary>
+        /// <param name="requestPath">The request path to query for.</param>
+        /// <returns>The matching <see cref="ControllerRoute" />, if found. Otherwise, null.</returns>
+        public ControllerRoute? ParseRequestPath(string requestPath)
+        {
+            foreach(ControllerRoute route in this)
+            {
+                Regex pattern = new Regex(route.RoutePath);
+                Match match = pattern.Match(requestPath);
+
+                if(!match.Success)
+                {
+                    continue;
+                }
+
+                return route;
+            }
+
+            return null;
         }
     }
 }

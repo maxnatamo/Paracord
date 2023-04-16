@@ -1,3 +1,4 @@
+using LightInject;
 using Paracord.Core.Application;
 using Paracord.Core.Controller;
 
@@ -17,17 +18,17 @@ namespace Paracord.Core.Extensions
                 return application;
             }
 
-            foreach(Type controllerType in ControllerBase.GetAllControllers())
+            List<Type> controllerTypes = ControllerBase.GetAllControllers();
+
+            foreach(Type controllerType in controllerTypes)
             {
-                application.Services.Register(
-                    typeof(ControllerBase),
-                    controllerType,
-                    controllerType.FullName ?? controllerType.Name
-                );
+                application.Services.Register(controllerType);
             }
 
-            foreach(ControllerBase controller in application.Services.GetAllInstances(typeof(ControllerBase)))
+            foreach(Type controllerType in controllerTypes)
             {
+                ControllerBase controller = (ControllerBase) application.Services.GetInstance(controllerType);
+
                 foreach(ControllerRoute route in ControllerBase.GetAllRoutes(controller))
                 {
                     application.Routes.Add(route);

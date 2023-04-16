@@ -33,7 +33,7 @@ namespace Paracord.Core.Controller
         /// </summary>
         public string RoutePath
         {
-            get => Path.Join(this.ControllerPath, this.MethodPath);
+            get => Path.Join(this.ControllerPath, this.MethodPath).Trim().TrimEnd('/');
         }
 
         /// <summary>

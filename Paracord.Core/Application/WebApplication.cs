@@ -81,6 +81,7 @@ namespace Paracord.Core.Application
                     this.ExecuteMiddleware(_ => _.AfterRequestReceived(this.Listener, ctx.Request, ctx.Response));
 
                     // Call context handler
+                    this.ContextHandler(ctx);
 
                     this.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, ctx.Request, ctx.Response));
 
@@ -97,6 +98,18 @@ namespace Paracord.Core.Application
         {
             this.ExecuteMiddleware(_ => _.OnServerClosed(this.Listener));
             this.Listener.Stop();
+        }
+
+        internal void ContextHandler(HttpContext ctx)
+        {
+            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request.Path);
+            if(route == null)
+            {
+                ctx.Response.StatusCode = HttpStatusCode.NotFound;
+                return;
+            }
+
+            route.Executor(ctx);
         }
 
         /// <summary>
