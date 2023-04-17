@@ -104,7 +104,7 @@ namespace Paracord.Core.Parsing.Routing
 
             char firstChar = this.Source[this.CurrentIndex];
 
-            if(firstChar < ' ' && firstChar != '\t' && firstChar != '\n')
+            if(firstChar < ' ')
             {
                 throw new InvalidDataException($"Invalid token {(int) firstChar}");
             }
@@ -128,7 +128,7 @@ namespace Paracord.Core.Parsing.Routing
                 return this.ParseNameToken();
             }
 
-            return new RouteToken(RouteTokenType.UNKNOWN, this.CurrentIndex, this.CurrentIndex + 1);
+            return new RouteToken(RouteTokenType.UNKNOWN, firstChar.ToString(), this.CurrentIndex, this.CurrentIndex + 1);
         }
 
         /// <summary>
