@@ -1,4 +1,5 @@
 using Paracord.Core.Http;
+using Paracord.Core.Parsing.Http;
 
 namespace Paracord.Core.UnitTests.Http.HttpParserTests
 {
