@@ -117,12 +117,12 @@ namespace Paracord.Core.Parsing.Routing
                     '{' => new RouteToken(RouteTokenType.BRACE_LEFT, this.CurrentIndex, this.CurrentIndex + 1),
                     '}' => new RouteToken(RouteTokenType.BRACE_RIGHT, this.CurrentIndex, this.CurrentIndex + 1),
 
-                    _   => new RouteToken(RouteTokenType.UNKNOWN, this.CurrentIndex, this.CurrentIndex + 1),
+                    _ => new RouteToken(RouteTokenType.UNKNOWN, this.CurrentIndex, this.CurrentIndex + 1),
                 };
             }
 
             if(('a' <= firstChar && firstChar <= 'z') ||
-              ('A' <= firstChar && firstChar <= 'Z') || 
+              ('A' <= firstChar && firstChar <= 'Z') ||
               ('0' <= firstChar && firstChar <= '9'))
             {
                 return this.ParseNameToken();

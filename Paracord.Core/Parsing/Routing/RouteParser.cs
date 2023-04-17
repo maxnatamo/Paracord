@@ -14,7 +14,7 @@ namespace Paracord.Core.Parsing.Routing
         /// The current position into the token-list
         /// </summary>
         internal static int CurrentTokenIndex { get; set; } = 0;
- 
+
         /// <summary>
         /// The currently-processing token
         /// </summary>
