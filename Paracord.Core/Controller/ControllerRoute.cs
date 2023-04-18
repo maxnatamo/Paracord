@@ -99,9 +99,9 @@ namespace Paracord.Core.Controller
         public ControllerRouteMatch Match(string requestPath)
         {
             string[] requestPathSegments = requestPath.Trim('/').Split('/');
-            List<ControllerRouteSegment> routePath = this.ControllerPath;
+            List<ControllerRouteSegment> routePath = this.RoutePath;
 
-            ControllerRouteMatch match = new ControllerRouteMatch();
+            ControllerRouteMatch match = new ControllerRouteMatch { Success = true };
 
             if(requestPathSegments.Count() > routePath.Count())
             {
@@ -110,25 +110,28 @@ namespace Paracord.Core.Controller
 
             for(int i = 0; i < requestPathSegments.Count(); i++)
             {
-                if(routePath[i].Type == ControllerRouteSegmentType.Constant && routePath[i].Name != requestPathSegments[i])
+                if(routePath[i].Type == ControllerRouteSegmentType.Constant && routePath[i].Name.ToLower() != requestPathSegments[i].ToLower())
                 {
                     return new ControllerRouteMatch { Success = false };
                 }
 
-                if(routePath[i].Type == ControllerRouteSegmentType.Variable && string.IsNullOrEmpty(requestPathSegments[i]))
+                if(routePath[i].Type == ControllerRouteSegmentType.Variable)
                 {
-                    if(routePath[i].Default == null)
+                    if(string.IsNullOrEmpty(requestPathSegments[i]))
                     {
-                        return new ControllerRouteMatch { Success = false };
+                        if(routePath[i].Default == null)
+                        {
+                            return new ControllerRouteMatch { Success = false };
+                        }
+                        else
+                        {
+                            requestPathSegments[i] = routePath[i].Default!;
+                        }
                     }
 
-                    requestPathSegments[i] = routePath[i].Default!;
+                    match.Parameters.Add(routePath[i].Name, requestPathSegments[i]);
                 }
-
-                match.Parameters.Add(routePath[i].Name, requestPathSegments[i]);
             }
-
-            match.Success = true;
 
             return match;
         }

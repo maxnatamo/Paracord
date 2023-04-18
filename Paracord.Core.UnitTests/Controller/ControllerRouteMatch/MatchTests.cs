@@ -19,6 +19,20 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
+        public void MatchReturnsSuccessfulMatchGivenUppercaseStringWithConstantRoute()
+        {
+            // Arrange
+            string requestPath = "INDEX";
+            ControllerRoute route = ControllerRoute.Parse("index", "");
+
+            // Act
+            ControllerRouteMatch match = route.Match(requestPath);
+
+            // Assert
+            match.Success.Should().BeTrue();
+        }
+
+        [Fact]
         public void MatchReturnsNonSuccessfulMatchGivenEmptyStringWithVariableRoute()
         {
             // Arrange
