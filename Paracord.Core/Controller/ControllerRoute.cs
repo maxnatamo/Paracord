@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Paracord.Core.Http;
 using Paracord.Core.Parsing.Routing;
 using Paracord.Shared.Exceptions;
 using Paracord.Shared.Models.Http;
@@ -94,14 +95,19 @@ namespace Paracord.Core.Controller
         /// If the match was a success, <see cref="ControllerRouteMatch.Success" /> will be set to <c>true</c>.
         /// </para>
         /// </summary>
-        /// <param name="requestPath"></param>
+        /// <param name="request">The <see cref="HttpRequest" /> to match against.</param>
         /// <returns>The matched <see cref="ControllerRouteMatch" />-instance.</returns>
-        public ControllerRouteMatch Match(string requestPath)
+        public ControllerRouteMatch Match(HttpRequest request)
         {
-            string[] requestPathSegments = requestPath.Trim('/').Split('/');
+            string[] requestPathSegments = request.Path.Trim('/').Split('/');
             List<ControllerRouteSegment> routePath = this.RoutePath;
 
             ControllerRouteMatch match = new ControllerRouteMatch { Success = true };
+
+            if(!this.HttpMethod.HasFlag(request.Method))
+            {
+                return new ControllerRouteMatch { Success = false };
+            }
 
             if(requestPathSegments.Count() > routePath.Count())
             {

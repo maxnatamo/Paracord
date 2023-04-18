@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Paracord.Core.Http;
 
 namespace Paracord.Core.Controller
 {
@@ -9,15 +10,15 @@ namespace Paracord.Core.Controller
     public class ControllerRouteCollection : Collection<ControllerRoute>
     {
         /// <summary>
-        /// Iterate through the collection and find the first that matches the specified request path.
+        /// Iterate through the collection and find the first that matches the specified <see cref="HttpRequest" />-instance.
         /// </summary>
-        /// <param name="requestPath">The request path to query for.</param>
+        /// <param name="request">The <see cref="HttpRequest" /> to query for.</param>
         /// <returns>The matching <see cref="ControllerRoute" />, if found. Otherwise, null.</returns>
-        public ControllerRoute? ParseRequestPath(string requestPath)
+        public ControllerRoute? ParseRequestPath(HttpRequest request)
         {
             foreach(ControllerRoute route in this)
             {
-                ControllerRouteMatch match = route.Match(requestPath);
+                ControllerRouteMatch match = route.Match(request);
 
                 if(!match.Success)
                 {

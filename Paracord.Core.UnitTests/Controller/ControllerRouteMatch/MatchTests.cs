@@ -1,18 +1,31 @@
 using Paracord.Core.Controller;
+using Paracord.Core.Http;
+
+using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
 
 namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
 {
     public class MatchTests
     {
+        private HttpRequest MakeRequest(string path, HttpMethod method = HttpMethod.GET)
+            => new HttpRequest
+            {
+                Target = new HttpTarget
+                {
+                    PathSegments = new string[] { path }
+                },
+                Method = method
+            };
+
         [Fact]
         public void MatchReturnsNonSuccessfulMatchGivenEmptyStringWithConstantRoute()
         {
             // Arrange
-            string requestPath = string.Empty;
+            HttpRequest request = this.MakeRequest(string.Empty);
             ControllerRoute route = ControllerRoute.Parse("/", "index");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeFalse();
@@ -22,11 +35,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         public void MatchReturnsSuccessfulMatchGivenUppercaseStringWithConstantRoute()
         {
             // Arrange
-            string requestPath = "INDEX";
+            HttpRequest request = this.MakeRequest("index");
             ControllerRoute route = ControllerRoute.Parse("index", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -36,11 +49,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         public void MatchReturnsNonSuccessfulMatchGivenEmptyStringWithVariableRoute()
         {
             // Arrange
-            string requestPath = string.Empty;
+            HttpRequest request = this.MakeRequest(string.Empty);
             ControllerRoute route = ControllerRoute.Parse("{controller}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeFalse();
@@ -50,11 +63,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         public void MatchReturnsSuccessfulMatchGivenStringWithVariableRoute()
         {
             // Arrange
-            string requestPath = "index";
+            HttpRequest request = this.MakeRequest("index");
             ControllerRoute route = ControllerRoute.Parse("{controller}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -66,11 +79,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         public void MatchReturnsSuccessfulMatchGivenEmptyStringWithVariableRouteWithDefault()
         {
             // Arrange
-            string requestPath = string.Empty;
+            HttpRequest request = this.MakeRequest(string.Empty);
             ControllerRoute route = ControllerRoute.Parse("{controller=index}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -82,11 +95,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         public void MatchReturnsSuccessfulMatchGivenStringWithVariableRouteWithDefault()
         {
             // Arrange
-            string requestPath = "dashboard";
+            HttpRequest request = this.MakeRequest("dashboard");
             ControllerRoute route = ControllerRoute.Parse("{controller=index}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(requestPath);
+            ControllerRouteMatch match = route.Match(request);
 
             // Assert
             match.Success.Should().BeTrue();
