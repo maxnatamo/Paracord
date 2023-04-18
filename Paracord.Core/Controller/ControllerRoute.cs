@@ -107,7 +107,7 @@ namespace Paracord.Core.Controller
             {
                 return new ControllerRouteMatch { Success = false };
             }
-            
+
             for(int i = 0; i < requestPathSegments.Count(); i++)
             {
                 if(routePath[i].Type == ControllerRouteSegmentType.Constant && routePath[i].Name != requestPathSegments[i])
