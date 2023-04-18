@@ -13,6 +13,11 @@ namespace Paracord.Core.Parsing.Routing
         EQUAL,
 
         /// <summary>
+        /// Forward slash, /
+        /// </summary>
+        SLASH,
+
+        /// <summary>
         /// Open brace, {
         /// </summary>
         BRACE_LEFT,

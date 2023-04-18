@@ -48,22 +48,6 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsUnknownTokenGivenSlash()
-        {
-            // Arrange
-            string route = "/";
-
-            // Act
-            RouteToken token = new RouteTokenizer(route).GetNextToken();
-
-            // Assert
-            token.Start.Should().Be(0);
-            token.End.Should().Be(1);
-            token.Type.Should().Be(RouteTokenType.UNKNOWN);
-            token.Value.Should().Be("/");
-        }
-
-        [Fact]
         public void GetNextTokenReturnsEqualTokenGivenEqual()
         {
             // Arrange
@@ -76,6 +60,21 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
             token.Start.Should().Be(0);
             token.End.Should().Be(1);
             token.Type.Should().Be(RouteTokenType.EQUAL);
+        }
+
+        [Fact]
+        public void GetNextTokenReturnsSlashTokenGivenForwardSlash()
+        {
+            // Arrange
+            string route = "/";
+
+            // Act
+            RouteToken token = new RouteTokenizer(route).GetNextToken();
+
+            // Assert
+            token.Start.Should().Be(0);
+            token.End.Should().Be(1);
+            token.Type.Should().Be(RouteTokenType.SLASH);
         }
 
         [Fact]

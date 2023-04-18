@@ -60,6 +60,7 @@ namespace Paracord.Core.Parsing.Routing
         {
             RouteTokenType.EOF => "EOF",
             RouteTokenType.EQUAL => "=",
+            RouteTokenType.SLASH => "/",
             RouteTokenType.BRACE_LEFT => "{",
             RouteTokenType.BRACE_RIGHT => "}",
             RouteTokenType.NAME => "Name",

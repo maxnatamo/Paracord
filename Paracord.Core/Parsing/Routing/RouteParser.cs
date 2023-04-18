@@ -21,76 +21,84 @@ namespace Paracord.Core.Parsing.Routing
         internal static RouteToken CurrentToken = new RouteToken();
 
         /// <summary>
-        /// Parse the specified route into a <see cref="ControllerRouteSegment" />-instance.
+        /// Parse the specified route into a list of <see cref="ControllerRouteSegment" />-instances.
         /// </summary>
-        /// <param name="route">The route to parse</param>
-        /// <returns>The parsed <see cref="ControllerRouteSegment" />-object.</returns>
+        /// <param name="route">The route to parse.</param>
+        /// <returns>List of <see cref="ControllerRouteSegment" />-instances.</returns>
         /// <exception cref="MissingBraceException">Thrown when the number of braces isn't even.</exception>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        public static ControllerRouteSegment Parse(string route)
+        public static List<ControllerRouteSegment> Parse(string route)
         {
             RouteParser.Tokenizer.SetSource(route);
             RouteParser.CurrentTokenIndex = 0;
             RouteParser.CurrentToken = RouteParser.Tokenizer.GetNextToken();
 
-            ControllerRouteSegment segment = new ControllerRouteSegment();
+            List<ControllerRouteSegment> segments = new List<ControllerRouteSegment>();
 
-            RouteParser.ParseDefinition(segment);
+            segments.Add(RouteParser.ParseDefinition());
 
-            return segment;
+            while(RouteParser.Peek(RouteTokenType.SLASH))
+            {
+                RouteParser.Skip();
+                segments.Add(RouteParser.ParseDefinition());
+            }
+
+            return segments;
         }
 
         /// <summary>
         /// Parse the current source into a <see cref="ControllerRouteSegment" />-instance.
         /// </summary>
-        /// <param name="segment">The <see cref="ControllerRouteSegment" />-instance to fill.</param>
+        /// <returns>A non-null <see cref="ControllerRouteSegment" />, if a definition was found. Otherwise, null.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        public static void ParseDefinition(ControllerRouteSegment segment)
+        internal static ControllerRouteSegment ParseDefinition()
         {
             if(RouteParser.Peek(RouteTokenType.NAME))
             {
-                RouteParser.ParseConstantRoute(segment);
-                return;
+                return RouteParser.ParseConstantRoute();
             }
 
             if(RouteParser.Peek(RouteTokenType.BRACE_LEFT))
             {
-                RouteParser.ParseVariableRoute(segment);
-                return;
+                return RouteParser.ParseVariableRoute();
             }
 
-            throw RouteParser.UnexpectedToken();
+            throw UnexpectedToken();
         }
 
         /// <summary>
         /// Parse the current source into a constant <see cref="ControllerRouteSegment" />-instance.
         /// </summary>
-        /// <param name="segment">The <see cref="ControllerRouteSegment" />-instance to fill.</param>
+        /// <returns>The parsed <see cref="ControllerRouteSegment" />-object.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        internal static void ParseConstantRoute(ControllerRouteSegment segment)
+        internal static ControllerRouteSegment ParseConstantRoute()
         {
             RouteParser.Expect(RouteTokenType.NAME);
 
+            ControllerRouteSegment segment = new ControllerRouteSegment();
             segment.Type = ControllerRouteSegmentType.Constant;
             segment.Name = RouteParser.CurrentToken.Value;
             segment.Default = null;
 
             RouteParser.Skip();
-            RouteParser.Expect(RouteTokenType.EOF);
+            RouteParser.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
+
+            return segment;
         }
 
         /// <summary>
         /// Parse the current source into a variable <see cref="ControllerRouteSegment" />-instance.
         /// </summary>
-        /// <param name="segment">The <see cref="ControllerRouteSegment" />-instance to fill.</param>
+        /// <returns>The parsed <see cref="ControllerRouteSegment" />-object.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        internal static void ParseVariableRoute(ControllerRouteSegment segment)
+        internal static ControllerRouteSegment ParseVariableRoute()
         {
             RouteParser.Expect(RouteTokenType.BRACE_LEFT);
             RouteParser.Skip();
 
             RouteParser.Expect(RouteTokenType.NAME);
 
+            ControllerRouteSegment segment = new ControllerRouteSegment();
             segment.Type = ControllerRouteSegmentType.Variable;
             segment.Name = RouteParser.CurrentToken.Value;
 
@@ -111,7 +119,10 @@ namespace Paracord.Core.Parsing.Routing
 
             RouteParser.Expect(RouteTokenType.BRACE_RIGHT);
             RouteParser.Skip();
-            RouteParser.Expect(RouteTokenType.EOF);
+
+            RouteParser.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
+
+            return segment;
         }
 
         /// <summary>
