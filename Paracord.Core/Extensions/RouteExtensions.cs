@@ -55,9 +55,9 @@ namespace Paracord.Core.Extensions
         /// <param name="info">The <see cref="MethodInfo" /> to parse the method from.</param>
         /// <returns>
         /// The parsed <see cref="HttpMethod" />, if any <see cref="HttpMethodAttribute" /> where applied.
-        /// Otherwise, <see cref="HttpMethod.GET" />.
+        /// Otherwise, <see cref="HttpMethod.All" />.
         /// </returns>
         public static HttpMethod ParseHttpMethod(this MethodInfo info)
-            => info.GetAttribute<HttpMethodAttribute>()?.Methods ?? HttpMethod.GET;
+            => info.GetAttribute<HttpMethodAttribute>()?.Methods ?? HttpMethod.All;
     }
 }

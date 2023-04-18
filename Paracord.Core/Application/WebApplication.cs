@@ -102,7 +102,7 @@ namespace Paracord.Core.Application
 
         internal void ContextHandler(HttpContext ctx)
         {
-            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request.Path);
+            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request);
             if(route == null)
             {
                 ctx.Response.StatusCode = HttpStatusCode.NotFound;

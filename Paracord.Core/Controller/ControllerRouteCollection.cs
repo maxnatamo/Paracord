@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
+using Paracord.Core.Http;
 
 namespace Paracord.Core.Controller
 {
@@ -9,43 +10,22 @@ namespace Paracord.Core.Controller
     public class ControllerRouteCollection : Collection<ControllerRoute>
     {
         /// <summary>
-        /// Adds a <see cref="ControllerRoute" /> to the end of the <see cref="ControllerRouteCollection" />.
+        /// Iterate through the collection and find the first that matches the specified <see cref="HttpRequest" />-instance.
         /// </summary>
-        /// <param name="item">The <see cref="ControllerRoute" />-instance to add.</param>
-        /// <exception cref="ArgumentException">
-        /// Thrown if the <see cref="ControllerRoute.RoutePath" /> of the <paramref name="item" /> is not valid Regex.
-        /// </exception>
-        public new void Add(ControllerRoute item)
-        {
-            try
-            {
-                new Regex(item.RoutePath);
-            }
-            catch(ArgumentException e)
-            {
-                throw new ArgumentException($"Route combination is not valid Regex: {item.RoutePath}", e);
-            }
-
-            base.Add(item);
-        }
-
-        /// <summary>
-        /// Iterate through the collection and find the first that matches the specified request path.
-        /// </summary>
-        /// <param name="requestPath">The request path to query for.</param>
+        /// <param name="request">The <see cref="HttpRequest" /> to query for.</param>
         /// <returns>The matching <see cref="ControllerRoute" />, if found. Otherwise, null.</returns>
-        public ControllerRoute? ParseRequestPath(string requestPath)
+        public ControllerRoute? ParseRequestPath(HttpRequest request)
         {
             foreach(ControllerRoute route in this)
             {
-                Regex pattern = new Regex(route.RoutePath);
-                Match match = pattern.Match(requestPath);
+                ControllerRouteMatch match = route.Match(request);
 
                 if(!match.Success)
                 {
                     continue;
                 }
 
+                request.Parameters = match.Parameters;
                 return route;
             }
 

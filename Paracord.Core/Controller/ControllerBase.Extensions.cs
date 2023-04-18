@@ -1,6 +1,7 @@
 using System.Reflection;
 
 using Paracord.Core.Extensions;
+using Paracord.Core.Parsing.Routing;
 
 namespace Paracord.Core.Controller
 {
@@ -62,12 +63,18 @@ namespace Paracord.Core.Controller
         /// <returns>The parsed <see cref="ControllerRoute" />-instance.</returns>
         internal static ControllerRoute ParseControllerRoute<T>(T controller, MethodInfo methodInfo) where T : ControllerBase
         {
+            RouteParser parser = new RouteParser();
+
             ControllerRoute route = new ControllerRoute();
             route.ParentController = controller;
-            route.ControllerPath = controller.GetType().ParseRoute();
-            route.MethodPath = methodInfo.ParseRoute();
             route.HttpMethod = methodInfo.ParseHttpMethod();
             route.Executor = ctx => methodInfo.Invoke(controller, new object[] { ctx });
+
+            string controllerRoute = controller.GetType().ParseRoute();
+            route.ControllerPath = parser.Parse(controllerRoute);
+
+            string methodRoute = methodInfo.ParseRoute();
+            route.MethodPath = parser.Parse(methodRoute);
 
             return route;
         }

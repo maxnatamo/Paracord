@@ -2,6 +2,7 @@ using System.Collections.Specialized;
 using System.Text;
 
 using Newtonsoft.Json;
+using Paracord.Shared.Models;
 using Paracord.Shared.Models.Http;
 
 namespace Paracord.Core.Http
@@ -85,10 +86,14 @@ namespace Paracord.Core.Http
 
         /// <summary>
         /// Writes the given text to the response body.
+        /// As a side-effect, the Content-Type header will be set to <c>application/json; charset=utf-8</c>
         /// </summary>
         /// <param name="text">The text to write to the body.</param>
         public void Write(string text)
-            => this.Write(text, Encoding.ASCII);
+        {
+            this.Write(text, Encoding.ASCII);
+            this.Headers[HttpHeaders.ContentType] = MimeTypes.FileExtensions[".txt"];
+        }
 
         /// <summary>
         /// Writes the given text to the response body, given the specified encoding.

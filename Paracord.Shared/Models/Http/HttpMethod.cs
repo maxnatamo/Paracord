@@ -60,5 +60,10 @@ namespace Paracord.Shared.Models.Http
         /// </summary>
         /// <seealso href="https://httpwg.org/specs/rfc9110.html#PATCH">Relavant RFC9110 section.</seealso>
         PATCH,
+
+        /// <summary>
+        /// All other <see cref="HttpMethod" />-enums.
+        /// </summary>
+        All = GET | POST | PUT | DELETE | CONNECT | OPTIONS | TRACE | PATCH,
     }
 }
