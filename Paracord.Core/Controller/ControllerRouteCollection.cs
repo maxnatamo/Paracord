@@ -25,6 +25,7 @@ namespace Paracord.Core.Controller
                     continue;
                 }
 
+                request.Parameters = match.Parameters;
                 return route;
             }
 
