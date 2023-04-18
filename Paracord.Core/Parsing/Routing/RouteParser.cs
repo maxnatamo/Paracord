@@ -3,22 +3,22 @@ using Paracord.Shared.Exceptions;
 
 namespace Paracord.Core.Parsing.Routing
 {
-    public static partial class RouteParser
+    public partial class RouteParser
     {
         /// <summary>
         /// The <see cref="RouteTokenizer" />-instance to transform inputs into tokens.
         /// </summary>
-        internal static RouteTokenizer Tokenizer = new RouteTokenizer();
+        internal RouteTokenizer Tokenizer = new RouteTokenizer();
 
         /// <summary>
         /// The current position into the token-list
         /// </summary>
-        internal static int CurrentTokenIndex { get; set; } = 0;
+        internal int CurrentTokenIndex { get; set; } = 0;
 
         /// <summary>
         /// The currently-processing token
         /// </summary>
-        internal static RouteToken CurrentToken = new RouteToken();
+        internal RouteToken CurrentToken = new RouteToken();
 
         /// <summary>
         /// Parse the specified route into a list of <see cref="ControllerRouteSegment" />-instances.
@@ -27,20 +27,27 @@ namespace Paracord.Core.Parsing.Routing
         /// <returns>List of <see cref="ControllerRouteSegment" />-instances.</returns>
         /// <exception cref="MissingBraceException">Thrown when the number of braces isn't even.</exception>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        public static List<ControllerRouteSegment> Parse(string route)
+        public List<ControllerRouteSegment> Parse(string route)
         {
-            RouteParser.Tokenizer.SetSource(route);
-            RouteParser.CurrentTokenIndex = 0;
-            RouteParser.CurrentToken = RouteParser.Tokenizer.GetNextToken();
+            route = route.Trim('/');
+
+            if(string.IsNullOrEmpty(route))
+            {
+                return new List<ControllerRouteSegment>();
+            }
+
+            this.Tokenizer.SetSource(route);
+            this.CurrentTokenIndex = 0;
+            this.CurrentToken = this.Tokenizer.GetNextToken();
 
             List<ControllerRouteSegment> segments = new List<ControllerRouteSegment>();
 
-            segments.Add(RouteParser.ParseDefinition());
+            segments.Add(this.ParseDefinition());
 
-            while(RouteParser.Peek(RouteTokenType.SLASH))
+            while(this.Peek(RouteTokenType.SLASH))
             {
-                RouteParser.Skip();
-                segments.Add(RouteParser.ParseDefinition());
+                this.Skip();
+                segments.Add(this.ParseDefinition());
             }
 
             return segments;
@@ -51,16 +58,16 @@ namespace Paracord.Core.Parsing.Routing
         /// </summary>
         /// <returns>A non-null <see cref="ControllerRouteSegment" />, if a definition was found. Otherwise, null.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        internal static ControllerRouteSegment ParseDefinition()
+        internal ControllerRouteSegment ParseDefinition()
         {
-            if(RouteParser.Peek(RouteTokenType.NAME))
+            if(this.Peek(RouteTokenType.NAME))
             {
-                return RouteParser.ParseConstantRoute();
+                return this.ParseConstantRoute();
             }
 
-            if(RouteParser.Peek(RouteTokenType.BRACE_LEFT))
+            if(this.Peek(RouteTokenType.BRACE_LEFT))
             {
-                return RouteParser.ParseVariableRoute();
+                return this.ParseVariableRoute();
             }
 
             throw UnexpectedToken();
@@ -71,17 +78,17 @@ namespace Paracord.Core.Parsing.Routing
         /// </summary>
         /// <returns>The parsed <see cref="ControllerRouteSegment" />-object.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        internal static ControllerRouteSegment ParseConstantRoute()
+        internal ControllerRouteSegment ParseConstantRoute()
         {
-            RouteParser.Expect(RouteTokenType.NAME);
+            this.Expect(RouteTokenType.NAME);
 
             ControllerRouteSegment segment = new ControllerRouteSegment();
             segment.Type = ControllerRouteSegmentType.Constant;
-            segment.Name = RouteParser.CurrentToken.Value;
+            segment.Name = this.CurrentToken.Value;
             segment.Default = null;
 
-            RouteParser.Skip();
-            RouteParser.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
+            this.Skip();
+            this.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
 
             return segment;
         }
@@ -91,36 +98,36 @@ namespace Paracord.Core.Parsing.Routing
         /// </summary>
         /// <returns>The parsed <see cref="ControllerRouteSegment" />-object.</returns>
         /// <exception cref="UnexpectedTokenException">Thrown when an unexpected token was found.</exception>
-        internal static ControllerRouteSegment ParseVariableRoute()
+        internal ControllerRouteSegment ParseVariableRoute()
         {
-            RouteParser.Expect(RouteTokenType.BRACE_LEFT);
-            RouteParser.Skip();
+            this.Expect(RouteTokenType.BRACE_LEFT);
+            this.Skip();
 
-            RouteParser.Expect(RouteTokenType.NAME);
+            this.Expect(RouteTokenType.NAME);
 
             ControllerRouteSegment segment = new ControllerRouteSegment();
             segment.Type = ControllerRouteSegmentType.Variable;
-            segment.Name = RouteParser.CurrentToken.Value;
+            segment.Name = this.CurrentToken.Value;
 
             if(segment.Name.Any(v => v >= '0' && v <= '9'))
             {
                 throw UnexpectedToken();
             }
 
-            RouteParser.Skip();
+            this.Skip();
 
-            if(RouteParser.Peek(RouteTokenType.EQUAL))
+            if(this.Peek(RouteTokenType.EQUAL))
             {
-                RouteParser.Skip();
-                segment.Default = RouteParser.CurrentToken.Value;
+                this.Skip();
+                segment.Default = this.CurrentToken.Value;
 
-                RouteParser.Skip();
+                this.Skip();
             }
 
-            RouteParser.Expect(RouteTokenType.BRACE_RIGHT);
-            RouteParser.Skip();
+            this.Expect(RouteTokenType.BRACE_RIGHT);
+            this.Skip();
 
-            RouteParser.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
+            this.Expect(RouteTokenType.EOF, RouteTokenType.SLASH);
 
             return segment;
         }
@@ -130,9 +137,9 @@ namespace Paracord.Core.Parsing.Routing
         /// </summary>
         /// <param name="type">The token-type to peek for.</param>
         /// <returns>True, if the type matches the current token. Otherwise, false.</returns>
-        internal static bool Peek(RouteTokenType type)
+        internal bool Peek(RouteTokenType type)
         {
-            return RouteParser.CurrentToken.Type == type;
+            return this.CurrentToken.Type == type;
         }
 
         /// <summary>
@@ -140,9 +147,9 @@ namespace Paracord.Core.Parsing.Routing
         /// </summary>
         /// <param name="types">The token-types to assert for.</param>
         /// <exception cref="UnexpectedTokenException">Thrown if the assertion fails.</exception>
-        internal static void Expect(params RouteTokenType[] types)
+        internal void Expect(params RouteTokenType[] types)
         {
-            if(!types.Any(v => RouteParser.Peek(v)))
+            if(!types.Any(v => this.Peek(v)))
             {
                 throw UnexpectedToken();
             }
@@ -154,17 +161,17 @@ namespace Paracord.Core.Parsing.Routing
         /// <remarks>
         /// If the position points to the end of the file, nothing is done.
         /// </remarks>
-        internal static void Skip()
+        internal void Skip()
         {
-            RouteParser.CurrentTokenIndex++;
-            RouteParser.CurrentToken = RouteParser.Tokenizer.GetNextToken();
+            this.CurrentTokenIndex++;
+            this.CurrentToken = this.Tokenizer.GetNextToken();
         }
 
         /// <summary>
         /// Return <see cref="UnexpectedTokenException" />-object with location attached as description.
         /// </summary>
         /// <returns><see cref="UnexpectedTokenException" />-object.</returns>
-        internal static Exception UnexpectedToken()
-            => new UnexpectedTokenException(RouteParser.CurrentToken.Start);
+        internal Exception UnexpectedToken()
+            => new UnexpectedTokenException(this.CurrentToken.Start);
     }
 }

@@ -7,16 +7,16 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
     public class ParseTests
     {
         [Fact]
-        public void ParseThrowsUnexpectedTokenExceptionGivenEmptyString()
+        public void ParseReturnsNoSegmentsGivenEmptyString()
         {
             // Arrange
             string route = string.Empty;
 
             // Act
-            Action act = () => RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
-            act.Should().Throw<UnexpectedTokenException>();
+            segments.Should().BeEmpty();
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "Controller";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(1);
@@ -42,7 +42,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "Co123ler";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(1);
@@ -58,7 +58,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{co123ler}";
 
             // Act
-            Action act = () => RouteParser.Parse(route);
+            Action act = () => new RouteParser().Parse(route);
 
             // Assert
             act.Should().Throw<UnexpectedTokenException>();
@@ -71,7 +71,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "Controller=";
 
             // Act
-            Action act = () => RouteParser.Parse(route);
+            Action act = () => new RouteParser().Parse(route);
 
             // Assert
             act.Should().Throw<UnexpectedTokenException>();
@@ -84,7 +84,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{}";
 
             // Act
-            Action act = () => RouteParser.Parse(route);
+            Action act = () => new RouteParser().Parse(route);
 
             // Assert
             act.Should().Throw<UnexpectedTokenException>();
@@ -97,7 +97,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{controller}";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(1);
@@ -113,7 +113,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{controller=index}";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(1);
@@ -129,7 +129,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{controller=index1}";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(1);
@@ -145,7 +145,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "controller/action";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(2);
@@ -164,7 +164,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{controller}/{action}";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(2);
@@ -183,7 +183,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
             string route = "{controller}/{action=Index}";
 
             // Act
-            List<ControllerRouteSegment> segments = RouteParser.Parse(route);
+            List<ControllerRouteSegment> segments = new RouteParser().Parse(route);
 
             // Assert
             segments.Should().HaveCount(2);
