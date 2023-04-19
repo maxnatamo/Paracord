@@ -7,7 +7,7 @@ namespace Paracord.Core.Extensions
     public static class ApplicationControllerExtensions
     {
         /// <summary>
-        /// Register a new middleware onto the <see cref="WebApplication" />-instance.
+        /// Map all available controllers onto the specified <see cref="WebApplication" />-instance.
         /// </summary>
         /// <param name="application">The <see cref="WebApplication" />-instance to map the controllers to.</param>
         /// <returns>The <see cref="WebApplication" /> to allow for method chaining.</returns>
