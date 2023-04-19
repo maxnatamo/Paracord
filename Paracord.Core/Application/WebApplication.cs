@@ -84,8 +84,6 @@ namespace Paracord.Core.Application
                     this.ContextHandler(ctx);
 
                     this.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, ctx.Request, ctx.Response));
-
-                    ctx.Send();
                 },
                 cancellationToken);
             });
@@ -100,12 +98,18 @@ namespace Paracord.Core.Application
             this.Listener.Stop();
         }
 
+        /// <summary>
+        /// Handle the specified <see cref="HttpContext" /> and execute the appropriate handler.
+        /// </summary>
+        /// <param name="ctx">The <see cref="HttpContext" />-instance to handle.</param>
         internal void ContextHandler(HttpContext ctx)
         {
             ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request);
             if(route == null)
             {
                 ctx.Response.StatusCode = HttpStatusCode.NotFound;
+                ctx.Send();
+
                 return;
             }
 
