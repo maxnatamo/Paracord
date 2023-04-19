@@ -39,18 +39,18 @@ namespace Paracord.Core.Controller
         /// <summary>
         /// Get all available routes from the specified <see cref="ControllerBase" /> type.
         /// </summary>
-        /// <param name="controller">The controller to parse the routes from.</param>
+        /// <param name="controllerType">The controller type to parse the routes from.</param>
         /// <returns>List of <see cref="ControllerRoute" />.</returns>
-        internal static IEnumerable<ControllerRoute> GetAllRoutes<T>(T controller) where T : ControllerBase
+        internal static IEnumerable<ControllerRoute> GetAllRoutes(Type controllerType)
         {
-            List<MethodInfo> methods = controller.GetType()
+            List<MethodInfo> methods = controllerType
                 .GetMethods(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
                 .Where(v => !v.IsSpecialName)
                 .ToList();
 
             foreach(MethodInfo method in methods)
             {
-                ControllerRoute route = ControllerBase.ParseControllerRoute(controller, method);
+                ControllerRoute route = ControllerBase.ParseControllerRoute(controllerType, method);
                 yield return route;
             }
         }
@@ -58,19 +58,19 @@ namespace Paracord.Core.Controller
         /// <summary>
         /// Parse a single method from a <see cref="ControllerBase" /> and return the parsed <see cref="ControllerRoute" />-instance.
         /// </summary>
-        /// <param name="controller">The controller to parse the method from.</param>
+        /// <param name="controllerType">The controller type to parse the routes from.</param>
         /// <param name="methodInfo">The actual method to parse.</param>
         /// <returns>The parsed <see cref="ControllerRoute" />-instance.</returns>
-        internal static ControllerRoute ParseControllerRoute<T>(T controller, MethodInfo methodInfo) where T : ControllerBase
+        internal static ControllerRoute ParseControllerRoute(Type controllerType, MethodInfo methodInfo)
         {
             RouteParser parser = new RouteParser();
 
             ControllerRoute route = new ControllerRoute();
-            route.ParentControllerType = controller.GetType();
+            route.ParentControllerType = controllerType;
             route.HttpMethod = methodInfo.ParseHttpMethod();
             route.ExecutorMethod = methodInfo;
 
-            string controllerRoute = controller.GetType().ParseRoute();
+            string controllerRoute = controllerType.ParseRoute();
             route.ControllerPath = parser.Parse(controllerRoute);
 
             string methodRoute = methodInfo.ParseRoute();
