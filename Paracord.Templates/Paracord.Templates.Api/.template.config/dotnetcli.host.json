@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json.schemastore.org/dotnetcli.host",
+  "symbolInfo":
+  {
+    "AddHealthEndpoint": {
+      "longName": "use-healthcheck",
+      "shortName": "hc"
+    },
+    "HealthCheckPath": {
+      "longName": "healthcheck-path",
+      "shortName": "hcp"
+    },
+    "Docker": {
+      "longName": "docker",
+      "shortName": "d"
+    }
+  }
+}

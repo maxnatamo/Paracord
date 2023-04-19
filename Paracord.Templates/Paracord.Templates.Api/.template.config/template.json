@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Max T. Kristiansen",
+  "classifications": [
+    "Paracord",
+    "WebAPI",
+    "Web"
+  ],
+  "name": "Paracord Web API",
+  "description": "A project template for creating RESTful HTTP services using Paracord",
+  "groupIdentity": "Paracord.Template.Api",
+  "identity": "Paracord.Template.Api",
+  "shortName": "paracord-api",
+  "defaultName": "WebApi1",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "ApplicationName",
+  "symbols": {
+    "AddHealthEndpoint": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Whether the project should add a health-check endpoint."
+    },
+    "HealthCheckPath": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "/health",
+      "replaces": "HEALTHCHECK_PATH",
+      "description": "The path to register the health-check endpoint. Only applicable if the health-point is enabled."
+    },
+    "Docker": {
+      "type": "parameter",
+      "datatype": "bool",
+      "defaultValue": "true",
+      "description": "Whether to add a Docker setup to the project."
+    }
+  },
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "condition": "(!Docker)",
+          "exclude": [
+            "Dockerfile",
+            ".dockerignore"
+          ]
+        },
+        {
+          "condition": "(!AddHealthEndpoint)",
+          "exclude": [
+            "Controllers/HealthController.cs"
+          ]
+        }
+      ]
+    }
+  ]
+}

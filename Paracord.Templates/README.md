@@ -1,0 +1,1 @@
+Templates for projects made with [Paracord](https://github.com/maxnatamo/Paracord).

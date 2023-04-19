@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json.schemastore.org/ide.host",
+  "order": 0,
+  "supportsDocker": true,
+  "disableHttpsSymbol": "NoHttps",
+  "symbolInfo": [
+    {
+      "id": "Docker",
+      "name": {
+        "text": "Add Docker support",
+        "overrideDefaultText": true
+      },
+      "description": {
+        "text": "Whether to add an optimized Dockerfile and .dockerignore file to the project.",
+        "overrideDefaultText": true
+      },
+      "isVisible": true,
+      "defaultValue": "true"
+    },
+    {
+      "id": "AddHealthEndpoint",
+      "name": {
+        "text": "Enable health-endpoint",
+        "overrideDefaultText": true
+      },
+      "description": {
+        "text": "Whether the project should add a health-check endpoint.",
+        "overrideDefaultText": true
+      },
+      "isVisible": true,
+      "defaultValue": "true"
+    },
+    {
+      "id": "HealthCheckPath",
+      "name": {
+        "text": "Health-endpoint path",
+        "overrideDefaultText": true
+      },
+      "description": {
+        "text": "The path to register the health-check endpoint. Only applicable if the health-point is enabled.",
+        "overrideDefaultText": true
+      },
+      "isVisible": true,
+      "defaultValue": "/health"
+    }
+  ]
+}
