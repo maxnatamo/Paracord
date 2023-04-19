@@ -50,11 +50,11 @@ namespace Paracord.Core.Application
 
             if(!this.Options.Prefixes.Any())
             {
-                this.Options.Prefixes.Add(ListenerPrefix.Parse("http://localhost:8080"));
+                this.Options.Prefixes.Add("http://0.0.0.0:8080");
 
                 if(this.Options.SslCertificate != null)
                 {
-                    this.Options.Prefixes.Add(ListenerPrefix.Parse("https://localhost:8443"));
+                    this.Options.Prefixes.Add("https://0.0.0.0:8443");
                 }
             }
 
