@@ -37,6 +37,16 @@ As it stands currently, Paracord is still in very *pre-alpha*, so there's no way
 
 ## 🧯 Installation
 
+To use Paracord in a new project, you can use a pre-built template:
+
+```sh
+# Download template
+dotnet new install Paracord.Templates
+
+# Create new API project
+dotnet new paracord-api -o Paracord.Api
+```
+
 To use Paracord in an existing project, you can install it using Nuget:
 
 ```sh
