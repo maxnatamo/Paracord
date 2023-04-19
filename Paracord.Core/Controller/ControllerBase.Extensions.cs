@@ -66,9 +66,9 @@ namespace Paracord.Core.Controller
             RouteParser parser = new RouteParser();
 
             ControllerRoute route = new ControllerRoute();
-            route.ParentController = controller;
+            route.ParentControllerType = controller.GetType();
             route.HttpMethod = methodInfo.ParseHttpMethod();
-            route.Executor = ctx => methodInfo.Invoke(controller, new object[] { ctx });
+            route.ExecutorMethod = methodInfo;
 
             string controllerRoute = controller.GetType().ParseRoute();
             route.ControllerPath = parser.Parse(controllerRoute);

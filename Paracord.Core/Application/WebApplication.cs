@@ -109,7 +109,25 @@ namespace Paracord.Core.Application
                 return;
             }
 
-            route.Executor(ctx);
+            using(this.Services.BeginScope())
+            {
+                ControllerBase controller = (ControllerBase) this.Services.GetInstance(route.ParentControllerType);
+                controller.Request = ctx.Request;
+                controller.Response = ctx.Response;
+
+                object? result = route.ExecutorMethod.Invoke(controller, new object[] { });
+
+                if(ctx.IsOpen)
+                {
+                    if(result != null)
+                    {
+                        ctx.Response.Body.SetLength(0);
+                        ctx.Response.WriteToJson(result, route.ExecutorMethod.ReturnType);
+                    }
+
+                    ctx.Send();
+                }
+            }
         }
 
         /// <summary>
