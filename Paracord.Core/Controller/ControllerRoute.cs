@@ -1,8 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+
 using Paracord.Core.Http;
 using Paracord.Core.Parsing.Routing;
 using Paracord.Shared.Exceptions;
-using Paracord.Shared.Models.Http;
 using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
 
 namespace Paracord.Core.Controller
@@ -13,9 +14,14 @@ namespace Paracord.Core.Controller
     public class ControllerRoute
     {
         /// <summary>
-        /// The parent controller class.
+        /// The type of parent controller class.
         /// </summary>
-        public ControllerBase ParentController { get; set; } = default!;
+        public Type ParentControllerType { get; set; } = default!;
+
+        /// <summary>
+        /// The action method on the parent controller type.
+        /// </summary>
+        public MethodInfo ExecutorMethod { get; set; } = default!;
 
         /// <summary>
         /// The relative path of the parent controller.
@@ -45,11 +51,6 @@ namespace Paracord.Core.Controller
                 return segments;
             }
         }
-
-        /// <summary>
-        /// The actual handler on the controller.
-        /// </summary>
-        public Action<HttpContext> Executor { get; set; } = ctx => { };
 
         /// <summary>
         /// Try to parse a controller- and method route into a native <see cref="ControllerRoute" />-instance.
@@ -109,7 +110,7 @@ namespace Paracord.Core.Controller
                 return new ControllerRouteMatch { Success = false };
             }
 
-            if(requestPathSegments.Count() > routePath.Count())
+            if(requestPathSegments.Count() != routePath.Count())
             {
                 return new ControllerRouteMatch { Success = false };
             }
