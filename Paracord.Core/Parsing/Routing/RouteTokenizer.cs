@@ -8,6 +8,7 @@ namespace Paracord.Core.Parsing.Routing
         private static readonly char[] PUNCTUATION_TOKENS =
         {
             '=',
+            ':',
             '/',
             '{',
             '}',
@@ -115,6 +116,7 @@ namespace Paracord.Core.Parsing.Routing
                 return firstChar switch
                 {
                     '=' => new RouteToken(RouteTokenType.EQUAL, this.CurrentIndex, this.CurrentIndex + 1),
+                    ':' => new RouteToken(RouteTokenType.COLON, this.CurrentIndex, this.CurrentIndex + 1),
                     '/' => new RouteToken(RouteTokenType.SLASH, this.CurrentIndex, this.CurrentIndex + 1),
                     '{' => new RouteToken(RouteTokenType.BRACE_LEFT, this.CurrentIndex, this.CurrentIndex + 1),
                     '}' => new RouteToken(RouteTokenType.BRACE_RIGHT, this.CurrentIndex, this.CurrentIndex + 1),

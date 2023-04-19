@@ -108,13 +108,20 @@ namespace Paracord.Core.Parsing.Routing
             ControllerRouteSegment segment = new ControllerRouteSegment();
             segment.Type = ControllerRouteSegmentType.Variable;
             segment.Name = this.CurrentToken.Value;
+            this.Skip();
 
             if(segment.Name.Any(v => v >= '0' && v <= '9'))
             {
                 throw UnexpectedToken();
             }
 
-            this.Skip();
+            if(this.Peek(RouteTokenType.COLON))
+            {
+                this.Skip();
+                segment.ConstraintName = this.CurrentToken.Value;
+
+                this.Skip();
+            }
 
             if(this.Peek(RouteTokenType.EQUAL))
             {
