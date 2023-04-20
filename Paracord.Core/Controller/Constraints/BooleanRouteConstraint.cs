@@ -8,7 +8,7 @@ namespace Paracord.Core.Controller.Constraints
     public class BooleanRouteConstraint : IRouteConstraint
     {
         /// <inheritdoc cref="IRouteConstraint.Identifier" />
-        public string Identifier => "int";
+        public string Identifier => "bool";
 
         /// <summary>
         /// Try to match the specified <paramref name="value" /> as a <see cref="System.Boolean" /> and return the result via <paramref name="result" />.
