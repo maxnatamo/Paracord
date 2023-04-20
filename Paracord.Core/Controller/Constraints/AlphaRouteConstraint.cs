@@ -11,6 +11,6 @@ namespace Paracord.Core.Controller.Constraints
         /// <summary>
         /// The Regex pattern to use for the constraint.
         /// </summary>
-        public override string Pattern => @"^[a-zA-Z]*$";
+        public override string Pattern => @"^[a-zA-Z]+$";
     }
 }
