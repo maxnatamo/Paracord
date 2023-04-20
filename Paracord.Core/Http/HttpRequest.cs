@@ -53,7 +53,7 @@ namespace Paracord.Core.Http
         /// <summary>
         /// The request parameters, parsed from the route
         /// </summary>
-        public Dictionary<string, string> Parameters { get; internal set; }
+        public Dictionary<string, object?> Parameters { get; internal set; }
 
         /// <summary>
         /// The HTTP request protocol (e.g. HTTP/1.1, HTTP/2.0).
@@ -92,7 +92,7 @@ namespace Paracord.Core.Http
 
             this.Cookies = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
             this.Headers = new NameValueCollection(StringComparer.InvariantCultureIgnoreCase);
-            this.Parameters = new Dictionary<string, string>();
+            this.Parameters = new Dictionary<string, object?>();
 
             this.ThreadId = Thread.CurrentThread.ManagedThreadId;
             this.Time = DateTime.Now;

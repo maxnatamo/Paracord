@@ -13,8 +13,6 @@ namespace Paracord.Core.Controller
         /// <summary>
         /// Lookup table for parameters in the request route.
         /// </summary>
-        /// <typeparam name="string">Name and/or key of the route parameter.</typeparam>
-        /// <typeparam name="string">The actual value of the key.</typeparam>
-        public readonly Dictionary<string, string> Parameters = new Dictionary<string, string>();
+        public readonly Dictionary<string, object?> Parameters = new Dictionary<string, object?>();
     }
 }
