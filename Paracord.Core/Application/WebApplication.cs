@@ -1,5 +1,6 @@
 using LightInject;
 using Paracord.Core.Controller;
+using Paracord.Core.Controller.Constraints;
 using Paracord.Core.Listener;
 using Paracord.Shared.Models.Http;
 using Paracord.Shared.Models.Listener;
@@ -17,19 +18,9 @@ namespace Paracord.Core.Application
         private readonly HttpListener Listener;
 
         /// <summary>
-        /// Collection of routes available for the application.
-        /// </summary>
-        protected internal readonly ControllerRouteCollection Routes = new ControllerRouteCollection();
-
-        /// <summary>
         /// The services available to the <see cref="WebApplication" />.
         /// </summary>
         public readonly ServiceContainer Services;
-
-        /// <summary>
-        /// List of all middlewares used by the listener.
-        /// </summary>
-        protected IEnumerable<MiddlewareBase> Middlewares => this.Services.GetAllInstances<MiddlewareBase>();
 
         /// <summary>
         /// Environment information for the <see cref="WebApplication"/>-instance.
@@ -41,12 +32,31 @@ namespace Paracord.Core.Application
         /// </summary>
         protected readonly WebApplicationOptions Options;
 
+        /// <summary>
+        /// Collection of routes available for the application.
+        /// </summary>
+        protected internal readonly ControllerRouteCollection Routes = new ControllerRouteCollection();
+
+        /// <summary>
+        /// List of all route constraints used by the listener.
+        /// </summary>
+        protected readonly RouteConstraintOptions RouteConstraintsOptions;
+
+        /// <summary>
+        /// List of all middlewares used by the listener.
+        /// </summary>
+        protected IEnumerable<MiddlewareBase> Middlewares => this.Services.GetAllInstances<MiddlewareBase>();
+
         public WebApplication(ServiceContainer services, WebApplicationEnvironment environment, WebApplicationOptions options)
         {
             this.Listener = new HttpListener();
             this.Services = services;
             this.Environment = environment;
             this.Options = options;
+
+            this.Services.RegisterFallback((t, _) => t.Equals(typeof(RouteConstraintOptions)), _ => new RouteConstraintOptions());
+
+            this.RouteConstraintsOptions = this.Services.GetInstance<RouteConstraintOptions>();
 
             if(!this.Options.Prefixes.Any())
             {
@@ -104,7 +114,7 @@ namespace Paracord.Core.Application
         /// <param name="ctx">The <see cref="HttpContext" />-instance to handle.</param>
         internal void ContextHandler(HttpContext ctx)
         {
-            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request);
+            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request, this.RouteConstraintsOptions.Constraints);
             if(route == null)
             {
                 ctx.Response.StatusCode = HttpStatusCode.NotFound;

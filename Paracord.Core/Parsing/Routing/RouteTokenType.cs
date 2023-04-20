@@ -8,6 +8,11 @@ namespace Paracord.Core.Parsing.Routing
         EOF,
 
         /// <summary>
+        /// Colon sign, :
+        /// </summary>
+        COLON,
+
+        /// <summary>
         /// Equal sign, =
         /// </summary>
         EQUAL,

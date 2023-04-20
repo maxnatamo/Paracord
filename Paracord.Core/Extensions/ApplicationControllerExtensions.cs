@@ -27,9 +27,7 @@ namespace Paracord.Core.Extensions
 
             foreach(Type controllerType in controllerTypes)
             {
-                ControllerBase controller = (ControllerBase) application.Services.GetInstance(controllerType);
-
-                foreach(ControllerRoute route in ControllerBase.GetAllRoutes(controller))
+                foreach(ControllerRoute route in ControllerBase.GetAllRoutes(controllerType))
                 {
                     application.Routes.Add(route);
                 }

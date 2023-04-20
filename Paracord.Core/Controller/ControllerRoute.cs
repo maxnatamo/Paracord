@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-using Paracord.Core.Http;
 using Paracord.Core.Parsing.Routing;
 using Paracord.Shared.Exceptions;
 using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
@@ -11,7 +10,7 @@ namespace Paracord.Core.Controller
     /// <summary>
     /// A controller route, representing a single method on a controller.
     /// </summary>
-    public class ControllerRoute
+    public partial class ControllerRoute
     {
         /// <summary>
         /// The type of parent controller class.
@@ -88,59 +87,6 @@ namespace Paracord.Core.Controller
                 return result;
             }
             throw new FormatException("The supplied route(s) are improperly formatted.");
-        }
-
-        /// <summary>
-        /// Match the specified request-path with the <see cref="ControllerRoute" /> and return the result.
-        /// <para>
-        /// If the match was a success, <see cref="ControllerRouteMatch.Success" /> will be set to <c>true</c>.
-        /// </para>
-        /// </summary>
-        /// <param name="request">The <see cref="HttpRequest" /> to match against.</param>
-        /// <returns>The matched <see cref="ControllerRouteMatch" />-instance.</returns>
-        public ControllerRouteMatch Match(HttpRequest request)
-        {
-            string[] requestPathSegments = request.Path.Trim('/').Split('/');
-            List<ControllerRouteSegment> routePath = this.RoutePath;
-
-            ControllerRouteMatch match = new ControllerRouteMatch { Success = true };
-
-            if(!this.HttpMethod.HasFlag(request.Method))
-            {
-                return new ControllerRouteMatch { Success = false };
-            }
-
-            if(requestPathSegments.Count() != routePath.Count())
-            {
-                return new ControllerRouteMatch { Success = false };
-            }
-
-            for(int i = 0; i < requestPathSegments.Count(); i++)
-            {
-                if(routePath[i].Type == ControllerRouteSegmentType.Constant && routePath[i].Name.ToLower() != requestPathSegments[i].ToLower())
-                {
-                    return new ControllerRouteMatch { Success = false };
-                }
-
-                if(routePath[i].Type == ControllerRouteSegmentType.Variable)
-                {
-                    if(string.IsNullOrEmpty(requestPathSegments[i]))
-                    {
-                        if(routePath[i].Default == null)
-                        {
-                            return new ControllerRouteMatch { Success = false };
-                        }
-                        else
-                        {
-                            requestPathSegments[i] = routePath[i].Default!;
-                        }
-                    }
-
-                    match.Parameters.Add(routePath[i].Name, requestPathSegments[i]);
-                }
-            }
-
-            return match;
         }
     }
 }

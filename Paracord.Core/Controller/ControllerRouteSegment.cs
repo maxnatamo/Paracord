@@ -39,5 +39,10 @@ namespace Paracord.Core.Controller
         /// The optional default value for the segment. Only applicable for variable segments.
         /// </summary>
         public string? Default { get; set; } = null;
+
+        /// <summary>
+        /// The name of the optional constraint for the segment. Only applicable for variable segments.
+        /// </summary>
+        public string? ConstraintName { get; set; } = null;
     }
 }
