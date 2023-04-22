@@ -40,7 +40,7 @@ namespace Paracord.Core.Application
         /// <summary>
         /// List of all route constraints used by the listener.
         /// </summary>
-        protected readonly RouteConstraintOptions RouteConstraintsOptions;
+        protected internal readonly RouteConstraintOptions RouteConstraintsOptions;
 
         /// <summary>
         /// List of all middlewares used by the listener.
@@ -114,7 +114,7 @@ namespace Paracord.Core.Application
         /// <param name="ctx">The <see cref="HttpContext" />-instance to handle.</param>
         internal void ContextHandler(HttpContext ctx)
         {
-            ControllerRoute? route = this.Routes.ParseRequestPath(ctx.Request, this.RouteConstraintsOptions.Constraints);
+            ControllerRoute? route = this.Routes.ParseRequestPath(this, ctx.Request);
             if(route == null)
             {
                 ctx.Response.StatusCode = HttpStatusCode.NotFound;

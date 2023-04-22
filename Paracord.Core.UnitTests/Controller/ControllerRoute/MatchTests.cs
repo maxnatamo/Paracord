@@ -1,5 +1,6 @@
+using LightInject;
+using Paracord.Core.Application;
 using Paracord.Core.Controller;
-using Paracord.Core.Controller.Constraints;
 using Paracord.Core.Http;
 
 using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
@@ -23,10 +24,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("/", "index");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeFalse();
@@ -37,10 +39,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest("index");
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("index", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -51,10 +54,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("{controller}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeFalse();
@@ -65,10 +69,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest("index");
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("{controller}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -81,10 +86,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("{controller=index}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeTrue();
@@ -97,10 +103,11 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         {
             // Arrange
             HttpRequest request = this.MakeRequest("dashboard");
+            WebApplication application = new WebApplication(new ServiceContainer(), new WebApplicationEnvironment(), new WebApplicationOptions());
             ControllerRoute route = ControllerRoute.Parse("{controller=index}", "");
 
             // Act
-            ControllerRouteMatch match = route.Match(request, new List<IRouteConstraint> { });
+            ControllerRouteMatch match = route.Match(application, request);
 
             // Assert
             match.Success.Should().BeTrue();

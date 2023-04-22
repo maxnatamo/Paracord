@@ -1,3 +1,4 @@
+using Paracord.Core.Application;
 using Paracord.Core.Controller.Constraints;
 using Paracord.Core.Http;
 
@@ -14,10 +15,10 @@ namespace Paracord.Core.Controller
         /// If the match was a success, <see cref="ControllerRouteMatch.Success" /> will be set to <c>true</c>.
         /// </para>
         /// </summary>
+        /// <param name="application">The parent <see cref="WebApplication" />-instance.</param>
         /// <param name="request">The <see cref="HttpRequest" /> to match against.</param>
-        /// <param name="routeConstraints">List of available <see cref="IRouteConstraint" /> services.</param>
         /// <returns>The matched <see cref="ControllerRouteMatch" />-instance.</returns>
-        public ControllerRouteMatch Match(HttpRequest request, IEnumerable<IRouteConstraint> routeConstraints)
+        public ControllerRouteMatch Match(WebApplication application, HttpRequest request)
         {
             string[] requestPathSegments = request.Path.Trim('/').Split('/');
             List<ControllerRouteSegment> routePath = this.RoutePath;
@@ -39,53 +40,74 @@ namespace Paracord.Core.Controller
             // Handle individual route segments
             for(int i = 0; i < requestPathSegments.Count(); i++)
             {
-                // Try to match constant values
-                if(routePath[i].Type == ControllerRouteSegmentType.Constant && routePath[i].Name.ToLower() != requestPathSegments[i].ToLower())
+                bool matched = this.RoutePath[i].Type switch
+                {
+                    ControllerRouteSegmentType.Constant => this.MatchConstantRoute(application, match, this.RoutePath[i], requestPathSegments[i]),
+                    ControllerRouteSegmentType.Variable => this.MatchVariableRoute(application, match, this.RoutePath[i], requestPathSegments[i]),
+
+                    _ => throw new ArgumentException($"Invalid ControllerRouteSegmentType: {this.RoutePath[i].Type.ToString()}")
+                };
+
+                if(!matched)
                 {
                     return new ControllerRouteMatch { Success = false };
-                }
-
-                // Handle variable routes
-                if(routePath[i].Type == ControllerRouteSegmentType.Variable)
-                {
-                    string routeKey = routePath[i].Name;
-                    string routeValue = requestPathSegments[i];
-                    IRouteConstraint? constraint = null;
-
-                    // Handle route constraints
-                    if(routePath[i].ConstraintName != null)
-                    {
-                        constraint = routeConstraints.FirstOrDefault(v => v.Identifier == routePath[i].ConstraintName);
-
-                        if(constraint == null)
-                        {
-                            return new ControllerRouteMatch { Success = false };
-                        }
-                    }
-
-                    // Handle default values
-                    if(string.IsNullOrEmpty(routeValue))
-                    {
-                        if(routePath[i].Default == null)
-                        {
-                            return new ControllerRouteMatch { Success = false };
-                        }
-                        else
-                        {
-                            routeValue = routePath[i].Default!;
-                        }
-                    }
-
-                    if(!this.ValidateConstraints(constraint, routeValue, out var parsedRouteValue))
-                    {
-                        return new ControllerRouteMatch { Success = false };
-                    }
-
-                    match.Parameters.Add(routeKey, parsedRouteValue);
                 }
             }
 
             return match;
+        }
+
+        /// <summary>
+        /// Match a constant route segment and populate <paramref name="match" />, unless the match failed.
+        /// </summary>
+        /// <param name="application">The parent <see cref="WebApplication" />-instance.</param>
+        /// <param name="match">The <see cref="ControllerRouteMatch" /> to fill in, if the match succeeds.</param>
+        /// <param name="pattern">The controller route pattern to match against.</param>
+        /// <param name="path">The input route path to match with.</param>
+        /// <returns>Returns <c>true</c>, if the match succeeded. Otherwise, <c>false</c>.</returns>
+        internal bool MatchConstantRoute(WebApplication application, ControllerRouteMatch match, ControllerRouteSegment pattern, string path)
+            => pattern.Name.ToLower() == path.ToLower();
+
+        /// <summary>
+        /// Match a variable route segment and populate <paramref name="match" />, unless the match failed.
+        /// </summary>
+        /// <param name="application">The parent <see cref="WebApplication" />-instance.</param>
+        /// <param name="match">The <see cref="ControllerRouteMatch" /> to fill in, if the match succeeds.</param>
+        /// <param name="pattern">The controller route pattern to match against.</param>
+        /// <param name="path">The input route path to match with.</param>
+        /// <returns>Returns <c>true</c>, if the match succeeded. Otherwise, <c>false</c>.</returns>
+        internal bool MatchVariableRoute(WebApplication application, ControllerRouteMatch match, ControllerRouteSegment pattern, string path)
+        {
+            IRouteConstraint? constraint = null;
+
+            if(pattern.ConstraintName != null)
+            {
+                constraint = application.RouteConstraintsOptions.Constraints.FirstOrDefault(v => v.Identifier == pattern.ConstraintName);
+
+                if(constraint == null)
+                {
+                    return false;
+                }
+            }
+
+            // Handle default values
+            if(string.IsNullOrEmpty(path))
+            {
+                if(pattern.Default == null)
+                {
+                    return false;
+                }
+
+                path = pattern.Default!;
+            }
+
+            if(!this.ValidateConstraints(constraint, path, out var parsedRouteValue))
+            {
+                return false;
+            }
+
+            match.Parameters.Add(pattern.Name, parsedRouteValue);
+            return true;
         }
 
         /// <summary>

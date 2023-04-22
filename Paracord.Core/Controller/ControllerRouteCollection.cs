@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 
+using Paracord.Core.Application;
 using Paracord.Core.Controller.Constraints;
 using Paracord.Core.Http;
 
@@ -13,14 +14,14 @@ namespace Paracord.Core.Controller
         /// <summary>
         /// Iterate through the collection and find the first that matches the specified <see cref="HttpRequest" />-instance.
         /// </summary>
+        /// <param name="application">The parent <see cref="WebApplication" />-instance.</param>
         /// <param name="request">The <see cref="HttpRequest" /> to query for.</param>
-        /// <param name="routeConstraints">List of available <see cref="IRouteConstraint" /> services.</param>
         /// <returns>The matching <see cref="ControllerRoute" />, if found. Otherwise, null.</returns>
-        public ControllerRoute? ParseRequestPath(HttpRequest request, IEnumerable<IRouteConstraint> routeConstraints)
+        public ControllerRoute? ParseRequestPath(WebApplication application, HttpRequest request)
         {
             foreach(ControllerRoute route in this)
             {
-                ControllerRouteMatch match = route.Match(request, routeConstraints);
+                ControllerRouteMatch match = route.Match(application, request);
 
                 if(!match.Success)
                 {
