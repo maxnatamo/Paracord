@@ -63,6 +63,21 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
+        public void GetNextTokenReturnsColonTokenGivenColon()
+        {
+            // Arrange
+            string route = ":";
+
+            // Act
+            RouteToken token = new RouteTokenizer(route).GetNextToken();
+
+            // Assert
+            token.Start.Should().Be(0);
+            token.End.Should().Be(1);
+            token.Type.Should().Be(RouteTokenType.COLON);
+        }
+
+        [Fact]
         public void GetNextTokenReturnsSlashTokenGivenForwardSlash()
         {
             // Arrange
@@ -121,6 +136,22 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
             token.End.Should().Be(10);
             token.Type.Should().Be(RouteTokenType.NAME);
             token.Value.Should().Be("Controller");
+        }
+
+        [Fact]
+        public void GetNextTokenReturnsUnknownTokenGivenUnsupportedToken()
+        {
+            // Arrange
+            string route = "%";
+
+            // Act
+            RouteToken token = new RouteTokenizer(route).GetNextToken();
+
+            // Assert
+            token.Start.Should().Be(0);
+            token.End.Should().Be(1);
+            token.Type.Should().Be(RouteTokenType.UNKNOWN);
+            token.Value.Should().Be("%");
         }
     }
 }
