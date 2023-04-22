@@ -31,19 +31,26 @@ namespace Paracord.Core.Controller
                 return new ControllerRouteMatch { Success = false };
             }
 
+            if(!routePath.SequenceEqual(routePath.OrderByDescending(v => v.Default == null)))
+            {
+                throw new ArgumentException("Optional parameters must appear after all required parameters.");
+            }
+
             // Try to match amount of route segments
-            if(requestPathSegments.Count() != routePath.Count())
+            if(requestPathSegments.Count() < routePath.Count(v => v.Default == null))
             {
                 return new ControllerRouteMatch { Success = false };
             }
 
             // Handle individual route segments
-            for(int i = 0; i < requestPathSegments.Count(); i++)
+            for(int i = 0; i < routePath.Count(); i++)
             {
-                bool matched = this.RoutePath[i].Type switch
+                string requestPathSegment = i < requestPathSegments.Length ? requestPathSegments[i] : "";
+
+                bool matched = routePath[i].Type switch
                 {
-                    ControllerRouteSegmentType.Constant => this.MatchConstantRoute(application, match, this.RoutePath[i], requestPathSegments[i]),
-                    ControllerRouteSegmentType.Variable => this.MatchVariableRoute(application, match, this.RoutePath[i], requestPathSegments[i]),
+                    ControllerRouteSegmentType.Constant => this.MatchConstantRoute(application, match, this.RoutePath[i], requestPathSegment),
+                    ControllerRouteSegmentType.Variable => this.MatchVariableRoute(application, match, this.RoutePath[i], requestPathSegment),
 
                     _ => throw new ArgumentException($"Invalid ControllerRouteSegmentType: {this.RoutePath[i].Type.ToString()}")
                 };

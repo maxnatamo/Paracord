@@ -97,6 +97,10 @@ namespace Paracord.Core.Application
                     }
                     catch(Exception e)
                     {
+                        ctx.Response.Body.SetLength(0);
+                        ctx.Response.Write(e.ToString());
+                        ctx.Response.StatusCode = HttpStatusCode.InternalServerError;
+
                         Console.WriteLine("Exception caught while processing request:");
                         Console.WriteLine(e.ToString());
                     }
