@@ -5,7 +5,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
     public class MatchTests
     {
         [Fact]
-        public void MatchReturnsFalseGivenEmptyString()
+        public void Match_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -19,7 +19,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenString()
+        public void Match_ReturnsFalse_GivenString()
         {
             // Arrange
             string value = "a";
@@ -33,7 +33,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenIntegerValue()
+        public void Match_ReturnsTrue_GivenIntegerValue()
         {
             // Arrange
             string value = "1";
@@ -49,7 +49,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenIntegerValueWithDecimalPoint()
+        public void Match_ReturnsTrue_GivenIntegerValueWithDecimalPoint()
         {
             // Arrange
             string value = "1.";
@@ -65,7 +65,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenFloatingPointNumber()
+        public void Match_ReturnsTrue_GivenFloatingPointNumber()
         {
             // Arrange
             string value = "1.123";
@@ -81,7 +81,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenNumberWithThousandsSeparator()
+        public void Match_ReturnsFalse_GivenNumberWithThousandsSeparator()
         {
             // Arrange
             string value = "1,000";
@@ -95,7 +95,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenNumberWithCurrency()
+        public void Match_ReturnsFalse_GivenNumberWithCurrency()
         {
             // Arrange
             string value = "$1,000";
@@ -109,7 +109,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenNegativeNumber()
+        public void Match_ReturnsTrue_GivenNegativeNumber()
         {
             // Arrange
             string value = "-1";
@@ -125,7 +125,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DoubleRouteConstraintTe
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenNumberInExponentialNotation()
+        public void Match_ReturnsFalse_GivenNumberInExponentialNotation()
         {
             // Arrange
             string value = "1.24E3";

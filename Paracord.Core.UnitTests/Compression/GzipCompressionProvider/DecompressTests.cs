@@ -7,7 +7,7 @@ namespace Paracord.Core.UnitTests.Compression.GzipCompressionProviderTests
     public class DecompressTests
     {
         [Fact]
-        public void DecompressReturnsEmptyArrayGivenEmptyStream()
+        public void Decompress_ReturnsEmptyArray_GivenEmptyStream()
         {
             // Arrange
             MemoryStream inputStream = new MemoryStream();
@@ -20,7 +20,7 @@ namespace Paracord.Core.UnitTests.Compression.GzipCompressionProviderTests
         }
 
         [Fact]
-        public void DecompressReturnsSameAsInputGivenStringContent()
+        public void Decompress_ReturnsSameAsInput_GivenStringContent()
         {
             // Arrange
             string content = "This is a test string!";

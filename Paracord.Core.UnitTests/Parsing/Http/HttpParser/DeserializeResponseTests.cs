@@ -8,7 +8,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
     public class DeserializeResponseTests
     {
         [Fact]
-        public void SerializeResponseReturnsGivenResponseWithoutHeadersOrBody()
+        public void SerializeResponse_ReturnsExpected_GivenResponseWithoutHeadersOrBody()
         {
             // Arrange
             HttpResponse response = new HttpResponse();
@@ -22,7 +22,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void SerializeResponseReturnsGivenResponseWithHeadersWithoutBody()
+        public void SerializeResponse_ReturnsExpected_GivenResponseWithHeadersWithoutBody()
         {
             // Arrange
             HttpResponse response = new HttpResponse();
@@ -38,7 +38,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void SerializeResponseReturnsGivenResponseWithHeadersAndBody()
+        public void SerializeResponse_ReturnsExpected_GivenResponseWithHeadersAndBody()
         {
             // Arrange
             HttpResponse response = new HttpResponse();

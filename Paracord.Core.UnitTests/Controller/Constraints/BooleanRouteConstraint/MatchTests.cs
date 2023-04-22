@@ -5,7 +5,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
     public class MatchTests
     {
         [Fact]
-        public void MatchReturnsFalseGivenEmptyString()
+        public void Match_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -19,7 +19,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenString()
+        public void Match_ReturnsFalse_GivenString()
         {
             // Arrange
             string value = "A";
@@ -33,7 +33,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenTrueString()
+        public void Match_ReturnsTrue_GivenTrueString()
         {
             // Arrange
             string value = "true";
@@ -49,7 +49,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenFalseString()
+        public void Match_ReturnsTrue_GivenFalseString()
         {
             // Arrange
             string value = "false";
@@ -65,7 +65,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenUppercaseTrueString()
+        public void Match_ReturnsTrue_GivenUppercaseTrueString()
         {
             // Arrange
             string value = "TRUE";
@@ -81,7 +81,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.BooleanRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenUppercaseFalseString()
+        public void Match_ReturnsTrue_GivenUppercaseFalseString()
         {
             // Arrange
             string value = "FALSE";

@@ -5,7 +5,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueCollectionTests
     public class TryParseTests
     {
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyString()
+        public void TryParse_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -18,7 +18,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueCollectionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenOnlyCommas()
+        public void TryParse_ReturnsFalse_GivenOnlyCommas()
         {
             // Arrange
             string value = ",,,,";
@@ -31,7 +31,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueCollectionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValidQualityValueWithComma()
+        public void TryParse_ReturnsFalse_GivenValidQualityValueWithComma()
         {
             // Arrange
             string value = "gzip;q=1.0,";
@@ -44,7 +44,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueCollectionTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenSingleValidQualityValue()
+        public void TryParse_ReturnsTrue_GivenSingleValidQualityValue()
         {
             // Arrange
             string value = "gzip;q=1.0";

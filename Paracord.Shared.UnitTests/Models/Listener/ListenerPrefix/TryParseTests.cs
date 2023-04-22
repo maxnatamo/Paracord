@@ -5,7 +5,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
     public class TryParseTests
     {
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyString()
+        public void TryParse_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -18,7 +18,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenNull()
+        public void TryParse_ReturnsFalse_GivenNull()
         {
             // Arrange
             string value = null!;
@@ -31,7 +31,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenLongString()
+        public void TryParse_ReturnsFalse_GivenLongString()
         {
             // Arrange
             string value = string.Join("", Enumerable.Repeat('a', 300));
@@ -44,7 +44,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenAddress()
+        public void TryParse_ReturnsTrue_GivenAddress()
         {
             // Arrange
             string value = "127.0.0.1";
@@ -60,7 +60,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenAddressAndInsecureProtocol()
+        public void TryParse_ReturnsTrue_GivenAddressAndInsecureProtocol()
         {
             // Arrange
             string value = "http://127.0.0.1";
@@ -76,7 +76,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenAddressAndSecureProtocol()
+        public void TryParse_ReturnsTrue_GivenAddressAndSecureProtocol()
         {
             // Arrange
             string value = "https://127.0.0.1";
@@ -92,7 +92,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenProtocol()
+        public void TryParse_ReturnsFalse_GivenProtocol()
         {
             // Arrange
             string value = "https://";
@@ -105,7 +105,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenAddressAndPort()
+        public void TryParse_ReturnsTrue_GivenAddressAndPort()
         {
             // Arrange
             string value = "0.0.0.0:32000";
@@ -120,7 +120,7 @@ namespace Paracord.Shared.UnitTests.Listener.ListenerPrefixTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenPortNumberAboveLimit()
+        public void TryParse_ReturnsFalse_GivenPortNumberAboveLimit()
         {
             // Arrange
             string value = "0.0.0.0:96000";

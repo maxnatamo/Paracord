@@ -5,7 +5,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
     public class TryParseTests
     {
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyString()
+        public void TryParse_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -18,7 +18,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenRootPath()
+        public void TryParse_ReturnsTrue_GivenRootPath()
         {
             // Arrange
             string value = "/";
@@ -33,7 +33,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenNestedPath()
+        public void TryParse_ReturnsTrue_GivenNestedPath()
         {
             // Arrange
             string value = "/a/b/c";
@@ -48,7 +48,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseSingleQueryParameter()
+        public void TryParse_ReturnsFalse_GivenSingleQueryParameter()
         {
             // Arrange
             string value = "?a=c";
@@ -61,7 +61,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenRootPathWithSingleQueryParameter()
+        public void TryParse_ReturnsTrue_GivenRootPathWithSingleQueryParameter()
         {
             // Arrange
             string value = "/?a=c";
@@ -78,7 +78,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyQueryName()
+        public void TryParse_ReturnsFalse_GivenEmptyQueryName()
         {
             // Arrange
             string value = "?=c";
@@ -91,7 +91,7 @@ namespace Paracord.Core.UnitTests.Http.HttpTargetTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueWhenGivenQueryParametersWithHashtag()
+        public void TryParse_ReturnsTrueWhen_GivenQueryParametersWithHashtag()
         {
             // Arrange
             string value = "/?a=1#";

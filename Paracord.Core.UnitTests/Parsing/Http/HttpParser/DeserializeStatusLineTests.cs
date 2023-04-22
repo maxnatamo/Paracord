@@ -6,7 +6,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
     public class DeserializeStatusLineTests
     {
         [Fact]
-        public void DeserializeStatusLineThrowsArgumentNullExceptionWhenRequestIsNull()
+        public void DeserializeStatusLine_ThrowsArgumentNullException_GivenNullRequest()
         {
             // Arrange
             HttpRequest request = null!;
@@ -19,7 +19,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void DeserializeStatusLineThrowsNotImplementedExceptionWhenHeaderDataIsEmpty()
+        public void DeserializeStatusLine_ThrowsNotImplementedException_EmptyHeaderData()
         {
             // Arrange
             HttpRequest request = new HttpRequest();
@@ -32,7 +32,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void DeserializeStatusLineThrowsFormatExceptionWhenHeaderDataIsLessThan3Segments()
+        public void DeserializeStatusLine_ThrowsFormatException_WhenHeaderDataIsLessThan3Segments()
         {
             // Arrange
             HttpRequest request = new HttpRequest();
@@ -49,7 +49,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void DeserializeStatusLineThrowsFormatExceptionWhenHeaderDataIsMoreThan3Segments()
+        public void DeserializeStatusLine_ThrowsFormatException_WhenHeaderDataIsMoreThan3Segments()
         {
             // Arrange
             HttpRequest request = new HttpRequest();
@@ -66,7 +66,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void DeserializeStatusLineThrowsNotImplementedExceptionWhenVerbIsInvalid()
+        public void DeserializeStatusLine_ThrowsNotImplementedException_WhenVerbIsInvalid()
         {
             // Arrange
             HttpRequest request = new HttpRequest();

@@ -10,7 +10,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
     public class ETagMiddlewareTests
     {
         [Fact]
-        public void ETagMiddlewareSkipsGivenNonSuccessfulErrorCode()
+        public void ETagMiddleware_Skips_GivenNonSuccessfulErrorCode()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -28,7 +28,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareSkipsGivenAlreadyExistingETagHeader()
+        public void ETagMiddleware_Skips_GivenAlreadyExistingETagHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -46,7 +46,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareSkipsGivenBodyLengthOverLimit()
+        public void ETagMiddleware_Skips_GivenBodyLengthOverLimit()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -64,7 +64,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsETagGivenTextResponse()
+        public void ETagMiddleware_ReturnsETag_GivenTextResponse()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -83,7 +83,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsETagGivenTextResponseAndMatchingIfMatchHeader()
+        public void ETagMiddleware_ReturnsETag_GivenTextResponseAndMatchingIfMatchHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -102,7 +102,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsETagGivenCatchAllIfMatchHeader()
+        public void ETagMiddleware_ReturnsETag_GivenCatchAllIfMatchHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -121,7 +121,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsPreconditionFailedGivenNonMatchingIfMatchHeader()
+        public void ETagMiddleware_ReturnsPreconditionFailed_GivenNonMatchingIfMatchHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -142,7 +142,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsETagGivenNonMatchingIfNoneMatchHeader()
+        public void ETagMiddleware_ReturnsETag_GivenNonMatchingIfNoneMatchHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();
@@ -163,7 +163,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.ETagMiddlewareTests
         }
 
         [Fact]
-        public void ETagMiddlewareReturnsPreconditionFailedGivenMatchingIfNoneMatchHeader()
+        public void ETagMiddleware_ReturnsPreconditionFailed_GivenMatchingIfNoneMatchHeader()
         {
             // Arrange
             ETagMiddleware middleware = new ETagMiddleware();

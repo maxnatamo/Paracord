@@ -6,7 +6,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
     public class GetNextTokenTests
     {
         [Fact]
-        public void GetNextTokenReturnsEndOfFileTokenGivenEmptyString()
+        public void GetNextToken_ReturnsEndOfFileToken_GivenEmptyString()
         {
             // Arrange
             string route = string.Empty;
@@ -22,7 +22,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenThrowsInvalidDataExceptionGivenNonAlnumByteSequence()
+        public void GetNextTokenThrowsInvalidDataException_GivenNonAlnumByteSequence()
         {
             // Arrange
             string route = new ASCIIEncoding().GetString(new byte[] { 0x10 });
@@ -35,7 +35,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenThrowsInvalidDataExceptionGivenNewline()
+        public void GetNextTokenThrowsInvalidDataException_GivenNewline()
         {
             // Arrange
             string route = "\n";
@@ -48,7 +48,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsEqualTokenGivenEqual()
+        public void GetNextToken_ReturnsEqualToken_GivenEqual()
         {
             // Arrange
             string route = "=";
@@ -63,7 +63,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsColonTokenGivenColon()
+        public void GetNextToken_ReturnsColonToken_GivenColon()
         {
             // Arrange
             string route = ":";
@@ -78,7 +78,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsSlashTokenGivenForwardSlash()
+        public void GetNextToken_ReturnsSlashToken_GivenForwardSlash()
         {
             // Arrange
             string route = "/";
@@ -93,7 +93,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsBraceLeftTokenGivenBraceLeft()
+        public void GetNextToken_ReturnsBraceLeftToken_GivenBraceLeft()
         {
             // Arrange
             string route = "{";
@@ -108,7 +108,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsBraceRightTokenGivenBraceRight()
+        public void GetNextToken_ReturnsBraceRightToken_GivenBraceRight()
         {
             // Arrange
             string route = "}";
@@ -123,7 +123,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsNameTokenGivenWord()
+        public void GetNextToken_ReturnsNameToken_GivenWord()
         {
             // Arrange
             string route = "Controller";
@@ -139,7 +139,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
         }
 
         [Fact]
-        public void GetNextTokenReturnsUnknownTokenGivenUnsupportedToken()
+        public void GetNextToken_ReturnsUnknownToken_GivenUnsupportedToken()
         {
             // Arrange
             string route = "%";

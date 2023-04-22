@@ -7,7 +7,7 @@ namespace Paracord.Core.UnitTests.Compression.DeflateCompressionProviderTests
     public class CompressTests
     {
         [Fact]
-        public void CompressReturnsEmptyArrayGivenEmptyStream()
+        public void Compress_ReturnsEmptyArray_GivenEmptyStream()
         {
             // Arrange
             MemoryStream inputStream = new MemoryStream();
@@ -20,7 +20,7 @@ namespace Paracord.Core.UnitTests.Compression.DeflateCompressionProviderTests
         }
 
         [Fact]
-        public void CompressReturnsCompressedStringGivenStreamWithStringContent()
+        public void Compress_ReturnsCompressedString_GivenStreamWithStringContent()
         {
             // Arrange
             string content = "This is a test string!";

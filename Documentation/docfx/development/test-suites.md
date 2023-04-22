@@ -44,3 +44,14 @@ Currently, the project uses a namespace convention, like so:
 --------------------|-------
  Unit tests         | `Paracord.{PROJECT}.UnitTests.{FOLDERPATH}.{CLASSNAME}Tests`
  Integration tests  | `Paracord.{PROJECT}.IntegrationTests.{FOLDERPATH}.{CLASSNAME}Tests`
+
+## Methods
+
+The test method name should indicate the expected result and a description of the input, as such:
+
+```
+{METHODNAME}_Returns{EXPECTED_RESULT}_Given{INPUT}
+```
+
+- `EXPECTED_RESULT`: The expected result of the method, such as `ReturnsTrue`, `ThrowsUnexpectedTokenException`, etc.
+- `INPUT`: A simple description of the input, such as `EmptyString`, `IntegerAboveMax`, `NonPrintableAscii`, etc.

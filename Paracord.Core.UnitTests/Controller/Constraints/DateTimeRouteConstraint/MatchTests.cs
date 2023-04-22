@@ -6,7 +6,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraint
     public class MatchTests
     {
         [Fact]
-        public void MatchReturnsFalseGivenEmptyString()
+        public void Match_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -20,7 +20,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraint
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenLongDateString()
+        public void Match_ReturnsTrue_GivenLongDateString()
         {
             // Arrange
             string value = new DateTime(2007, 1, 9, 9, 41, 12).ToLongDateString();
@@ -38,7 +38,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraint
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenLongTimeString()
+        public void Match_ReturnsTrue_GivenLongTimeString()
         {
             // Arrange
             string value = new DateTime(2007, 1, 9, 9, 41, 12).ToLongTimeString();
@@ -56,7 +56,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraint
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenShortDateString()
+        public void Match_ReturnsTrue_GivenShortDateString()
         {
             // Arrange
             string value = new DateTime(2007, 1, 9, 9, 41, 12).ToShortDateString();
@@ -74,7 +74,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraint
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenShortTimeString()
+        public void Match_ReturnsTrue_GivenShortTimeString()
         {
             // Arrange
             string value = new DateTime(2007, 1, 9, 9, 41, 12).ToShortTimeString();

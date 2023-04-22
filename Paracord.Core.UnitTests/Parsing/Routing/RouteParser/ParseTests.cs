@@ -7,7 +7,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
     public class ParseTests
     {
         [Fact]
-        public void ParseReturnsNoSegmentsGivenEmptyString()
+        public void Parse_ReturnsNoSegments_GivenEmptyString()
         {
             // Arrange
             string route = string.Empty;
@@ -20,7 +20,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsConstantRouteSegmentGivenAlphabeticalWord()
+        public void Parse_ReturnsConstantRouteSegment_GivenAlphabeticalWord()
         {
             // Arrange
             string route = "Controller";
@@ -36,7 +36,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsConstantRouteSegmentGivenAlphanumericWord()
+        public void Parse_ReturnsConstantRouteSegment_GivenAlphanumericWord()
         {
             // Arrange
             string route = "Co123ler";
@@ -52,7 +52,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseThrowsUnexpectedTokenExceptionGivenEnclosedAlphanumericWord()
+        public void Parse_ThrowsUnexpectedTokenException_GivenEnclosedAlphanumericWord()
         {
             // Arrange
             string route = "{co123ler}";
@@ -65,7 +65,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseThrowsUnexpectedTokenExceptionGivenAlphabeticalWordWithEqualSign()
+        public void Parse_ThrowsUnexpectedTokenException_GivenAlphabeticalWordWithEqualSign()
         {
             // Arrange
             string route = "Controller=";
@@ -78,7 +78,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseThrowsUnexpectedTokenExceptionGivenBracesWithoutContent()
+        public void Parse_ThrowsUnexpectedTokenException_GivenBracesWithoutContent()
         {
             // Arrange
             string route = "{}";
@@ -91,7 +91,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsVariableRouteSegmentGivenEnclosedValue()
+        public void Parse_ReturnsVariableRouteSegment_GivenEnclosedValue()
         {
             // Arrange
             string route = "{controller}";
@@ -107,7 +107,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsVariableRouteSegmentGivenEnclosedValueWithDefaultValue()
+        public void Parse_ReturnsVariableRouteSegment_GivenEnclosedValueWithDefaultValue()
         {
             // Arrange
             string route = "{controller=index}";
@@ -123,7 +123,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsVariableRouteSegmentGivenEnclosedValueWithAlphanumericDefaultValue()
+        public void Parse_ReturnsVariableRouteSegment_GivenEnclosedValueWithAlphanumericDefaultValue()
         {
             // Arrange
             string route = "{controller=index1}";
@@ -139,7 +139,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsConstantRouteSegmentsGivenSeparatedWords()
+        public void Parse_ReturnsConstantRouteSegments_GivenSeparatedWords()
         {
             // Arrange
             string route = "controller/action";
@@ -158,7 +158,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsVariableRouteSegmentsGivenSeparatedEnclosedWords()
+        public void Parse_ReturnsVariableRouteSegments_GivenSeparatedEnclosedWords()
         {
             // Arrange
             string route = "{controller}/{action}";
@@ -177,7 +177,7 @@ namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
         }
 
         [Fact]
-        public void ParseReturnsVariableRouteSegmentsGivenSeparatedEnclosedWordsWithDefaultValue()
+        public void Parse_ReturnsVariableRouteSegments_GivenSeparatedEnclosedWordsWithDefaultValue()
         {
             // Arrange
             string route = "{controller}/{action=Index}";

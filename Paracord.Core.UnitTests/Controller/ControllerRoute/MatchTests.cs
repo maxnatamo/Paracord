@@ -20,7 +20,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
             };
 
         [Fact]
-        public void MatchReturnsNonSuccessfulMatchGivenEmptyStringWithConstantRoute()
+        public void Match_ReturnsNonSuccessfulMatch_GivenEmptyStringWithConstantRoute()
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
@@ -35,7 +35,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
-        public void MatchReturnsSuccessfulMatchGivenUppercaseStringWithConstantRoute()
+        public void Match_ReturnsSuccessfulMatch_GivenUppercaseStringWithConstantRoute()
         {
             // Arrange
             HttpRequest request = this.MakeRequest("index");
@@ -50,7 +50,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
-        public void MatchReturnsNonSuccessfulMatchGivenEmptyStringWithVariableRoute()
+        public void Match_ReturnsNonSuccessfulMatch_GivenEmptyStringWithVariableRoute()
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
@@ -65,7 +65,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
-        public void MatchReturnsSuccessfulMatchGivenStringWithVariableRoute()
+        public void Match_ReturnsSuccessfulMatch_GivenStringWithVariableRoute()
         {
             // Arrange
             HttpRequest request = this.MakeRequest("index");
@@ -82,7 +82,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
-        public void MatchReturnsSuccessfulMatchGivenEmptyStringWithVariableRouteWithDefault()
+        public void Match_ReturnsSuccessfulMatch_GivenEmptyStringWithVariableRouteWithDefault()
         {
             // Arrange
             HttpRequest request = this.MakeRequest(string.Empty);
@@ -99,7 +99,7 @@ namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
         }
 
         [Fact]
-        public void MatchReturnsSuccessfulMatchGivenStringWithVariableRouteWithDefault()
+        public void Match_ReturnsSuccessfulMatch_GivenStringWithVariableRouteWithDefault()
         {
             // Arrange
             HttpRequest request = this.MakeRequest("dashboard");

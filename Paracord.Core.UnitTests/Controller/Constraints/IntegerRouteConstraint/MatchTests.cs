@@ -5,7 +5,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
     public class MatchTests
     {
         [Fact]
-        public void MatchReturnsFalseGivenEmptyString()
+        public void Match_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -19,7 +19,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenString()
+        public void Match_ReturnsFalse_GivenString()
         {
             // Arrange
             string value = "a";
@@ -33,7 +33,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
         }
 
         [Fact]
-        public void IntegerRouteConstraint()
+        public void Match_ReturnsFalse_GivenIntegerValue()
         {
             // Arrange
             string value = "1";
@@ -49,7 +49,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenIntegerValueWithDecimalPoint()
+        public void Match_ReturnsFalse_GivenIntegerValueWithDecimalPoint()
         {
             // Arrange
             string value = "1.";
@@ -63,7 +63,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsTrueGivenNegativeNumber()
+        public void Match_ReturnsTrue_GivenNegativeNumber()
         {
             // Arrange
             string value = "-1";
@@ -79,7 +79,7 @@ namespace Paracord.Core.UnitTests.Controller.Constraints.IntegerRouteConstraintT
         }
 
         [Fact]
-        public void MatchReturnsFalseGivenGivenHugeNumber()
+        public void Match_ReturnsFalse_GivenGivenHugeNumber()
         {
             // Arrange
             string value = Int64.MaxValue.ToString();

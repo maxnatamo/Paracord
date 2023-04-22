@@ -5,7 +5,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
     public class TryParseTests
     {
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyString()
+        public void TryParse_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -18,7 +18,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenWhitespace()
+        public void TryParse_ReturnsFalse_GivenWhitespace()
         {
             // Arrange
             string value = "  \t\t\n";
@@ -31,7 +31,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenHTTP_1_1()
+        public void TryParse_ReturnsTrue_GivenHTTP_1_1()
         {
             // Arrange
             string value = "HTTP/1.1";
@@ -47,7 +47,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenHTTP_1_11()
+        public void TryParse_ReturnsFalse_GivenHTTP_1_11()
         {
             // Arrange
             string value = "HTTP/1.11";
@@ -60,7 +60,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenHTTP_1_A()
+        public void TryParse_ReturnsFalse_GivenHTTP_1_A()
         {
             // Arrange
             string value = "HTTP/1.A";
@@ -73,7 +73,7 @@ namespace Paracord.Core.UnitTests.Http.HttpVersionTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenHTTP_1_()
+        public void TryParse_ReturnsFalse_GivenHTTP_1_()
         {
             // Arrange
             string value = "HTTP/1.";

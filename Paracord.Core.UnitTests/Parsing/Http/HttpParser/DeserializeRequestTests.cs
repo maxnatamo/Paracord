@@ -8,7 +8,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
     public class DeserializeRequestTests
     {
         [Fact]
-        public void DeserializeRequestThrowsFormatExceptionWhenNoContentDelimiterIsPresent()
+        public void DeserializeRequest_ThrowsFormatException_WhenNoContentDelimiterIsPresent()
         {
             // Arrange
             string request = @"\u000D\u000AGET / HTTP/1.1\u000D\u000AHost: localhost\u000D\u000Abody";
@@ -21,7 +21,7 @@ namespace Paracord.Core.UnitTests.Http.HttpParserTests
         }
 
         [Fact]
-        public void DeserializeRequestThrowsFormatExceptionWhenTwoContentDelimiterIsPresent()
+        public void DeserializeRequest_ThrowsFormatException_WhenTwoContentDelimiterIsPresent()
         {
             // Arrange
             string request = @"\u000D\u000AGET / HTTP/1.1\u000D\u000AHost: localhost\u000D\u000A\u000D\u000Abody\u000D\u000A\u000D\u000Abody 2";

@@ -18,7 +18,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
     public class HttpsRedirectMiddlewareTests
     {
         [Fact]
-        public void HttpsRedirectMiddlewareContinuesGivenSingleInsecurePrefixAndInsecureRequest()
+        public void HttpsRedirectMiddleware_Continues_GivenSingleInsecurePrefixAndInsecureRequest()
         {
             // Arrange
             HttpsRedirectMiddleware middleware = new HttpsRedirectMiddleware();
@@ -41,7 +41,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
         }
 
         [Fact]
-        public void HttpsRedirectMiddlewareContinuesGivenSingleSecurePrefixAndSecureRequest()
+        public void HttpsRedirectMiddleware_Continues_GivenSingleSecurePrefixAndSecureRequest()
         {
             // Arrange
             HttpsRedirectMiddleware middleware = new HttpsRedirectMiddleware();
@@ -64,7 +64,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
         }
 
         [Fact]
-        public void HttpsRedirectMiddlewareRedirectsGivenSingleSecurePrefixAndInsecureRequest()
+        public void HttpsRedirectMiddleware_Redirects_GivenSingleSecurePrefixAndInsecureRequest()
         {
             // Arrange
             HttpsRedirectMiddleware middleware = new HttpsRedirectMiddleware();
@@ -89,7 +89,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
         }
 
         [Fact]
-        public void HttpsRedirectMiddlewareContinuesGivenUpgradeInsecureRequestsHeaderOfZero()
+        public void HttpsRedirectMiddleware_Continues_GivenUpgradeInsecureRequestsHeaderOfZero()
         {
             // Arrange
             HttpsRedirectMiddleware middleware = new HttpsRedirectMiddleware();
@@ -114,7 +114,7 @@ namespace Paracord.Core.IntegrationTests.Middleware.HttpsRedirectMiddlewareTests
         }
 
         [Fact]
-        public void HttpsRedirectMiddlewareRedirectsGivenUpgradeInsecureRequestsHeaderOfOne()
+        public void HttpsRedirectMiddleware_Redirects_GivenUpgradeInsecureRequestsHeaderOfOne()
         {
             // Arrange
             HttpsRedirectMiddleware middleware = new HttpsRedirectMiddleware();

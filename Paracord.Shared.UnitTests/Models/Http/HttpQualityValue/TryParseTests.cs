@@ -5,7 +5,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
     public class TryParseTests
     {
         [Fact]
-        public void TryParseReturnsFalseGivenEmptyString()
+        public void TryParse_ReturnsFalse_GivenEmptyString()
         {
             // Arrange
             string value = string.Empty;
@@ -18,7 +18,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenNull()
+        public void TryParse_ReturnsFalse_GivenNull()
         {
             // Arrange
             string value = null!;
@@ -31,7 +31,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenByteSequence()
+        public void TryParse_ReturnsFalse_GivenByteSequence()
         {
             // Arrange
             string value = "\u0000\u0000";
@@ -44,7 +44,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenLongString()
+        public void TryParse_ReturnsFalse_GivenLongString()
         {
             // Arrange
             string value = string.Join("", Enumerable.Repeat('a', 300));
@@ -57,7 +57,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenValueWithoutWeight()
+        public void TryParse_ReturnsTrue_GivenValueWithoutWeight()
         {
             // Arrange
             string value = "value";
@@ -72,7 +72,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValueWithSemicolon()
+        public void TryParse_ReturnsFalse_GivenValueWithSemicolon()
         {
             // Arrange
             string value = "value;";
@@ -85,7 +85,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenOnlyWeight()
+        public void TryParse_ReturnsFalse_GivenOnlyWeight()
         {
             // Arrange
             string value = "q=1.0";
@@ -98,7 +98,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenOnlyWeightWithSemicolon()
+        public void TryParse_ReturnsFalse_GivenOnlyWeightWithSemicolon()
         {
             // Arrange
             string value = ";q=1.0";
@@ -111,7 +111,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenWeightWithNonFloatValue()
+        public void TryParse_ReturnsFalse_GivenWeightWithNonFloatValue()
         {
             // Arrange
             string value = "value;q=s";
@@ -124,7 +124,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValueWithIntegerWeight()
+        public void TryParse_ReturnsFalse_GivenValueWithIntegerWeight()
         {
             // Arrange
             string value = "value;q=1";
@@ -137,7 +137,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValueWithoutDecimal()
+        public void TryParse_ReturnsFalse_GivenValueWithoutDecimal()
         {
             // Arrange
             string value = "value;q=1.";
@@ -150,7 +150,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsTrueGivenValueWithValidWeight()
+        public void TryParse_ReturnsTrue_GivenValueWithValidWeight()
         {
             // Arrange
             string value = "value;q=0.7";
@@ -165,7 +165,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValueWithWeightAboveOne()
+        public void TryParse_ReturnsFalse_GivenValueWithWeightAboveOne()
         {
             // Arrange
             string value = "value;q=1.1";
@@ -178,7 +178,7 @@ namespace Paracord.Shared.UnitTests.Http.HttpQualityValueTests
         }
 
         [Fact]
-        public void TryParseReturnsFalseGivenValueWithNegativeWeight()
+        public void TryParse_ReturnsFalse_GivenValueWithNegativeWeight()
         {
             // Arrange
             string value = "value;q=-0.1";
