@@ -1,3 +1,4 @@
+using Paracord.Core.Controller;
 using Paracord.Core.Http;
 using Paracord.Shared.Models.Http;
 
@@ -27,12 +28,22 @@ namespace Paracord.Core.Extensions
             response.Send();
         }
 
+        /// <param name="controller">The controller to handle the redirect from.</param>
+        /// <inheritdoc cref="HttpResponseExtensions.Redirect(HttpResponse, string, HttpStatusCode)" />
+        public static void Redirect(this ControllerBase controller, string path, HttpStatusCode statusCode = HttpStatusCode.TemporaryRedirect)
+            => controller.Response.Redirect(path, statusCode);
+
         /// <inheritdoc cref="HttpResponseExtensions.Redirect(HttpResponse, string, HttpStatusCode)" />
         /// <param name="permanent">
         /// Whether the redirect is permanent or not.
         /// Specifies the status code (<see cref="HttpStatusCode.TemporaryRedirect" /> or <see cref="HttpStatusCode.PermanentRedirect" />).
         /// </param>
-        public static void Redirect(this HttpResponse response, string path, bool permanent = false)
+        public static void Redirect(this HttpResponse response, string path, bool permanent)
             => response.Redirect(path, permanent ? HttpStatusCode.PermanentRedirect : HttpStatusCode.TemporaryRedirect);
+
+        /// <param name="controller">The controller to handle the redirect from.</param>
+        /// <inheritdoc cref="HttpResponseExtensions.Redirect(HttpResponse, string, bool)" />
+        public static void Redirect(this ControllerBase controller, string path, bool permanent)
+            => controller.Response.Redirect(path, permanent);
     }
 }
