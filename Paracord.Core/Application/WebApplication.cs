@@ -91,9 +91,19 @@ namespace Paracord.Core.Application
                     this.ExecuteMiddleware(_ => _.AfterRequestReceived(this.Listener, ctx.Request, ctx.Response));
 
                     // Call context handler
-                    this.ContextHandler(ctx);
+                    try
+                    {
+                        this.ContextHandler(ctx);
+                    }
+                    catch(Exception e)
+                    {
+                        Console.WriteLine("Exception caught while processing request:");
+                        Console.WriteLine(e.ToString());
+                    }
 
                     this.ExecuteMiddleware(_ => _.BeforeResponseSent(this.Listener, ctx.Request, ctx.Response));
+
+                    ctx.Send();
                 },
                 cancellationToken);
             });
@@ -129,7 +139,18 @@ namespace Paracord.Core.Application
                 controller.Request = ctx.Request;
                 controller.Response = ctx.Response;
 
-                object? result = route.ExecutorMethod.Invoke(controller, new object[] { });
+                object? result = null;
+
+                try
+                {
+                    result = route.ExecutorMethod.Invoke(controller, new object[] { });
+                }
+                catch(Exception e)
+                {
+                    ctx.Response.Body.SetLength(0);
+                    ctx.Response.Write(e.ToString());
+                    ctx.Response.StatusCode = HttpStatusCode.InternalServerError;
+                }
 
                 if(ctx.IsOpen)
                 {
@@ -138,8 +159,6 @@ namespace Paracord.Core.Application
                         ctx.Response.Body.SetLength(0);
                         ctx.Response.WriteToJson(result, route.ExecutorMethod.ReturnType);
                     }
-
-                    ctx.Send();
                 }
             }
         }
