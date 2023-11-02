@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Paracord.Shared\Paracord.Shared.csproj" />
+    <ProjectReference Include="../src/Paracord.Shared.csproj" />
   </ItemGroup>
 
 </Project>
