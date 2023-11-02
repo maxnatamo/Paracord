@@ -2,7 +2,7 @@ using Paracord.Core.Controller;
 using Paracord.Core.Parsing.Routing;
 using Paracord.Shared.Exceptions;
 
-namespace Paracord.Core.UnitTests.Parsing.Routing.RouteParserTests
+namespace Paracord.Core.Tests.Parsing.Routing.RouteParserTests
 {
     public class ParseTests
     {

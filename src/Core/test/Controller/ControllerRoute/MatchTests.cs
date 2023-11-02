@@ -5,7 +5,7 @@ using Paracord.Core.Http;
 
 using HttpMethod = Paracord.Shared.Models.Http.HttpMethod;
 
-namespace Paracord.Core.UnitTests.Controller.ControllerRouteTests
+namespace Paracord.Core.Tests.Controller.ControllerRouteTests
 {
     public class MatchTests
     {

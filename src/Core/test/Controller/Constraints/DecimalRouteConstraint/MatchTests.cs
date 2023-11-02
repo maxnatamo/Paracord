@@ -1,6 +1,6 @@
 using Paracord.Core.Controller.Constraints;
 
-namespace Paracord.Core.UnitTests.Controller.Constraints.DecimalRouteConstraintTests
+namespace Paracord.Core.Tests.Controller.Constraints.DecimalRouteConstraintTests
 {
     public class MatchTests
     {

@@ -1,6 +1,6 @@
 using Paracord.Shared.Models.Http;
 
-namespace Paracord.Shared.UnitTests.Http.HttpQualityValueCollectionTests
+namespace Paracord.Shared.Tests.Http.HttpQualityValueCollectionTests
 {
     public class TryParseTests
     {

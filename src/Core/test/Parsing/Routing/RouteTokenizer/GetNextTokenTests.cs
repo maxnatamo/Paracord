@@ -1,7 +1,7 @@
 using System.Text;
 using Paracord.Core.Parsing.Routing;
 
-namespace Paracord.Core.UnitTests.Parsing.Routing.RouteTokenizerTests
+namespace Paracord.Core.Tests.Parsing.Routing.RouteTokenizerTests
 {
     public class GetNextTokenTests
     {

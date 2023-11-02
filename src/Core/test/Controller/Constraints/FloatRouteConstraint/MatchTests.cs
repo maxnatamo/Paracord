@@ -1,6 +1,6 @@
 using Paracord.Core.Controller.Constraints;
 
-namespace Paracord.Core.UnitTests.Controller.Constraints.FloatRouteConstraintTests
+namespace Paracord.Core.Tests.Controller.Constraints.FloatRouteConstraintTests
 {
     public class MatchTests
     {

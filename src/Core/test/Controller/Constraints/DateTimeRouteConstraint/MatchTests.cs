@@ -1,7 +1,7 @@
 using FluentAssertions.Extensions;
 using Paracord.Core.Controller.Constraints;
 
-namespace Paracord.Core.UnitTests.Controller.Constraints.DateTimeRouteConstraintTests
+namespace Paracord.Core.Tests.Controller.Constraints.DateTimeRouteConstraintTests
 {
     public class MatchTests
     {
