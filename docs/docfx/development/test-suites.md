@@ -7,11 +7,9 @@ All tests are executed on pull requests and on all commits to `main`.
 ## Structuring
 
 When creating new test classes, they should conform to some guidelines, to avoid confusion. Generally, test files should be structured as such:
-
- Test type          | File name 
---------------------|-------
- Unit tests         | `Paracord.{PROJECT}.UnitTests/{FOLDERPATH}/{CLASSNAME}/{METHODNAME}Tests.cs`
- Integration tests  | `Paracord.{PROJECT}.IntegrationTests/{FOLDERPATH}/{CLASSNAME}Tests.cs`
+```
+src/{PROJECT}/test/{FOLDERPATH}/{CLASSNAME}/{METHODNAME}Tests.cs
+```
 
 - `PROJECT`: The parent project where the tested class resides, such as `Core`, `Shared`, etc.
 - `FOLDERPATH`: The path to the tested class in the source project.
@@ -30,7 +28,7 @@ Paracord.Shared/
 
 When unit-testing the `Build` method in `X509CertificateBuilder`, the test file should be named like this:
 ```
-Paracord.Shared.UnitTests/Security/X509/X509CertificateBuilder/BuildTests.cs
+src/Shared/test/Security/X509/X509CertificateBuilder/BuildTests.cs
 ```
 
 ## Namespaces
@@ -39,11 +37,9 @@ Like file names, the namespace of the test file is equally important. It should 
 collisions with other tests; or even the type being tested.
 
 Currently, the project uses a namespace convention, like so:
-
- Test type          | Namespace
---------------------|-------
- Unit tests         | `Paracord.{PROJECT}.UnitTests.{FOLDERPATH}.{CLASSNAME}Tests`
- Integration tests  | `Paracord.{PROJECT}.IntegrationTests.{FOLDERPATH}.{CLASSNAME}Tests`
+```
+Paracord.{PROJECT}.Tests.{FOLDERPATH}.{CLASSNAME}Tests
+```
 
 ## Methods
 
