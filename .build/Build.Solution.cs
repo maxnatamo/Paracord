@@ -11,8 +11,7 @@ partial class Build : NukeBuild
     private static readonly AbsolutePath[] Projects =
     {
         RootDirectory / "src" / "Core",
-        RootDirectory / "src" / "Shared",
-        RootDirectory / "src" / "Templates",
+        RootDirectory / "src" / "Shared"
     };
 
     private static IEnumerable<string> GetAllProjects()
