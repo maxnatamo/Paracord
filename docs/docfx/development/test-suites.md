@@ -7,9 +7,10 @@ All tests are executed on pull requests and on all commits to `main`.
 ## Structuring
 
 When creating new test classes, they should conform to some guidelines, to avoid confusion. Generally, test files should be structured as such:
-```
-src/{PROJECT}/test/{FOLDERPATH}/{CLASSNAME}/{METHODNAME}Tests.cs
-```
+ Test type          | File name 
+--------------------|-------
+ Unit tests         | `src/{PROJECT}/test/{FOLDERPATH}/{CLASSNAME}/{METHODNAME}Tests.cs`
+ Integration tests  | `src/{PROJECT}/test/{FOLDERPATH}/{CLASSNAME}Tests.cs`
 
 - `PROJECT`: The parent project where the tested class resides, such as `Core`, `Shared`, etc.
 - `FOLDERPATH`: The path to the tested class in the source project.
