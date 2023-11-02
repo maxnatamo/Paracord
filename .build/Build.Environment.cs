@@ -1,14 +1,18 @@
 using Nuke.Common;
-using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.Tools.GitVersion;
 
 partial class Build : NukeBuild
 {
     /// <summary>
+    /// Path to the directory containing the source code.
+    /// </summary>
+    private AbsolutePath SourceDirectory => RootDirectory / "src";
+
+    /// <summary>
     /// Path to the main solution file of the project.
     /// </summary>
-    readonly AbsolutePath MainSolutionFile = RootDirectory / "Paracord.sln";
+    private AbsolutePath MainSolutionFile => SourceDirectory / "Paracord.sln";
 
     /// <summary>
     /// Path to store coverage reports.

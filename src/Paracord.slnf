@@ -1,0 +1,12 @@
+{
+  "solution": {
+    "path": "Paracord.sln",
+    "projects": [
+      "Core\\src\\Paracord.Core.csproj",
+      "Core\\test\\Paracord.Core.Tests.csproj",
+      "Shared\\src\\Paracord.Shared.csproj",
+      "Shared\\test\\Paracord.Shared.Tests.csproj",
+      "Templates\\Paracord.Templates.csproj"
+    ]
+  }
+}

@@ -11,6 +11,8 @@ partial class Build : NukeBuild
     Target Restore => _ => _
         .Executes(() =>
         {
+            this.GenerateSolutionFile();
+
             DotNetRestore(c => c
                 .SetProjectFile(MainSolutionFile));
         });
@@ -19,6 +21,11 @@ partial class Build : NukeBuild
         .DependsOn(Restore)
         .Executes(() =>
         {
+            if(!InvokedTargets.Contains(Restore))
+            {
+                this.GenerateSolutionFile();
+            }
+
             DotNetBuild(c => c
                 .SetProjectFile(MainSolutionFile)
                 .SetNoRestore(InvokedTargets.Contains(Restore))
