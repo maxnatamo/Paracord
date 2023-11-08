@@ -79,7 +79,7 @@ namespace Paracord.Core.Controller
 
         /// <inheritdoc cref="ControllerRoute.TryParse(string, out ControllerRoute?)" />
         /// <returns>The parsed <see cref="ControllerRoute" />-instance.</returns>
-        /// <exception cref=""></exception>
+        /// <exception cref="FormatException">Thrown when <paramref name="controllerRoute" /> is not formatted correctly.</exception>
         public static ControllerRoute Parse(string controllerRoute, string methodRoute)
         {
             if(ControllerRoute.TryParse(controllerRoute, methodRoute, out var result))
