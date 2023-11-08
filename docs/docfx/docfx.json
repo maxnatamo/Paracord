@@ -5,8 +5,8 @@
         {
           "src": "../../",
           "files": [
-            "Paracord.Core/Paracord.Core.csproj",
-            "Paracord.Shared/Paracord.Shared.csproj"
+            "src/Core/src/Paracord.Core.csproj",
+            "src/Shared/src/Paracord.Shared.csproj"
           ]
         }
       ],
