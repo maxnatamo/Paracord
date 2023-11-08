@@ -41,7 +41,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: 'Documentation/docfx/_site'
+          path: 'docs/docfx/_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
