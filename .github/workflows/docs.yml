@@ -36,7 +36,7 @@ jobs:
           dotnet-version: 7.x
 
       - run: dotnet tool update -g docfx
-      - run: docfx Documentation/docfx/docfx.json
+      - run: docfx docs/docfx/docfx.json
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
