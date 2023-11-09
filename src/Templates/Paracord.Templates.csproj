@@ -3,7 +3,6 @@
   <PropertyGroup Label="Build">
     <PackageType>Template</PackageType>
     <PackageId>Paracord.Templates</PackageId>
-    <TargetFramework>net7.0</TargetFramework>
 
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
